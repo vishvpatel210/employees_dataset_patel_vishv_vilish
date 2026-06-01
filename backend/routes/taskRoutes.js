@@ -1,6 +1,7 @@
 const express = require('express');
 const {
     getTasks,
+    
     getTask,
     createTask,
     updateTask,
@@ -14,7 +15,7 @@ router.use(protect);
 
 router
     .route('/')
-    .get(getTasks)
+    .get(getTasks) 
     .post(authorize('Admin', 'HR'), createTask);
 
 router

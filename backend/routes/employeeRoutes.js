@@ -3,8 +3,13 @@ const {
     getEmployees,
     getEmployee,
     createEmployee,
+    replaceEmployee,
     updateEmployee,
-    deleteEmployee
+    deleteEmployee,
+    employeeExists,
+    bulkCreateEmployees,
+    bulkUpdateEmployees,
+    bulkDeleteEmployees
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -19,8 +24,25 @@ router
     .post(authorize('Admin', 'HR'), createEmployee);
 
 router
+    .route('/exists/:id')
+    .get(employeeExists);
+
+router
+    .route('/bulk-create')
+    .post(authorize('Admin', 'HR'), bulkCreateEmployees);
+
+router
+    .route('/bulk-update')
+    .patch(authorize('Admin', 'HR'), bulkUpdateEmployees);
+
+router
+    .route('/bulk-delete')
+    .delete(authorize('Admin', 'HR'), bulkDeleteEmployees);
+
+router
     .route('/:id')
     .get(getEmployee)
+    .put(authorize('Admin', 'HR'), replaceEmployee)
     .patch(authorize('Admin', 'HR'), updateEmployee)
     .delete(authorize('Admin', 'HR'), deleteEmployee);
 

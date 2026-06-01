@@ -1,4 +1,45 @@
+const mongoose = require('mongoose');
 const Employee = require('../models/Employee');
+
+const getEmployeeLookupConditions = employeeId => {
+    const id = String(employeeId);
+    const conditions = [{ id }];
+
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        conditions.unshift({ _id: id });
+    }
+
+    return conditions;
+};
+
+const getEmployeeLookup = employeeId => ({
+    $or: getEmployeeLookupConditions(employeeId)
+});
+
+const populateEmployee = query => query.populate('user', 'name email').populate('department', 'name');
+
+const getBulkItems = (body, key) => Array.isArray(body) ? body : body && body[key];
+
+const getUpdatePayload = updateItem => {
+    if (!updateItem || typeof updateItem !== 'object' || Array.isArray(updateItem)) {
+        return null;
+    }
+
+    if (updateItem.data) {
+        return updateItem.data;
+    }
+
+    if (updateItem.fields) {
+        return updateItem.fields;
+    }
+
+    if (updateItem.update) {
+        return updateItem.update;
+    }
+
+    const { id, _id, employeeId, data, fields, update, ...payload } = updateItem;
+    return payload;
+};
 
 // @desc    Get all employees
 // @route   GET /api/v1/employees
@@ -83,7 +124,7 @@ exports.getEmployees = async (req, res, next) => {
 // @access  Private
 exports.getEmployee = async (req, res, next) => {
     try {
-        const employee = await Employee.findById(req.params.id).populate('user', 'name email').populate('department', 'name');
+        const employee = await populateEmployee(Employee.findOne(getEmployeeLookup(req.params.id)));
 
         if (!employee) {
             return res.status(404).json({ success: false, message: `Employee not found with id of ${req.params.id}` });
@@ -92,6 +133,22 @@ exports.getEmployee = async (req, res, next) => {
         res.status(200).json({
             success: true,
             data: employee
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Check whether employee exists
+// @route   GET /api/v1/employees/exists/:id
+// @access  Private
+exports.employeeExists = async (req, res, next) => {
+    try {
+        const employee = await Employee.exists(getEmployeeLookup(req.params.id));
+
+        res.status(200).json({
+            success: true,
+            exists: !!employee
         });
     } catch (err) {
         next(err);
@@ -114,15 +171,43 @@ exports.createEmployee = async (req, res, next) => {
     }
 };
 
-// @desc    Update employee
-// @route   PATCH /api/v1/employees/:id
+// @desc    Create multiple employees
+// @route   POST /api/v1/employees/bulk-create
 // @access  Private/Admin/HR
-exports.updateEmployee = async (req, res, next) => {
+exports.bulkCreateEmployees = async (req, res, next) => {
     try {
-        const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
+        const employeesToCreate = getBulkItems(req.body, 'employees');
+
+        if (!Array.isArray(employeesToCreate) || employeesToCreate.length === 0) {
+            return res.status(400).json({ success: false, message: 'Please provide a non-empty employees array' });
+        }
+
+        const employees = await Employee.insertMany(employeesToCreate, {
+            ordered: true
+        });
+
+        res.status(201).json({
+            success: true,
+            count: employees.length,
+            data: employees
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Replace employee
+// @route   PUT /api/v1/employees/:id
+// @access  Private/Admin/HR
+exports.replaceEmployee = async (req, res, next) => {
+    try {
+        const replacement = { ...req.body };
+        delete replacement._id;
+
+        const employee = await populateEmployee(Employee.findOneAndReplace(getEmployeeLookup(req.params.id), replacement, {
             new: true,
             runValidators: true
-        });
+        }));
 
         if (!employee) {
             return res.status(404).json({ success: false, message: `Employee not found with id of ${req.params.id}` });
@@ -137,12 +222,15 @@ exports.updateEmployee = async (req, res, next) => {
     }
 };
 
-// @desc    Delete employee
-// @route   DELETE /api/v1/employees/:id
+// @desc    Update employee
+// @route   PATCH /api/v1/employees/:id
 // @access  Private/Admin/HR
-exports.deleteEmployee = async (req, res, next) => {
+exports.updateEmployee = async (req, res, next) => {
     try {
-        const employee = await Employee.findByIdAndDelete(req.params.id);
+        const employee = await populateEmployee(Employee.findOneAndUpdate(getEmployeeLookup(req.params.id), req.body, {
+            new: true,
+            runValidators: true
+        }));
 
         if (!employee) {
             return res.status(404).json({ success: false, message: `Employee not found with id of ${req.params.id}` });
@@ -150,6 +238,114 @@ exports.deleteEmployee = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
+            data: employee
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Update multiple employees
+// @route   PATCH /api/v1/employees/bulk-update
+// @access  Private/Admin/HR
+exports.bulkUpdateEmployees = async (req, res, next) => {
+    try {
+        const updates = getBulkItems(req.body, 'updates');
+
+        if (!Array.isArray(updates) || updates.length === 0) {
+            return res.status(400).json({ success: false, message: 'Please provide a non-empty updates array' });
+        }
+
+        const results = [];
+
+        for (const updateItem of updates) {
+            if (!updateItem || typeof updateItem !== 'object' || Array.isArray(updateItem)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Each update must be an object'
+                });
+            }
+
+            const employeeId = updateItem.id || updateItem._id || updateItem.employeeId;
+            const updatePayload = getUpdatePayload(updateItem);
+
+            if (
+                !employeeId ||
+                !updatePayload ||
+                typeof updatePayload !== 'object' ||
+                Array.isArray(updatePayload) ||
+                Object.keys(updatePayload).length === 0
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Each update must include id, _id, or employeeId and at least one field to update'
+                });
+            }
+
+            const employee = await populateEmployee(Employee.findOneAndUpdate(getEmployeeLookup(employeeId), updatePayload, {
+                new: true,
+                runValidators: true
+            }));
+
+            results.push({
+                id: employeeId,
+                success: !!employee,
+                data: employee || null,
+                message: employee ? undefined : `Employee not found with id of ${employeeId}`
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            count: results.filter(result => result.success).length,
+            data: results
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Delete employee
+// @route   DELETE /api/v1/employees/:id
+// @access  Private/Admin/HR
+exports.deleteEmployee = async (req, res, next) => {
+    try {
+        const employee = await Employee.findOneAndDelete(getEmployeeLookup(req.params.id));
+
+        if (!employee) {
+            return res.status(404).json({ success: false, message: `Employee not found with id of ${req.params.id}` });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Delete multiple employees
+// @route   DELETE /api/v1/employees/bulk-delete
+// @access  Private/Admin/HR
+exports.bulkDeleteEmployees = async (req, res, next) => {
+    try {
+        const employeeIds = getBulkItems(req.body, 'ids');
+
+        if (!Array.isArray(employeeIds) || employeeIds.length === 0) {
+            return res.status(400).json({ success: false, message: 'Please provide a non-empty ids array' });
+        }
+
+        if (employeeIds.some(employeeId => employeeId === undefined || employeeId === null || String(employeeId).trim() === '')) {
+            return res.status(400).json({ success: false, message: 'Each id must be a non-empty value' });
+        }
+
+        const deleteConditions = employeeIds.flatMap(getEmployeeLookupConditions);
+        const result = await Employee.deleteMany({ $or: deleteConditions });
+
+        res.status(200).json({
+            success: true,
+            count: result.deletedCount,
             data: {}
         });
     } catch (err) {

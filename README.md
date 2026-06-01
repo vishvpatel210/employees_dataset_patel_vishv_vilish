@@ -252,8 +252,13 @@ http://localhost:5000/api/v1
 | GET | /employees | Get all employees |
 | GET | /employees/:id | Get employee by ID |
 | POST | /employees | Create employee |
+| PUT | /employees/:id | Replace employee |
 | PATCH | /employees/:id | Update employee |
 | DELETE | /employees/:id | Delete employee |
+| GET | /employees/exists/:id | Check whether employee exists |
+| POST | /employees/bulk-create | Create multiple employees |
+| PATCH | /employees/bulk-update | Update multiple employees |
+| DELETE | /employees/bulk-delete | Delete multiple employees |
 
 ---
 
