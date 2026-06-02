@@ -1017,3 +1017,97 @@ exports.getSortedEmployees = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Search employees by keyword
+// @route   GET /api/v1/search/employees?q=keyword
+// @access  Private
+exports.searchEmployees = async (req, res, next) => {
+    try {
+        const q = req.query.q;
+        if (!q) {
+            return res.status(400).json({ success: false, message: 'Please provide a search keyword (q)' });
+        }
+
+        const keyword = q.toLowerCase();
+        let queryObj = { $or: [] };
+        
+        const regex = new RegExp(q, 'i');
+        queryObj.$or.push(
+            { name: regex },
+            { designation: regex },
+            { 'profile.skills.primary': regex },
+            { 'profile.skills.secondary': regex },
+            { 'profile.skills.experience.domains': regex },
+            { 'profile.skills.experience.certifications.current': regex },
+            { 'profile.contact.address.location.country': regex },
+            { 'profile.contact.address.location.state': regex },
+            { 'profile.contact.address.city': regex },
+            { 'profile.contact.address.location.geo.timezone.name': regex },
+            { 'profile.contact.address.location.geo.timezone.utc_offset': regex }
+        );
+
+        if (keyword === 'verified') {
+            queryObj.$or.push({ 'profile.skills.experience.certifications.meta.verified': true });
+        }
+        
+        if (keyword === 'project' || keyword === 'projects') {
+            queryObj.$or.push({ 'profile.projects': { $exists: true, $not: { $size: 0 } } });
+        }
+
+        if (keyword === 'task' || keyword === 'tasks') {
+            const Task = require('../models/Task');
+            const tasks = await Task.find({});
+            const assignedEmployeeIds = tasks.map(t => t.assignedTo);
+            queryObj.$or.push({ _id: { $in: assignedEmployeeIds } });
+        }
+
+        const total = await Employee.countDocuments(queryObj);
+        
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const startIndex = (page - 1) * limit;
+
+        let queryBuilder = Employee.find(queryObj);
+        
+        if (req.query.sort) {
+            const sortMap = {
+                'experience': 'profile.skills.experience.years',
+                '-experience': '-profile.skills.experience.years',
+                'country': 'profile.contact.address.location.country',
+                '-country': '-profile.contact.address.location.country',
+                'state': 'profile.contact.address.location.state',
+                '-state': '-profile.contact.address.location.state',
+                'city': 'profile.contact.address.city',
+                '-city': '-profile.contact.address.city',
+                'skill': 'profile.skills.primary',
+                '-skill': '-profile.skills.primary',
+                'timezone': 'profile.contact.address.location.geo.timezone.name',
+                '-timezone': '-profile.contact.address.location.geo.timezone.name',
+                'lastUpdated': 'profile.skills.experience.certifications.meta.lastUpdated',
+                '-lastUpdated': '-profile.skills.experience.certifications.meta.lastUpdated',
+                'project': 'profile.projects',
+                '-project': '-profile.projects',
+                'domain': 'profile.skills.experience.domains',
+                '-domain': '-profile.skills.experience.domains',
+                'certification': 'profile.skills.experience.certifications.current',
+                '-certification': '-profile.skills.experience.certifications.current'
+            };
+            const sortBy = req.query.sort.split(',').map(s => sortMap[s.trim()] || s.trim()).join(' ');
+            queryBuilder = queryBuilder.sort(sortBy);
+        } else {
+            queryBuilder = queryBuilder.sort('-createdAt');
+        }
+
+        const employees = await populateEmployee(queryBuilder).skip(startIndex).limit(limit);
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            pagination: getPaginationData(page, limit, total),
+            data: employees
+        });
+
+    } catch (err) {
+        next(err);
+    }
+};
