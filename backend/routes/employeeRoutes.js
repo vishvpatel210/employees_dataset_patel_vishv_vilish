@@ -34,7 +34,8 @@ const {
     getEmployeeByTask,
     getEmployeePerformance,
     getEmployeeStats,
-    getSortedEmployees
+    getSortedEmployees,
+    getFilteredEmployees
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -163,6 +164,10 @@ router
 router
     .route('/sort/:sortType')
     .get(getSortedEmployees);
+
+router
+    .route('/filter/:filterType')
+    .get(getFilteredEmployees);
 
 router
     .route('/:id')
