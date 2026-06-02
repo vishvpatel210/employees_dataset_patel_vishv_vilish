@@ -1111,3 +1111,56 @@ exports.searchEmployees = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Get filtered employees based on preset categories
+// @route   GET /api/v1/employees/filter/:filterType
+// @access  Private
+exports.getFilteredEmployees = async (req, res, next) => {
+    try {
+        const filterType = req.params.filterType;
+        
+        switch(filterType) {
+            case 'high-experience':
+                req.query.experience = { gte: '8' };
+                break;
+            case 'low-experience':
+                req.query.experience = { lt: '3' };
+                break;
+            case 'verified':
+                req.query.verified = 'true';
+                break;
+            case 'cloud':
+                req.query.domain = 'cloud|aws|azure|gcp';
+                break;
+            case 'finance':
+            case 'healthcare':
+                req.query.domain = filterType;
+                break;
+            case 'devops':
+                req.query.technology = 'devops|kubernetes|docker|jenkins|ci/cd|terraform';
+                break;
+            case 'ai':
+                req.query.technology = 'ai|artificial intelligence|machine learning|deep learning|nlp|data science';
+                break;
+            case 'fullstack':
+                req.query.technology = 'fullstack|full stack|mern|mean';
+                break;
+            case 'kubernetes':
+            case 'react':
+            case 'nodejs':
+            case 'java':
+            case 'python':
+                req.query.technology = filterType;
+                break;
+            case 'recent-certifications':
+                req.query.sort = '-lastUpdated';
+                break;
+            default:
+                return res.status(400).json({ success: false, message: 'Invalid filter type' });
+        }
+
+        return exports.getEmployees(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+};
