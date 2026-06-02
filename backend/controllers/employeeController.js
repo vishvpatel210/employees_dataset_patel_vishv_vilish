@@ -56,14 +56,66 @@ exports.getEmployees = async (req, res, next) => {
         // Loop over removeFields and delete them from reqQuery
         removeFields.forEach(param => delete reqQuery[param]);
 
-        // Create query string
+        // Handle custom query parameters for nested fields
+        let customQuery = {};
+        
+        if (reqQuery.country) customQuery['profile.contact.address.location.country'] = new RegExp(reqQuery.country, 'i');
+        if (reqQuery.state) customQuery['profile.contact.address.location.state'] = new RegExp(reqQuery.state, 'i');
+        if (reqQuery.city) customQuery['profile.contact.address.city'] = new RegExp(reqQuery.city, 'i');
+        if (reqQuery.primarySkill) customQuery['profile.skills.primary'] = new RegExp(reqQuery.primarySkill, 'i');
+        if (reqQuery.secondarySkill) customQuery['profile.skills.secondary'] = new RegExp(reqQuery.secondarySkill, 'i');
+        if (reqQuery.domain) customQuery['profile.skills.experience.domains'] = new RegExp(reqQuery.domain, 'i');
+        if (reqQuery.experience) customQuery['profile.skills.experience.years'] = reqQuery.experience;
+        if (reqQuery.verified !== undefined) customQuery['profile.skills.experience.certifications.meta.verified'] = reqQuery.verified === 'true';
+        if (reqQuery.certification) customQuery['profile.skills.experience.certifications.current'] = new RegExp(reqQuery.certification, 'i');
+        
+        if (reqQuery.timezone) {
+            customQuery['$or'] = customQuery['$or'] || [];
+            customQuery['$or'].push(
+                { 'profile.contact.address.location.geo.timezone.name': new RegExp(reqQuery.timezone, 'i') },
+                { 'profile.contact.address.location.geo.timezone.utc_offset': new RegExp(reqQuery.timezone, 'i') }
+            );
+        }
+        
+        if (reqQuery.project) {
+            customQuery['profile.projects'] = reqQuery.project;
+        }
+        
+        if (reqQuery.technology || reqQuery.skill) {
+            const tech = reqQuery.technology || reqQuery.skill;
+            customQuery['$or'] = customQuery['$or'] || [];
+            customQuery['$or'].push(
+                { 'profile.skills.primary': new RegExp(tech, 'i') },
+                { 'profile.skills.secondary': new RegExp(tech, 'i') }
+            );
+        }
+        
+        if (reqQuery.emailVerified !== undefined) {
+             customQuery['profile.contact.emailVerified'] = reqQuery.emailVerified === 'true';
+        }
+
+        if (reqQuery.task) {
+            const Task = require('../models/Task');
+            const tasks = await Task.find({ taskId: reqQuery.task });
+            const assignedEmployeeIds = tasks.map(t => t.assignedTo);
+            customQuery['_id'] = { $in: assignedEmployeeIds };
+        }
+
+        // Remove mapped fields from reqQuery to avoid conflicts with stringified query
+        const mappedFields = ['country', 'state', 'city', 'primarySkill', 'secondarySkill', 'domain', 'experience', 'verified', 'certification', 'timezone', 'project', 'technology', 'skill', 'emailVerified', 'task'];
+        mappedFields.forEach(param => delete reqQuery[param]);
+
+        // Create query string for remaining operators
         let queryStr = JSON.stringify(reqQuery);
 
         // Create operators ($gt, $gte, etc)
         queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
 
+        // Merge standard parsed query with customQuery
+        const finalQuery = { ...JSON.parse(queryStr), ...customQuery };
+
         // Finding resource
-        query = Employee.find(JSON.parse(queryStr)).populate('user', 'name email').populate('department', 'name');
+        query = Employee.find(finalQuery).populate('user', 'name email').populate('department', 'name');
 
         // Select Fields
         if (req.query.select) {
