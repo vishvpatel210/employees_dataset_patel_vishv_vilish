@@ -26,7 +26,10 @@ const {
     getEmployeesByCertification,
     getVerifiedEmployees,
     getRecentCertifications,
-    getTopExperience
+    getTopExperience,
+    getEmployeeProjects,
+    getEmployeeTasks,
+    getEmployeesByName
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -123,6 +126,18 @@ router
 router
     .route('/certification/:certification')
     .get(getEmployeesByCertification);
+
+router
+    .route('/projects')
+    .get(getEmployeeProjects);
+
+router
+    .route('/tasks')
+    .get(getEmployeeTasks);
+
+router
+    .route('/name/:name')
+    .get(getEmployeesByName);
 
 router
     .route('/:id')
