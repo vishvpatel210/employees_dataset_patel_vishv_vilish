@@ -9,6 +9,7 @@ const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 
 // Custom error handler
 const errorHandler = require('./middlewares/errorMiddleware');
@@ -28,6 +29,7 @@ app.use('/api/v1/projects', projectRoutes);
 app.use('/api/v1/tasks', taskRoutes);
 app.use('/api/v1/search', searchRoutes);
 app.use('/api/v1/analytics/employees', analyticsRoutes);
+app.use('/api/v1/stats/employees', statsRoutes);
 
 // Basic route for testing
 app.get('/api/v1', (req, res) => {
