@@ -29,7 +29,11 @@ const {
     getTopExperience,
     getEmployeeProjects,
     getEmployeeTasks,
-    getEmployeesByName
+    getEmployeesByName,
+    getEmployeesByProject,
+    getEmployeeByTask,
+    getEmployeePerformance,
+    getEmployeeStats
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -138,6 +142,22 @@ router
 router
     .route('/name/:name')
     .get(getEmployeesByName);
+
+router
+    .route('/project/:projectId')
+    .get(getEmployeesByProject);
+
+router
+    .route('/task/:taskId')
+    .get(getEmployeeByTask);
+
+router
+    .route('/performance/:id')
+    .get(getEmployeePerformance);
+
+router
+    .route('/stats/:id')
+    .get(getEmployeeStats);
 
 router
     .route('/:id')
