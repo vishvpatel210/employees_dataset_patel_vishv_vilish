@@ -33,7 +33,8 @@ const {
     getEmployeesByProject,
     getEmployeeByTask,
     getEmployeePerformance,
-    getEmployeeStats
+    getEmployeeStats,
+    getSortedEmployees
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -158,6 +159,10 @@ router
 router
     .route('/stats/:id')
     .get(getEmployeeStats);
+
+router
+    .route('/sort/:sortType')
+    .get(getSortedEmployees);
 
 router
     .route('/:id')

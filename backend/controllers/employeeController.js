@@ -138,7 +138,30 @@ exports.getEmployees = async (req, res, next) => {
 
         // Sort
         if (req.query.sort) {
-            const sortBy = req.query.sort.split(',').join(' ');
+            const sortMap = {
+                'experience': 'profile.skills.experience.years',
+                '-experience': '-profile.skills.experience.years',
+                'country': 'profile.contact.address.location.country',
+                '-country': '-profile.contact.address.location.country',
+                'state': 'profile.contact.address.location.state',
+                '-state': '-profile.contact.address.location.state',
+                'city': 'profile.contact.address.city',
+                '-city': '-profile.contact.address.city',
+                'skill': 'profile.skills.primary',
+                '-skill': '-profile.skills.primary',
+                'timezone': 'profile.contact.address.location.geo.timezone.name',
+                '-timezone': '-profile.contact.address.location.geo.timezone.name',
+                'lastUpdated': 'profile.skills.experience.certifications.meta.lastUpdated',
+                '-lastUpdated': '-profile.skills.experience.certifications.meta.lastUpdated',
+                'project': 'profile.projects',
+                '-project': '-profile.projects',
+                'domain': 'profile.skills.experience.domains',
+                '-domain': '-profile.skills.experience.domains',
+                'certification': 'profile.skills.experience.certifications.current',
+                '-certification': '-profile.skills.experience.certifications.current'
+            };
+            
+            const sortBy = req.query.sort.split(',').map(s => sortMap[s.trim()] || s.trim()).join(' ');
             query = query.sort(sortBy);
         } else {
             query = query.sort('-createdAt');
@@ -968,6 +991,28 @@ exports.getEmployeeStats = async (req, res, next) => {
         };
 
         res.status(200).json({ success: true, data: stats });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees sorted by specific parameter
+// @route   GET /api/v1/employees/sort/:sortType
+// @access  Private
+exports.getSortedEmployees = async (req, res, next) => {
+    try {
+        const sortType = req.params.sortType;
+        const [field, order] = sortType.split('-');
+        
+        let sortStr = field;
+        if (order === 'desc') {
+            sortStr = '-' + field;
+        } else if (order === 'asc') {
+            sortStr = field;
+        }
+
+        req.query.sort = sortStr;
+        return exports.getEmployees(req, res, next);
     } catch (err) {
         next(err);
     }
