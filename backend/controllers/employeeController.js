@@ -20,6 +20,19 @@ const populateEmployee = query => query.populate('user', 'name email').populate(
 
 const getBulkItems = (body, key) => Array.isArray(body) ? body : body && body[key];
 
+const getPaginationData = (page, limit, total) => {
+    const pagination = {};
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    if (endIndex < total) {
+        pagination.next = { page: page + 1, limit };
+    }
+    if (startIndex > 0) {
+        pagination.prev = { page: page - 1, limit };
+    }
+    return pagination;
+};
+
 const getUpdatePayload = updateItem => {
     if (!updateItem || typeof updateItem !== 'object' || Array.isArray(updateItem)) {
         return null;
@@ -411,13 +424,19 @@ exports.bulkDeleteEmployees = async (req, res, next) => {
 exports.getEmployeesByState = async (req, res, next) => {
     try {
         const state = req.params.state;
-        const employees = await populateEmployee(Employee.find({
-            'profile.contact.address.location.state': new RegExp(state, 'i')
-        }));
+        const queryFilter = { 'profile.contact.address.location.state': new RegExp(state, 'i') };
+        const total = await Employee.countDocuments(queryFilter);
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const startIndex = (page - 1) * limit;
+
+        const queryObj = Employee.find(queryFilter);
+        const employees = await populateEmployee(queryObj).skip(startIndex).limit(limit);
 
         res.status(200).json({
             success: true,
             count: employees.length,
+            pagination: getPaginationData(page, limit, total),
             data: employees
         });
     } catch (err) {
@@ -431,13 +450,19 @@ exports.getEmployeesByState = async (req, res, next) => {
 exports.getEmployeesByCountry = async (req, res, next) => {
     try {
         const country = req.params.country;
-        const employees = await populateEmployee(Employee.find({
-            'profile.contact.address.location.country': new RegExp(country, 'i')
-        }));
+        const queryFilter = { 'profile.contact.address.location.country': new RegExp(country, 'i') };
+        const total = await Employee.countDocuments(queryFilter);
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const startIndex = (page - 1) * limit;
+
+        const queryObj = Employee.find(queryFilter);
+        const employees = await populateEmployee(queryObj).skip(startIndex).limit(limit);
 
         res.status(200).json({
             success: true,
             count: employees.length,
+            pagination: getPaginationData(page, limit, total),
             data: employees
         });
     } catch (err) {
@@ -494,10 +519,21 @@ exports.getEmployeesByTimezone = async (req, res, next) => {
 exports.getEmployeesByPrimarySkill = async (req, res, next) => {
     try {
         const skill = req.params.skill;
-        const employees = await populateEmployee(Employee.find({
-            'profile.skills.primary': new RegExp(skill, 'i')
-        }));
-        res.status(200).json({ success: true, count: employees.length, data: employees });
+        const queryFilter = { 'profile.skills.primary': new RegExp(skill, 'i') };
+        const total = await Employee.countDocuments(queryFilter);
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const startIndex = (page - 1) * limit;
+
+        const queryObj = Employee.find(queryFilter);
+        const employees = await populateEmployee(queryObj).skip(startIndex).limit(limit);
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            pagination: getPaginationData(page, limit, total),
+            data: employees
+        });
     } catch (err) {
         next(err);
     }
@@ -524,10 +560,21 @@ exports.getEmployeesBySecondarySkill = async (req, res, next) => {
 exports.getEmployeesByDomain = async (req, res, next) => {
     try {
         const domain = req.params.domain;
-        const employees = await populateEmployee(Employee.find({
-            'profile.skills.experience.domains': new RegExp(domain, 'i')
-        }));
-        res.status(200).json({ success: true, count: employees.length, data: employees });
+        const queryFilter = { 'profile.skills.experience.domains': new RegExp(domain, 'i') };
+        const total = await Employee.countDocuments(queryFilter);
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const startIndex = (page - 1) * limit;
+
+        const queryObj = Employee.find(queryFilter);
+        const employees = await populateEmployee(queryObj).skip(startIndex).limit(limit);
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            pagination: getPaginationData(page, limit, total),
+            data: employees
+        });
     } catch (err) {
         next(err);
     }
@@ -661,10 +708,22 @@ exports.getEmployeesByCertification = async (req, res, next) => {
 // @access  Private
 exports.getVerifiedEmployees = async (req, res, next) => {
     try {
-        const employees = await populateEmployee(Employee.find({
-            'profile.skills.experience.certifications.meta.verified': true
-        }));
-        res.status(200).json({ success: true, count: employees.length, data: employees });
+        
+        const queryFilter = { 'profile.skills.experience.certifications.meta.verified': true };
+        const total = await Employee.countDocuments(queryFilter);
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const startIndex = (page - 1) * limit;
+
+        const queryObj = Employee.find(queryFilter);
+        const employees = await populateEmployee(queryObj).skip(startIndex).limit(limit);
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            pagination: getPaginationData(page, limit, total),
+            data: employees
+        });
     } catch (err) {
         next(err);
     }
@@ -675,12 +734,22 @@ exports.getVerifiedEmployees = async (req, res, next) => {
 // @access  Private
 exports.getRecentCertifications = async (req, res, next) => {
     try {
-        const employees = await populateEmployee(
-            Employee.find({})
-            .sort({ 'profile.skills.experience.certifications.meta.lastUpdated': -1 })
-            .limit(10)
-        );
-        res.status(200).json({ success: true, count: employees.length, data: employees });
+        
+        const queryFilter = {};
+        const total = await Employee.countDocuments(queryFilter);
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const startIndex = (page - 1) * limit;
+
+        const queryObj = Employee.find(queryFilter).sort({ 'profile.skills.experience.certifications.meta.lastUpdated': -1 });
+        const employees = await populateEmployee(queryObj).skip(startIndex).limit(limit);
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            pagination: getPaginationData(page, limit, total),
+            data: employees
+        });
     } catch (err) {
         next(err);
     }
@@ -707,10 +776,22 @@ exports.getTopExperience = async (req, res, next) => {
 // @access  Private
 exports.getEmployeeProjects = async (req, res, next) => {
     try {
-        const employees = await Employee.find({
-            'profile.projects': { $exists: true, $not: { $size: 0 } }
-        }).populate('profile.projects');
-        res.status(200).json({ success: true, count: employees.length, data: employees });
+        
+        const queryFilter = { 'profile.projects': { $exists: true, $not: { $size: 0 } } };
+        const total = await Employee.countDocuments(queryFilter);
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 20;
+        const startIndex = (page - 1) * limit;
+
+        const queryObj = Employee.find(queryFilter);
+        const employees = await populateEmployee(queryObj).populate('profile.projects').skip(startIndex).limit(limit);
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            pagination: getPaginationData(page, limit, total),
+            data: employees
+        });
     } catch (err) {
         next(err);
     }
@@ -721,7 +802,11 @@ exports.getEmployeeProjects = async (req, res, next) => {
 // @access  Private
 exports.getEmployeeTasks = async (req, res, next) => {
     try {
-        const employeesWithTasks = await Employee.aggregate([
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 20;
+        const startIndex = (page - 1) * limit;
+
+        const pipeline = [
             {
                 $lookup: {
                     from: 'tasks',
@@ -735,8 +820,23 @@ exports.getEmployeeTasks = async (req, res, next) => {
                     'tasks.0': { $exists: true }
                 }
             }
+        ];
+
+        const countResult = await Employee.aggregate([...pipeline, { $count: 'total' }]);
+        const total = countResult.length > 0 ? countResult[0].total : 0;
+
+        const employeesWithTasks = await Employee.aggregate([
+            ...pipeline,
+            { $skip: startIndex },
+            { $limit: limit }
         ]);
-        res.status(200).json({ success: true, count: employeesWithTasks.length, data: employeesWithTasks });
+
+        res.status(200).json({ 
+            success: true, 
+            count: employeesWithTasks.length, 
+            pagination: getPaginationData(page, limit, total),
+            data: employeesWithTasks 
+        });
     } catch (err) {
         next(err);
     }
