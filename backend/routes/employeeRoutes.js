@@ -13,7 +13,15 @@ const {
     getEmployeesByState,
     getEmployeesByCountry,
     getEmployeesByCity,
-    getEmployeesByTimezone
+    getEmployeesByTimezone,
+    getEmployeesByPrimarySkill,
+    getEmployeesBySecondarySkill,
+    getEmployeesByDomain,
+    getCloudEngineers,
+    getDevOpsEngineers,
+    getAIEngineers,
+    getFullstackDevelopers,
+    getTopSkills
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -58,6 +66,38 @@ router
 router
     .route('/timezone/:timezone')
     .get(getEmployeesByTimezone);
+
+router
+    .route('/cloud-engineers')
+    .get(getCloudEngineers);
+
+router
+    .route('/devops-engineers')
+    .get(getDevOpsEngineers);
+
+router
+    .route('/ai-engineers')
+    .get(getAIEngineers);
+
+router
+    .route('/fullstack')
+    .get(getFullstackDevelopers);
+
+router
+    .route('/top-skills')
+    .get(getTopSkills);
+
+router
+    .route('/primary-skill/:skill')
+    .get(getEmployeesByPrimarySkill);
+
+router
+    .route('/secondary-skill/:skill')
+    .get(getEmployeesBySecondarySkill);
+
+router
+    .route('/domain/:domain')
+    .get(getEmployeesByDomain);
 
 router
     .route('/:id')

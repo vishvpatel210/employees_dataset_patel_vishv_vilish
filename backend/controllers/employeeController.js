@@ -435,3 +435,141 @@ exports.getEmployeesByTimezone = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Get employees by primary skill
+// @route   GET /api/v1/employees/primary-skill/:skill
+// @access  Private
+exports.getEmployeesByPrimarySkill = async (req, res, next) => {
+    try {
+        const skill = req.params.skill;
+        const employees = await populateEmployee(Employee.find({
+            'profile.skills.primary': new RegExp(skill, 'i')
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees by secondary skill
+// @route   GET /api/v1/employees/secondary-skill/:skill
+// @access  Private
+exports.getEmployeesBySecondarySkill = async (req, res, next) => {
+    try {
+        const skill = req.params.skill;
+        const employees = await populateEmployee(Employee.find({
+            'profile.skills.secondary': new RegExp(skill, 'i')
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees by domain
+// @route   GET /api/v1/employees/domain/:domain
+// @access  Private
+exports.getEmployeesByDomain = async (req, res, next) => {
+    try {
+        const domain = req.params.domain;
+        const employees = await populateEmployee(Employee.find({
+            'profile.skills.experience.domains': new RegExp(domain, 'i')
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get cloud engineers
+// @route   GET /api/v1/employees/cloud-engineers
+// @access  Private
+exports.getCloudEngineers = async (req, res, next) => {
+    try {
+        const regex = /(cloud|aws|azure|gcp|google cloud)/i;
+        const employees = await populateEmployee(Employee.find({
+            $or: [
+                { 'profile.skills.primary': regex },
+                { 'profile.skills.secondary': regex },
+                { 'profile.skills.experience.domains': regex }
+            ]
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get DevOps engineers
+// @route   GET /api/v1/employees/devops-engineers
+// @access  Private
+exports.getDevOpsEngineers = async (req, res, next) => {
+    try {
+        const regex = /(devops|kubernetes|docker|jenkins|ci\/cd|terraform)/i;
+        const employees = await populateEmployee(Employee.find({
+            $or: [
+                { 'profile.skills.primary': regex },
+                { 'profile.skills.secondary': regex },
+                { 'profile.skills.experience.domains': regex }
+            ]
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get AI engineers
+// @route   GET /api/v1/employees/ai-engineers
+// @access  Private
+exports.getAIEngineers = async (req, res, next) => {
+    try {
+        const regex = /(ai|artificial intelligence|machine learning|deep learning|nlp|data science|tensorflow|pytorch)/i;
+        const employees = await populateEmployee(Employee.find({
+            $or: [
+                { 'profile.skills.primary': regex },
+                { 'profile.skills.secondary': regex },
+                { 'profile.skills.experience.domains': regex }
+            ]
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get Fullstack developers
+// @route   GET /api/v1/employees/fullstack
+// @access  Private
+exports.getFullstackDevelopers = async (req, res, next) => {
+    try {
+        const regex = /(fullstack|full stack|mern|mean)/i;
+        const employees = await populateEmployee(Employee.find({
+            $or: [
+                { 'profile.skills.primary': regex },
+                { 'profile.skills.secondary': regex },
+                { 'profile.skills.experience.domains': regex }
+            ]
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get Top Skills
+// @route   GET /api/v1/employees/top-skills
+// @access  Private
+exports.getTopSkills = async (req, res, next) => {
+    try {
+        const topSkills = await Employee.aggregate([
+            { $group: { _id: '$profile.skills.primary', count: { $sum: 1 } } },
+            { $sort: { count: -1 } },
+            { $limit: 10 },
+            { $project: { _id: 0, skill: '$_id', count: 1 } }
+        ]);
+        res.status(200).json({ success: true, count: topSkills.length, data: topSkills });
+    } catch (err) {
+        next(err);
+    }
+};
