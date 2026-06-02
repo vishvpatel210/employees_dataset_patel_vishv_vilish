@@ -649,3 +649,58 @@ exports.getTopExperience = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Get employees with projects
+// @route   GET /api/v1/employees/projects
+// @access  Private
+exports.getEmployeeProjects = async (req, res, next) => {
+    try {
+        const employees = await Employee.find({
+            'profile.projects': { $exists: true, $not: { $size: 0 } }
+        }).populate('profile.projects');
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees with tasks
+// @route   GET /api/v1/employees/tasks
+// @access  Private
+exports.getEmployeeTasks = async (req, res, next) => {
+    try {
+        const employeesWithTasks = await Employee.aggregate([
+            {
+                $lookup: {
+                    from: 'tasks',
+                    localField: '_id',
+                    foreignField: 'assignedTo',
+                    as: 'tasks'
+                }
+            },
+            {
+                $match: {
+                    'tasks.0': { $exists: true }
+                }
+            }
+        ]);
+        res.status(200).json({ success: true, count: employeesWithTasks.length, data: employeesWithTasks });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees by name
+// @route   GET /api/v1/employees/name/:name
+// @access  Private
+exports.getEmployeesByName = async (req, res, next) => {
+    try {
+        const name = req.params.name;
+        const employees = await populateEmployee(Employee.find({
+            name: new RegExp(name, 'i')
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
