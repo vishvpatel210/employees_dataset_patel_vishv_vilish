@@ -704,3 +704,119 @@ exports.getEmployeesByName = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Get employees by project ID
+// @route   GET /api/v1/employees/project/:projectId
+// @access  Private
+exports.getEmployeesByProject = async (req, res, next) => {
+    try {
+        const projectId = req.params.projectId;
+        
+        // If projectId is not valid ObjectId, it won't match anyway but we prevent casting error
+        let query = { 'profile.projects': projectId };
+        if (!mongoose.Types.ObjectId.isValid(projectId)) {
+            // Might be an issue with Mongoose throwing CastError if we pass invalid ID to ObjectId array
+            return res.status(400).json({ success: false, message: 'Invalid project ID format' });
+        }
+        
+        const employees = await populateEmployee(Employee.find(query));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employee by task ID
+// @route   GET /api/v1/employees/task/:taskId
+// @access  Private
+exports.getEmployeeByTask = async (req, res, next) => {
+    try {
+        const Task = require('../models/Task');
+        
+        // Look up by internal _id or custom taskId
+        const taskQuery = [{ taskId: req.params.taskId }];
+        if (mongoose.Types.ObjectId.isValid(req.params.taskId)) {
+            taskQuery.push({ _id: req.params.taskId });
+        }
+        
+        const task = await Task.findOne({ $or: taskQuery });
+
+        if (!task) {
+             return res.status(404).json({ success: false, message: 'Task not found' });
+        }
+
+        const employee = await populateEmployee(Employee.findById(task.assignedTo));
+        res.status(200).json({ success: true, data: employee });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employee performance analytics
+// @route   GET /api/v1/employees/performance/:id
+// @access  Private
+exports.getEmployeePerformance = async (req, res, next) => {
+    try {
+        const employee = await Employee.findOne(getEmployeeLookup(req.params.id));
+        if (!employee) {
+            return res.status(404).json({ success: false, message: 'Employee not found' });
+        }
+
+        const Task = require('../models/Task');
+        const tasksCount = await Task.countDocuments({ assignedTo: employee._id });
+        
+        const baseScore = 60;
+        const experienceBonus = employee.profile.skills.experience.years * 2;
+        const projectBonus = employee.profile.projects.length * 3;
+        const taskBonus = tasksCount * 1;
+        
+        let totalScore = baseScore + experienceBonus + projectBonus + taskBonus;
+        totalScore = Math.min(100, totalScore);
+
+        let rating = 'Needs Improvement';
+        if (totalScore >= 90) rating = 'Outstanding';
+        else if (totalScore >= 80) rating = 'Exceeds Expectations';
+        else if (totalScore >= 70) rating = 'Meets Expectations';
+
+        const analytics = {
+            performanceScore: totalScore,
+            rating: rating,
+            metrics: {
+                experienceContribution: experienceBonus,
+                projectContribution: projectBonus,
+                taskContribution: taskBonus
+            }
+        };
+
+        res.status(200).json({ success: true, data: analytics });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employee statistics
+// @route   GET /api/v1/employees/stats/:id
+// @access  Private
+exports.getEmployeeStats = async (req, res, next) => {
+    try {
+        const employee = await Employee.findOne(getEmployeeLookup(req.params.id));
+        if (!employee) {
+            return res.status(404).json({ success: false, message: 'Employee not found' });
+        }
+
+        const Task = require('../models/Task');
+        const tasksCount = await Task.countDocuments({ assignedTo: employee._id });
+
+        const stats = {
+            totalProjects: employee.profile.projects.length,
+            totalTasks: tasksCount,
+            yearsOfExperience: employee.profile.skills.experience.years,
+            primarySkill: employee.profile.skills.primary,
+            designation: employee.designation || 'N/A'
+        };
+
+        res.status(200).json({ success: true, data: stats });
+    } catch (err) {
+        next(err);
+    }
+};
