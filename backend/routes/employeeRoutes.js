@@ -9,7 +9,11 @@ const {
     employeeExists,
     bulkCreateEmployees,
     bulkUpdateEmployees,
-    bulkDeleteEmployees
+    bulkDeleteEmployees,
+    getEmployeesByState,
+    getEmployeesByCountry,
+    getEmployeesByCity,
+    getEmployeesByTimezone
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -38,6 +42,22 @@ router
 router
     .route('/bulk-delete')
     .delete(authorize('Admin', 'HR'), bulkDeleteEmployees);
+
+router
+    .route('/state/:state')
+    .get(getEmployeesByState);
+
+router
+    .route('/country/:country')
+    .get(getEmployeesByCountry);
+
+router
+    .route('/city/:city')
+    .get(getEmployeesByCity);
+
+router
+    .route('/timezone/:timezone')
+    .get(getEmployeesByTimezone);
 
 router
     .route('/:id')

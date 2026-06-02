@@ -352,3 +352,86 @@ exports.bulkDeleteEmployees = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Get employees by state
+// @route   GET /api/v1/employees/state/:state
+// @access  Private
+exports.getEmployeesByState = async (req, res, next) => {
+    try {
+        const state = req.params.state;
+        const employees = await populateEmployee(Employee.find({
+            'profile.contact.address.location.state': new RegExp(state, 'i')
+        }));
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            data: employees
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees by country
+// @route   GET /api/v1/employees/country/:country
+// @access  Private
+exports.getEmployeesByCountry = async (req, res, next) => {
+    try {
+        const country = req.params.country;
+        const employees = await populateEmployee(Employee.find({
+            'profile.contact.address.location.country': new RegExp(country, 'i')
+        }));
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            data: employees
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees by city
+// @route   GET /api/v1/employees/city/:city
+// @access  Private
+exports.getEmployeesByCity = async (req, res, next) => {
+    try {
+        const city = req.params.city;
+        const employees = await populateEmployee(Employee.find({
+            'profile.contact.address.city': new RegExp(city, 'i')
+        }));
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            data: employees
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees by timezone
+// @route   GET /api/v1/employees/timezone/:timezone
+// @access  Private
+exports.getEmployeesByTimezone = async (req, res, next) => {
+    try {
+        const timezone = req.params.timezone;
+        const employees = await populateEmployee(Employee.find({
+            $or: [
+                { 'profile.contact.address.location.geo.timezone.name': new RegExp(timezone, 'i') },
+                { 'profile.contact.address.location.geo.timezone.utc_offset': new RegExp(timezone, 'i') }
+            ]
+        }));
+
+        res.status(200).json({
+            success: true,
+            count: employees.length,
+            data: employees
+        });
+    } catch (err) {
+        next(err);
+    }
+};
