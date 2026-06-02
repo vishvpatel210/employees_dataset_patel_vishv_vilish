@@ -21,7 +21,12 @@ const {
     getDevOpsEngineers,
     getAIEngineers,
     getFullstackDevelopers,
-    getTopSkills
+    getTopSkills,
+    getEmployeesByExperience,
+    getEmployeesByCertification,
+    getVerifiedEmployees,
+    getRecentCertifications,
+    getTopExperience
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -98,6 +103,26 @@ router
 router
     .route('/domain/:domain')
     .get(getEmployeesByDomain);
+
+router
+    .route('/verified')
+    .get(getVerifiedEmployees);
+
+router
+    .route('/recent-certifications')
+    .get(getRecentCertifications);
+
+router
+    .route('/top-experience')
+    .get(getTopExperience);
+
+router
+    .route('/experience/:years')
+    .get(getEmployeesByExperience);
+
+router
+    .route('/certification/:certification')
+    .get(getEmployeesByCertification);
 
 router
     .route('/:id')

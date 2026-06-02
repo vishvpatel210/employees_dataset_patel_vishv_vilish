@@ -573,3 +573,79 @@ exports.getTopSkills = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Get employees by minimum experience years
+// @route   GET /api/v1/employees/experience/:years
+// @access  Private
+exports.getEmployeesByExperience = async (req, res, next) => {
+    try {
+        const years = Number(req.params.years);
+        const employees = await populateEmployee(Employee.find({
+            'profile.skills.experience.years': { $gte: years }
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees by certification
+// @route   GET /api/v1/employees/certification/:certification
+// @access  Private
+exports.getEmployeesByCertification = async (req, res, next) => {
+    try {
+        const certification = req.params.certification;
+        const employees = await populateEmployee(Employee.find({
+            'profile.skills.experience.certifications.current': new RegExp(certification, 'i')
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get verified employees
+// @route   GET /api/v1/employees/verified
+// @access  Private
+exports.getVerifiedEmployees = async (req, res, next) => {
+    try {
+        const employees = await populateEmployee(Employee.find({
+            'profile.skills.experience.certifications.meta.verified': true
+        }));
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees with recent certifications
+// @route   GET /api/v1/employees/recent-certifications
+// @access  Private
+exports.getRecentCertifications = async (req, res, next) => {
+    try {
+        const employees = await populateEmployee(
+            Employee.find({})
+            .sort({ 'profile.skills.experience.certifications.meta.lastUpdated': -1 })
+            .limit(10)
+        );
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Get employees with top experience
+// @route   GET /api/v1/employees/top-experience
+// @access  Private
+exports.getTopExperience = async (req, res, next) => {
+    try {
+        const employees = await populateEmployee(
+            Employee.find({})
+            .sort({ 'profile.skills.experience.years': -1 })
+            .limit(10)
+        );
+        res.status(200).json({ success: true, count: employees.length, data: employees });
+    } catch (err) {
+        next(err);
+    }
+};
