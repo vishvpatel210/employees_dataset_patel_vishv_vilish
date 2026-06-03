@@ -73,11 +73,57 @@ router
 
 // Mock visualization/analytics routes for rate limit practice
 router.get('/random', (req, res) => res.status(200).json({ success: true, message: 'Random API hit' }));
-router.get('/recommendations', (req, res) => res.status(200).json({ success: true, message: 'Recommendations API hit' }));
 router.get('/heatmap', (req, res) => res.status(200).json({ success: true, message: 'Heatmap API hit' }));
 router.get('/dashboard', (req, res) => res.status(200).json({ success: true, message: 'Dashboard API hit' }));
 router.get('/live-search', (req, res) => res.status(200).json({ success: true, message: 'Live search API hit' }));
-router.get('/system/logs', (req, res) => res.status(200).json({ success: true, message: 'System logs hit' }));
+
+// Advanced Practice Routes
+router.get('/trending-skills', (req, res) => res.status(200).json({ success: true, message: 'Trending skills data' }));
+router.get('/recent', (req, res) => res.status(200).json({ success: true, message: 'Recently added employees' }));
+router.get('/recommendations', (req, res) => res.status(200).json({ success: true, message: 'Employee recommendations' }));
+
+router.get('/predictions/performance', (req, res) => res.status(200).json({ success: true, message: 'Performance predictions' }));
+router.get('/predictions/project-fit', (req, res) => res.status(200).json({ success: true, message: 'Project fit predictions' }));
+
+router.get('/segments/top-performers', (req, res) => res.status(200).json({ success: true, message: 'Top performers segment' }));
+router.get('/segments/cloud-engineers', (req, res) => res.status(200).json({ success: true, message: 'Cloud engineers segment' }));
+router.get('/segments/devops', (req, res) => res.status(200).json({ success: true, message: 'DevOps engineers segment' }));
+router.get('/segments/ai-engineers', (req, res) => res.status(200).json({ success: true, message: 'AI engineers segment' }));
+router.get('/segments/fullstack', (req, res) => res.status(200).json({ success: true, message: 'Fullstack segment' }));
+
+router.get('/heatmap/countries', (req, res) => res.status(200).json({ success: true, message: 'Country heatmap data' }));
+router.get('/heatmap/states', (req, res) => res.status(200).json({ success: true, message: 'State heatmap data' }));
+router.get('/heatmap/skills', (req, res) => res.status(200).json({ success: true, message: 'Skill heatmap data' }));
+
+router.get('/insights/projects', (req, res) => res.status(200).json({ success: true, message: 'Project insights' }));
+router.get('/insights/tasks', (req, res) => res.status(200).json({ success: true, message: 'Task insights' }));
+router.get('/insights/certifications', (req, res) => res.status(200).json({ success: true, message: 'Certification insights' }));
+
+router.get('/alerts/expired-certifications', (req, res) => res.status(200).json({ success: true, message: 'Expired certification alerts' }));
+router.get('/alerts/high-workload', (req, res) => res.status(200).json({ success: true, message: 'High workload alerts' }));
+router.get('/alerts/project-delays', (req, res) => res.status(200).json({ success: true, message: 'Project delay alerts' }));
+
+router.post('/report', (req, res) => res.status(200).json({ success: true, message: 'Issue report submitted successfully' }));
+router.post('/cache/clear', (req, res) => res.status(200).json({ success: true, message: 'Employee cache cleared' }));
+
+router.get('/system/health', (req, res) => res.status(200).json({ success: true, status: 'Healthy', version: '1.0.0' }));
+router.get('/system/version', (req, res) => res.status(200).json({ success: true, version: '1.0.0' }));
+router.get('/system/config', (req, res) => res.status(200).json({ success: true, config: { features: ['search', 'analytics'] } }));
+router.get('/system/logs', (req, res) => res.status(200).json({ success: true, message: 'System logs fetched' }));
+router.get('/logs', (req, res) => res.status(200).json({ success: true, message: 'API System logs' }));
+
+// Good to Have explicit HEAD/OPTIONS wrappers for documentation practice
+router.head('/', (req, res) => res.status(200).end());
+router.head('/:id', (req, res) => res.status(200).end());
+router.head('/projects', (req, res) => res.status(200).end());
+router.options('/', (req, res) => {
+    res.set('Allow', 'GET, POST, HEAD, OPTIONS');
+    res.status(204).end();
+});
+router.options('/:id', (req, res) => {
+    res.set('Allow', 'GET, PUT, PATCH, DELETE, HEAD, OPTIONS');
+    res.status(204).end();
+});
 
 router
     .route('/bulk-update')
