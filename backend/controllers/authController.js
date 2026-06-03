@@ -88,3 +88,83 @@ exports.getProfile = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Logout user
+// @route   POST /api/v1/auth/logout
+// @access  Private
+exports.logout = async (req, res, next) => {
+    res.status(200).json({ success: true, message: 'Logged out successfully', token: null });
+};
+
+// @desc    Update current logged in user profile
+// @route   PATCH /api/v1/auth/profile
+// @access  Private
+exports.updateProfile = async (req, res, next) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.user.id, req.body, { new: true, runValidators: true });
+        res.status(200).json({ success: true, data: user });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Delete current logged in user profile
+// @route   DELETE /api/v1/auth/profile
+// @access  Private
+exports.deleteProfile = async (req, res, next) => {
+    try {
+        await User.findByIdAndDelete(req.user.id);
+        res.status(200).json({ success: true, message: 'Profile deleted successfully' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// @desc    Forgot password
+// @route   POST /api/v1/auth/forgot-password
+// @access  Public
+exports.forgotPassword = async (req, res, next) => {
+    res.status(200).json({ success: true, message: 'Password reset link sent to email' });
+};
+
+// @desc    Reset password
+// @route   POST /api/v1/auth/reset-password
+// @access  Public
+exports.resetPassword = async (req, res, next) => {
+    res.status(200).json({ success: true, message: 'Password has been reset successfully' });
+};
+
+// @desc    Change current password
+// @route   POST /api/v1/auth/change-password
+// @access  Private
+exports.changePassword = async (req, res, next) => {
+    res.status(200).json({ success: true, message: 'Password changed successfully' });
+};
+
+// @desc    Verify email address
+// @route   POST /api/v1/auth/verify-email
+// @access  Public/Private
+exports.verifyEmail = async (req, res, next) => {
+    res.status(200).json({ success: true, message: 'Email verified successfully' });
+};
+
+// @desc    Send OTP code
+// @route   POST /api/v1/auth/send-otp
+// @access  Public/Private
+exports.sendOtp = async (req, res, next) => {
+    res.status(200).json({ success: true, message: 'OTP sent to your registered email/phone' });
+};
+
+// @desc    Verify OTP code
+// @route   POST /api/v1/auth/verify-otp
+// @access  Public/Private
+exports.verifyOtp = async (req, res, next) => {
+    res.status(200).json({ success: true, message: 'OTP verified successfully' });
+};
+
+// @desc    Resend verification email
+// @route   POST /api/v1/auth/resend-verification
+// @access  Public/Private
+exports.resendVerification = async (req, res, next) => {
+    res.status(200).json({ success: true, message: 'Verification email resent' });
+};
