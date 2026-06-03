@@ -13,6 +13,7 @@ const statsRoutes = require('./routes/statsRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const middlewareRoutes = require('./routes/middlewareRoutes');
+const jwtRoutes = require('./routes/jwtRoutes');
 
 // Custom error handler
 const errorHandler = require('./middlewares/errorMiddleware');
@@ -36,6 +37,7 @@ app.use('/api/v1/stats/employees', statsRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/protected', protectedRoutes);
 app.use('/api/v1/middleware', middlewareRoutes);
+app.use('/api/v1/jwt', jwtRoutes);
 
 // Basic route for testing
 app.get('/api/v1', (req, res) => {
