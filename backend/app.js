@@ -10,6 +10,9 @@ const taskRoutes = require('./routes/taskRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const statsRoutes = require('./routes/statsRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const protectedRoutes = require('./routes/protectedRoutes');
+const middlewareRoutes = require('./routes/middlewareRoutes');
 
 // Custom error handler
 const errorHandler = require('./middlewares/errorMiddleware');
@@ -30,6 +33,9 @@ app.use('/api/v1/tasks', taskRoutes);
 app.use('/api/v1/search', searchRoutes);
 app.use('/api/v1/analytics/employees', analyticsRoutes);
 app.use('/api/v1/stats/employees', statsRoutes);
+app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/protected', protectedRoutes);
+app.use('/api/v1/middleware', middlewareRoutes);
 
 // Basic route for testing
 app.get('/api/v1', (req, res) => {
