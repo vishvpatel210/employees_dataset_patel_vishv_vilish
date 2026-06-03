@@ -71,6 +71,14 @@ router
     .route('/geo')
     .post(authorize('Admin', 'HR'), validateGeo);
 
+// Mock visualization/analytics routes for rate limit practice
+router.get('/random', (req, res) => res.status(200).json({ success: true, message: 'Random API hit' }));
+router.get('/recommendations', (req, res) => res.status(200).json({ success: true, message: 'Recommendations API hit' }));
+router.get('/heatmap', (req, res) => res.status(200).json({ success: true, message: 'Heatmap API hit' }));
+router.get('/dashboard', (req, res) => res.status(200).json({ success: true, message: 'Dashboard API hit' }));
+router.get('/live-search', (req, res) => res.status(200).json({ success: true, message: 'Live search API hit' }));
+router.get('/system/logs', (req, res) => res.status(200).json({ success: true, message: 'System logs hit' }));
+
 router
     .route('/bulk-update')
     .patch(authorize('Admin', 'HR'), bulkUpdateEmployees);
