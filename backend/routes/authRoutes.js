@@ -4,11 +4,12 @@ const {
     forgotPassword, resetPassword, changePassword, verifyEmail, sendOtp, verifyOtp, resendVerification
 } = require('../controllers/authController');
 const { protect } = require('../middlewares/authMiddleware');
+const { authLimiter } = require('../middlewares/rateLimitMiddleware');
 
 const router = express.Router();
 
-router.post('/register', register);
-router.post('/login', login);
+router.post('/register', authLimiter, register);
+router.post('/login', authLimiter, login);
 router.post('/logout', protect, logout);
 
 router.get('/profile', protect, getProfile);

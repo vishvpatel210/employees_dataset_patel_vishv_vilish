@@ -5,6 +5,7 @@ const { getEmployees } = require('../controllers/employeeController');
 const { getProjects } = require('../controllers/projectController');
 const { getTasks } = require('../controllers/taskController');
 const { getTopSkills } = require('../controllers/analyticsController'); 
+const { strictLimiter } = require('../middlewares/rateLimitMiddleware');
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.post('/refresh-token', jwtController.refreshToken);
 router.delete('/revoke-token', protect, jwtController.revokeToken);
 
 // Reusing existing controllers for private data access via JWT
+router.use('/private-employees', strictLimiter);
 router.get('/private-employees', protect, getEmployees);
 router.get('/private-projects', protect, getProjects);
 router.get('/private-tasks', protect, getTasks);
