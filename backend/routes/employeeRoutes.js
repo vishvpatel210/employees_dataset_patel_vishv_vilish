@@ -58,6 +58,10 @@ router
     .post(authorize('Admin', 'HR'), bulkCreateEmployees);
 
 router
+    .route('/import-json')
+    .post(authorize('Admin', 'HR'), bulkCreateEmployees);
+
+router
     .route('/bulk-update')
     .patch(authorize('Admin', 'HR'), bulkUpdateEmployees);
 
