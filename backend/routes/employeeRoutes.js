@@ -35,7 +35,9 @@ const {
     getEmployeePerformance,
     getEmployeeStats,
     getSortedEmployees,
-    getFilteredEmployees
+    getFilteredEmployees,
+    validateCertifications,
+    validateGeo
 } = require('../controllers/employeeController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -60,6 +62,14 @@ router
 router
     .route('/import-json')
     .post(authorize('Admin', 'HR'), bulkCreateEmployees);
+
+router
+    .route('/certifications')
+    .post(authorize('Admin', 'HR'), validateCertifications);
+
+router
+    .route('/geo')
+    .post(authorize('Admin', 'HR'), validateGeo);
 
 router
     .route('/bulk-update')

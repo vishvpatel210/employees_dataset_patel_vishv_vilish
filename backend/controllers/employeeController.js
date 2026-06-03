@@ -1164,3 +1164,25 @@ exports.getFilteredEmployees = async (req, res, next) => {
         next(err);
     }
 };
+
+// @desc    Practice validate certification metadata
+// @route   POST /api/v1/employees/certifications
+// @access  Private/Admin/HR
+exports.validateCertifications = (req, res) => {
+    const certs = req.body;
+    if (!certs || (!certs.current && !certs.expired && !certs.meta)) {
+        return res.status(400).json({ success: false, message: 'Invalid certification metadata payload' });
+    }
+    res.status(200).json({ success: true, message: 'Certification metadata validated successfully' });
+};
+
+// @desc    Practice validate geo coordinates
+// @route   POST /api/v1/employees/geo
+// @access  Private/Admin/HR
+exports.validateGeo = (req, res) => {
+    const { lat, long } = req.body;
+    if (!lat || !long) {
+        return res.status(400).json({ success: false, message: 'Invalid geo coordinates payload: lat and long are required' });
+    }
+    res.status(200).json({ success: true, message: 'Geo coordinates validated successfully' });
+};
