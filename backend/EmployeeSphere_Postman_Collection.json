@@ -1,0 +1,6476 @@
+{
+  "info": {
+    "name": "EmployeeSphere Complete API V1",
+    "description": "Postman Collection for Employee Management Analytics API containing all Advanced, CRUD, Middleware, Auth, and Analytics endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Basic CRUD Routes",
+      "item": [
+        {
+          "name": "Fetch all employee records from dataset",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch single employee record using employee ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add a new employee record",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Replace complete employee record",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update specific employee fields",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Remove employee record from dataset",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check whether employee exists or not",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/exists/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "exists",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Insert multiple employee records together",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees/bulk-create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "bulk-create"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update multiple employee records together",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/employees/bulk-update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "bulk-update"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete multiple employee records",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/employees/bulk-delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "bulk-delete"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employee Information Routes",
+      "item": [
+        {
+          "name": "Fetch employee using employee name",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/name/:name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "name",
+                ":name"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by state",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/state/:state",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "state",
+                ":state"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by country",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/country/:country",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "country",
+                ":country"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by city",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/city/:city",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "city",
+                ":city"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by timezone",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/timezone/:timezone",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "timezone",
+                ":timezone"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees using primary skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/primary-skill/:skill",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "primary-skill",
+                ":skill"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees using secondary skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/secondary-skill/:skill",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "secondary-skill",
+                ":skill"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by working domain",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/domain/:domain",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "domain",
+                ":domain"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees using experience years",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/experience/:years",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "experience",
+                ":years"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees using certifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/certification/:certification",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "certification",
+                ":certification"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees with verified certifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/verified",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "verified"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch all employee projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch all employee tasks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch highest experienced employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/top-experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "top-experience"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees with top skills",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/top-skills",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "top-skills"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch cloud related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/cloud-engineers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "cloud-engineers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch DevOps related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/devops-engineers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "devops-engineers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch AI related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/ai-engineers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "ai-engineers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch full stack developers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/fullstack",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "fullstack"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch recently updated certifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/recent-certifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "recent-certifications"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Route Parameters",
+      "item": [
+        {
+          "name": "Fetch employee using route parameter",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employee by name parameter",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/name/:name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "name",
+                ":name"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by state parameter",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/state/:state",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "state",
+                ":state"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by country parameter",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/country/:country",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "country",
+                ":country"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by city parameter",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/city/:city",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "city",
+                ":city"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by timezone parameter",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/timezone/:timezone",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "timezone",
+                ":timezone"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by primary skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/primary-skill/:skill",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "primary-skill",
+                ":skill"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by secondary skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/secondary-skill/:skill",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "secondary-skill",
+                ":skill"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by domain",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/domain/:domain",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "domain",
+                ":domain"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by experience",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/experience/:years",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "experience",
+                ":years"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employee using project ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/project/:projectId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "project",
+                ":projectId"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employee using task ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/task/:taskId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "task",
+                ":taskId"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employees by certification",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/certification/:certification",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "certification",
+                ":certification"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employee performance analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/performance/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "performance",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employee statistics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/stats/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "stats",
+                ":id"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Query Parameters",
+      "item": [
+        {
+          "name": "Filter employees by country",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?country=USA",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "USA"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees by state",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?state=RI",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "state",
+                  "value": "RI"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees by city",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?city=Weberview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "city",
+                  "value": "Weberview"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees using primary skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?primarySkill=Java",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "primarySkill",
+                  "value": "Java"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees using secondary skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?secondarySkill=React",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "secondarySkill",
+                  "value": "React"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees using domain",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?domain=Cloud",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "domain",
+                  "value": "Cloud"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees using experience",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?experience=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "experience",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter verified employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?verified=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "verified",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Master\tFilter employees by certification",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?certification=Scrum",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "certification",
+                  "value": "Scrum"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees by timezone",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?timezone=America/Denver",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "timezone",
+                  "value": "America/Denver"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees by project ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?project=P321",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "project",
+                  "value": "P321"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees by task ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?task=T832",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "task",
+                  "value": "T832"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees using technologies",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?technology=Kubernetes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "technology",
+                  "value": "Kubernetes"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees using Node.js",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?skill=Node.js",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "skill",
+                  "value": "Node.js"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter verified email records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?emailVerified=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "emailVerified",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pagination Routes",
+      "item": [
+        {
+          "name": "Fetch paginated employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch second page of employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?page=2&limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate country based employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/country/USA?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "country",
+                "USA"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate state based employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/state/RI?page=1&limit=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "state",
+                "RI"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate primary skill records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/primary-skill/Java?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "primary-skill",
+                "Java"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate domain records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/domain/Cloud?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "domain",
+                "Cloud"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate employee projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/projects?page=1&limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "projects"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate employee tasks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/tasks?page=1&limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate verified employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/verified?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "verified"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate certification records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/recent-certifications?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "recent-certifications"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sorting Routes",
+      "item": [
+        {
+          "name": "Sort employees alphabetically",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "name"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees by experience",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "experience"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees by country",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=country",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "country"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees by state",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=state",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "state"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees by city",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=city",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "city"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees by project name",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=project",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "project"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees by task",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=task",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "task"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees by skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=skill",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "skill"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees by timezone",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=timezone",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "timezone"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort certifications using updated date",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=lastUpdated",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "lastUpdated"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort highest experienced employees first",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/sort/experience-desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "sort",
+                "experience-desc"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort employees alphabetically ascending",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/sort/name-asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "sort",
+                "name-asc"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort projects alphabetically",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/sort/project-asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "sort",
+                "project-asc"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort domains alphabetically",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/sort/domain-asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "sort",
+                "domain-asc"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Sort certification records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/sort/certification-desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "sort",
+                "certification-desc"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search Routes",
+      "item": [
+        {
+          "name": "Search employees using keyword",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=java",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "java"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search employees by domain",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=cloud",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "cloud"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search DevOps related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=devops",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "devops"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search employees using React skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=react",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "react"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Node.js related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=nodejs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "nodejs"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Kubernetes related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=kubernetes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "kubernetes"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search AWS certified employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=aws",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "aws"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Scrum certified employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=scrum",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "scrum"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Finance domain employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=finance",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "finance"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Healthcare domain employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=healthcare",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "healthcare"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search employees by country",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=usa",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "usa"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search employees by timezone",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=timezone",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "timezone"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search project related records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=project",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "project"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search task related records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=task",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "task"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search verified employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=verified",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "verified"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Filtering Routes",
+      "item": [
+        {
+          "name": "Fetch highly experienced employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/high-experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "high-experience"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch low experienced employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/low-experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "low-experience"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch verified certification employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/verified",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "verified"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch cloud domain employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/cloud",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "cloud"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch finance domain employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/finance",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "finance"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch healthcare domain employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/healthcare",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "healthcare"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch DevOps related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/devops",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "devops"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch AI related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/ai",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "ai"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch full stack developers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/fullstack",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "fullstack"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch Kubernetes related employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/kubernetes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "kubernetes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch React developers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/react",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "react"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch Node.js developers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/nodejs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "nodejs"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch Java developers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/java",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "java"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch Python developers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/python",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "python"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch recently certified employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/filter/recent-certifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "filter",
+                "recent-certifications"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics Routes",
+      "item": [
+        {
+          "name": "Analyze most popular employee skills",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/top-skills",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "top-skills"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze most active domains",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/top-domains",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "top-domains"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze most popular certifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/top-certifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "top-certifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze project distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/top-projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "top-projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze technology usage",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/top-technologies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "top-technologies"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze employee timezone distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/timezone-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "timezone-analysis"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze employee location distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/location-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "location-analysis"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze employee experience distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/experience-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "experience-analysis"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze certification verification status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/verification-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "verification-analysis"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze employee project activity",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/project-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "project-analysis"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze employee task activity",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/task-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "task-analysis"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze skill distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/skill-distribution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "skill-distribution"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze domain distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/domain-distribution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "domain-distribution"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze country wise employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/country-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "country-analysis"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze state wise employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/state-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "state-analysis"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Statistics Routes",
+      "item": [
+        {
+          "name": "Count total employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Calculate average employee experience",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/experience-average",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "experience-average"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch highest experienced employee",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/top-experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "top-experience"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count total projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/project-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "project-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count total tasks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/task-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "task-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count employees by country",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/country-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "country-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count employees by state",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/state-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "state-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count employees by domain",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/domain-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "domain-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count employees by skills",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/skill-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "skill-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count certification records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/certification-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "certification-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count timezone distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/timezone-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "timezone-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count verified employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/verified-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "verified-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze project distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/project-distribution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "project-distribution"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze task distribution",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/task-distribution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "task-distribution"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Count technology usage",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/technology-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "technology-count"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Combination Query Routes",
+      "item": [
+        {
+          "name": "Filter employees by country and sort by experience",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?country=USA&sort=experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "USA"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter employees by state and sort alphabetically",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?state=RI&sort=name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "state",
+                  "value": "RI"
+                },
+                {
+                  "key": "sort",
+                  "value": "name"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter city records and sort by experience",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?city=Weberview&sort=experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "city",
+                  "value": "Weberview"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter Java developers and sort by experience",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?primarySkill=Java&sort=experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "primarySkill",
+                  "value": "Java"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter cloud domain employees and sort records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?domain=Cloud&sort=experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "domain",
+                  "value": "Cloud"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter experience and sort alphabetically",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?experience=5&sort=name",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "experience",
+                  "value": "5"
+                },
+                {
+                  "key": "sort",
+                  "value": "name"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter verified employees and sort certifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?verified=true&sort=lastUpdated",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "verified",
+                  "value": "true"
+                },
+                {
+                  "key": "sort",
+                  "value": "lastUpdated"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter Kubernetes developers and sort results",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?technology=Kubernetes&sort=experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "technology",
+                  "value": "Kubernetes"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate country based employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?country=USA&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "USA"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate state based employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?state=RI&page=1&limit=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "state",
+                  "value": "RI"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate Java developer records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?primarySkill=Java&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "primarySkill",
+                  "value": "Java"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate cloud domain records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?domain=Cloud&page=1&limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "domain",
+                  "value": "Cloud"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate sorted experience records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Paginate sorted employee names",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?sort=name&page=2&limit=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "name"
+                },
+                {
+                  "key": "page",
+                  "value": "2"
+                },
+                {
+                  "key": "limit",
+                  "value": "15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine filtering, sorting, and pagination",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?country=USA&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "USA"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine state filtering and sorting",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?state=RI&sort=name&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "state",
+                  "value": "RI"
+                },
+                {
+                  "key": "sort",
+                  "value": "name"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine skill filtering and sorting",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?primarySkill=Java&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "primarySkill",
+                  "value": "Java"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine domain filtering and sorting",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?domain=Cloud&sort=experience&page=1&limit=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "domain",
+                  "value": "Cloud"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine verification filtering and sorting",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?verified=true&sort=lastUpdated&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "verified",
+                  "value": "true"
+                },
+                {
+                  "key": "sort",
+                  "value": "lastUpdated"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine technology filtering and sorting",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?technology=Kubernetes&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "technology",
+                  "value": "Kubernetes"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine multiple filters with sorting and pagination",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?country=USA&primarySkill=Java&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "USA"
+                },
+                {
+                  "key": "primarySkill",
+                  "value": "Java"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine state and domain analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?state=RI&domain=Finance&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "state",
+                  "value": "RI"
+                },
+                {
+                  "key": "domain",
+                  "value": "Finance"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine city and technology filtering",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?city=Weberview&technology=Node.js&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "city",
+                  "value": "Weberview"
+                },
+                {
+                  "key": "technology",
+                  "value": "Node.js"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine skill and domain filtering",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?primarySkill=Python&domain=Healthcare&sort=experience&page=1&limit=15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "primarySkill",
+                  "value": "Python"
+                },
+                {
+                  "key": "domain",
+                  "value": "Healthcare"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine verification and technology analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?verified=true&technology=Kubernetes&sort=lastUpdated&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "verified",
+                  "value": "true"
+                },
+                {
+                  "key": "technology",
+                  "value": "Kubernetes"
+                },
+                {
+                  "key": "sort",
+                  "value": "lastUpdated"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine country and experience analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?country=USA&experience=5&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "USA"
+                },
+                {
+                  "key": "experience",
+                  "value": "5"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine cloud and Node.js analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?domain=Cloud&technology=Node.js&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "domain",
+                  "value": "Cloud"
+                },
+                {
+                  "key": "technology",
+                  "value": "Node.js"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine primary and secondary skill analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?primarySkill=C++&technology=React&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "primarySkill",
+                  "value": "C++"
+                },
+                {
+                  "key": "technology",
+                  "value": "React"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine AI domain and verification analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?domain=AI&verified=true&sort=lastUpdated&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "domain",
+                  "value": "AI"
+                },
+                {
+                  "key": "verified",
+                  "value": "true"
+                },
+                {
+                  "key": "sort",
+                  "value": "lastUpdated"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Combine multiple advanced filters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?country=USA&domain=Finance&technology=GCP&sort=experience&page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "country",
+                  "value": "USA"
+                },
+                {
+                  "key": "domain",
+                  "value": "Finance"
+                },
+                {
+                  "key": "technology",
+                  "value": "GCP"
+                },
+                {
+                  "key": "sort",
+                  "value": "experience"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Middleware Routes",
+      "item": [
+        {
+          "name": "Admin protected route for managing employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin protected route for managing projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin protected route for managing tasks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin protected route for managing certifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/certifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "certifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protected route to add employee records",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/protected/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "protected",
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Protected route to update employee records",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/protected/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "protected",
+                "employees",
+                ":id"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Protected route to delete employee records",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/protected/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "protected",
+                "employees",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protected route to create project records",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/protected/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "protected",
+                "projects"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Protected route to update projects",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/protected/projects/:projectId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "protected",
+                "projects",
+                ":projectId"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Protected route to delete projects",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/protected/projects/:projectId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "protected",
+                "projects",
+                ":projectId"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Practice request logging middleware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/middleware/logger",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "middleware",
+                "logger"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Practice authentication middleware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/middleware/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "middleware",
+                "auth"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Practice API rate limiting middleware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/middleware/rate-limit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "middleware",
+                "rate-limit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Practice global error handling middleware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/middleware/error-handler",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "middleware",
+                "error-handler"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Practice request timing middleware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/middleware/request-time",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "middleware",
+                "request-time"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Practice role based authorization middleware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/middleware/role-check",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "middleware",
+                "role-check"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Practice request validation middleware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/middleware/validation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "middleware",
+                "validation"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Practice audit logging middleware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/middleware/audit-log",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "middleware",
+                "audit-log"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication Routes",
+      "item": [
+        {
+          "name": "Register new employee account",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login employee account",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout authenticated employee",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Fetch authenticated employee profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update employee profile",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "profile"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete employee profile",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Request password reset",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reset forgotten password",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Change current password",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "change-password"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify employee email address",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-email"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Send OTP verification code",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/send-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "send-otp"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify OTP code",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-otp"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Resend verification email",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/resend-verification",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "resend-verification"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "JWT Authentication Routes",
+      "item": [
+        {
+          "name": "Access JWT protected employee profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Access JWT protected dashboard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate JWT token",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/generate-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "generate-token"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify JWT token",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/verify-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "verify-token"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh JWT access token",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/refresh-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "refresh-token"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Revoke JWT token",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/revoke-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "revoke-token"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Access protected employee records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/private-employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "private-employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Access protected project records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/private-projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "private-projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Access protected task records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/private-tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "private-tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Access protected analytics dashboard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/private-analytics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "private-analytics"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling Routes",
+      "item": [
+        {
+          "name": "Return 404 if employee not found",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Return 400 if required fields missing",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Return validation error",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Return proper delete response",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Return 401 if unauthorized",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle invalid numeric values",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/experience/abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "experience",
+                "abc"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle invalid country requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/country/unknown",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "country",
+                "unknown"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle invalid project records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/project/unknown",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "project",
+                "unknown"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle invalid task records",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/task/unknown",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "task",
+                "unknown"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle duplicate employee insertion",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Handle invalid update payload",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Handle invalid pagination requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?page=-1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "-1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle invalid limit values",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees?limit=-5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "-5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle empty search requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees?q=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle invalid JSON uploads",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees/import-json",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "import-json"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Handle invalid certification requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/certification/unknown",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "certification",
+                "unknown"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle invalid timezone values",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/timezone/invalid",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "timezone",
+                "invalid"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Handle invalid project payload",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Handle invalid task payload",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Request Validation Practice",
+      "item": [
+        {
+          "name": "Validate required employee fields",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate employee email format",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate phone number format",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate experience years",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate country value",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate timezone format",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate primary skill field",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate secondary skills array",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate certifications data",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate project structure",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate task structure",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate updated employee data",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate email and password",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate login credentials",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate project payload",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate task payload",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate certification metadata",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees/certifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "certifications"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Validate geo coordinates",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees/geo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "geo"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API Rate Limiting Practice (Optional)",
+      "item": [
+        {
+          "name": "Limit requests per minute",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Prevent brute force login attacks",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Limit account registration requests",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Limit excessive search requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Strict admin route rate limiting",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protect analytics APIs from abuse",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Prevent excessive random API hits",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/random",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "random"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protect recommendation APIs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/recommendations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "recommendations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protect heavy analytics APIs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/high-experience",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "high-experience"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Limit project API requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Limit task API requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protect statistics APIs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protect JWT secured APIs with strict limits",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/private-employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "private-employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Limit live search requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/live-search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "live-search"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protect visualization APIs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/heatmap",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "heatmap"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Protect dashboard APIs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Limit log monitoring requests",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/system/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "system",
+                "logs"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Advanced Practice Routes (Optional)",
+      "item": [
+        {
+          "name": "Fetch random employee record",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/random",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "random"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch trending employee skills",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/trending-skills",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "trending-skills"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch recently added employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/recent",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "recent"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Recommend employees based on skills",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/recommendations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "recommendations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Predict employee performance trends",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/predictions/performance",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "predictions",
+                "performance"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Predict employee project compatibility",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/predictions/project-fit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "predictions",
+                "project-fit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch top performer employee segments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/segments/top-performers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "segments",
+                "top-performers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch cloud engineer segments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/segments/cloud-engineers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "segments",
+                "cloud-engineers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch DevOps engineer segments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/segments/devops",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "segments",
+                "devops"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch AI engineer segments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/segments/ai-engineers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "segments",
+                "ai-engineers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch full stack engineer segments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/segments/fullstack",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "segments",
+                "fullstack"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate country wise employee heatmap",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/heatmap/countries",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "heatmap",
+                "countries"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate state wise employee heatmap",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/heatmap/states",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "heatmap",
+                "states"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate skill distribution heatmap",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/heatmap/skills",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "heatmap",
+                "skills"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate project insights",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/insights/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "insights",
+                "projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate task insights",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/insights/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "insights",
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate certification insights",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/insights/certifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "insights",
+                "certifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch expired certification alerts",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/alerts/expired-certifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "alerts",
+                "expired-certifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch employee workload alerts",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/alerts/high-workload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "alerts",
+                "high-workload"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch project delay alerts",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/alerts/project-delays",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "alerts",
+                "project-delays"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit employee data issue report",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees/report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "report"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Check API health status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/system/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "system",
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch API version details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/system/version",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "system",
+                "version"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch public configuration details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/system/config",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "system",
+                "config"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Clear cached employee records",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/employees/cache/clear",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "cache",
+                "clear"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"exampleKey\": \"exampleValue\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Fetch API system logs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/employees/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "logs"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Good to Have Routes (HEAD & OPTIONS)",
+      "item": [
+        {
+          "name": "Fetch only headers for employee collection",
+          "request": {
+            "method": "HEAD",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch headers for single employee resource",
+          "request": {
+            "method": "HEAD",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch headers for employee project records",
+          "request": {
+            "method": "HEAD",
+            "url": {
+              "raw": "{{baseUrl}}/employees/projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check metadata for total employee statistics",
+          "request": {
+            "method": "HEAD",
+            "url": {
+              "raw": "{{baseUrl}}/stats/employees/count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats",
+                "employees",
+                "count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch analytics response headers only",
+          "request": {
+            "method": "HEAD",
+            "url": {
+              "raw": "{{baseUrl}}/analytics/employees/top-skills",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "analytics",
+                "employees",
+                "top-skills"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Verify authenticated employee session headers",
+          "request": {
+            "method": "HEAD",
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check API health status headers only",
+          "request": {
+            "method": "HEAD",
+            "url": {
+              "raw": "{{baseUrl}}/employees/system/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "system",
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List supported methods for employee routes",
+          "request": {
+            "method": "OPTIONS",
+            "url": {
+              "raw": "{{baseUrl}}/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List allowed methods for single employee route",
+          "request": {
+            "method": "OPTIONS",
+            "url": {
+              "raw": "{{baseUrl}}/employees/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch allowed methods for login endpoint",
+          "request": {
+            "method": "OPTIONS",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check supported admin route methods",
+          "request": {
+            "method": "OPTIONS",
+            "url": {
+              "raw": "{{baseUrl}}/admin/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch supported search endpoint methods",
+          "request": {
+            "method": "OPTIONS",
+            "url": {
+              "raw": "{{baseUrl}}/search/employees",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "search",
+                "employees"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch JWT route communication options",
+          "request": {
+            "method": "OPTIONS",
+            "url": {
+              "raw": "{{baseUrl}}/jwt/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "jwt",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Fetch API communication capabilities",
+          "request": {
+            "method": "OPTIONS",
+            "url": {
+              "raw": "{{baseUrl}}/employees/system/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "employees",
+                "system",
+                "health"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    }
+  ]
+}
