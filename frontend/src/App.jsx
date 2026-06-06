@@ -18,6 +18,7 @@ const EmployeeCreate = lazy(() => import('./pages/EmployeeCreate'));
 const EmployeeEdit = lazy(() => import('./pages/EmployeeEdit'));
 const EmployeeDetail = lazy(() => import('./pages/EmployeeDetail'));
 const DepartmentList = lazy(() => import('./pages/DepartmentList'));
+const ProjectList = lazy(() => import('./pages/ProjectList'));
 
 const Fallback = () => (
   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -51,10 +52,8 @@ const App = () => {
             {/* Departments - All authenticated users */}
             <Route path="/departments" element={<DepartmentList />} />
 
-            {/* Projects - All authenticated users */}
-            <Route path="/projects" element={<div className="p-4">Projects Page</div>} />
-            <Route path="/projects/new" element={<div className="p-4">Add Project Page</div>} />
-            <Route path="/projects/:id" element={<div className="p-4">Project Detail Page</div>} />
+{/* Projects - All authenticated users */}
+<Route path="/projects" element={<ProjectList />} />
 
             {/* Tasks - All authenticated users */}
             <Route path="/tasks" element={<div className="p-4">Tasks Page</div>} />
