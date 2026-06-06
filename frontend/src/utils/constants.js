@@ -1,8 +1,17 @@
 export const API_BASE_URL = 'http://localhost:5000/api/v1';
 
 export const ROLES = {
-  ADMIN: 'admin',
-  USER: 'user',
+  ADMIN: 'Admin',
+  USER: 'User',
+  EMPLOYEE: 'Employee',
+  HR: 'HR',
+};
+
+export const AUTH_PATHS = {
+  LOGIN: '/auth/login',
+  REGISTER: '/auth/register',
+  FORGOT_PASSWORD: '/auth/forgot-password',
+  RESET_PASSWORD: '/auth/reset-password',
 };
 
 export const STORAGE_KEYS = {
