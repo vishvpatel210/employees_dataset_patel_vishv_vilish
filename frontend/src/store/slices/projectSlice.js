@@ -1,29 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as projectService from '../../services/projectService';
 
-export const fetchProjects = createAsyncThunk(
-  'projects/fetchAll',
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await projectService.getProjects();
-      return { projects: data.data || [] };
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to fetch projects');
-    }
+export const fetchProjects = createAsyncThunk('projects/fetchAll', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await projectService.getProjects();
+    return { projects: data.data || [] };
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to fetch projects');
   }
-);
+});
 
-export const createProject = createAsyncThunk(
-  'projects/create',
-  async (projectData, { rejectWithValue }) => {
-    try {
-      const { data } = await projectService.createProject(projectData);
-      return data.data || data.project || data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to create project');
-    }
+export const createProject = createAsyncThunk('projects/create', async (projectData, { rejectWithValue }) => {
+  try {
+    const { data } = await projectService.createProject(projectData);
+    return data.data || data.project || data;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to create project');
   }
-);
+});
 
 export const updateProject = createAsyncThunk(
   'projects/update',
@@ -37,17 +31,14 @@ export const updateProject = createAsyncThunk(
   }
 );
 
-export const deleteProject = createAsyncThunk(
-  'projects/delete',
-  async (id, { rejectWithValue }) => {
-    try {
-      await projectService.deleteProject(id);
-      return id;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to delete project');
-    }
+export const deleteProject = createAsyncThunk('projects/delete', async (id, { rejectWithValue }) => {
+  try {
+    await projectService.deleteProject(id);
+    return id;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to delete project');
   }
-);
+});
 
 const projectSlice = createSlice({
   name: 'projects',
@@ -63,7 +54,10 @@ const projectSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProjects.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(fetchProjects.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchProjects.fulfilled, (state, action) => {
         state.loading = false;
         state.items = action.payload.projects;

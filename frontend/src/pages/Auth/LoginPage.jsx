@@ -39,11 +39,13 @@ const LoginPage = () => {
   }, [dispatch]);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    dispatch(login({
-      email: values.email,
-      password: values.password,
-      rememberMe: values.rememberMe,
-    })).finally(() => setSubmitting(false));
+    dispatch(
+      login({
+        email: values.email,
+        password: values.password,
+        rememberMe: values.rememberMe,
+      })
+    ).finally(() => setSubmitting(false));
   };
 
   return (
@@ -107,12 +109,7 @@ const LoginPage = () => {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowPassword((p) => !p)}
-                            edge="end"
-                            size="small"
-                            tabIndex={-1}
-                          >
+                          <IconButton onClick={() => setShowPassword((p) => !p)} edge="end" size="small" tabIndex={-1}>
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>
@@ -166,15 +163,14 @@ const LoginPage = () => {
       </Formik>
 
       <Divider sx={{ my: 3 }}>
-        <Typography variant="caption" color="text.secondary">OR</Typography>
+        <Typography variant="caption" color="text.secondary">
+          OR
+        </Typography>
       </Divider>
 
       <Typography variant="body2" align="center" color="text.secondary">
         Don&apos;t have an account?{' '}
-        <Link
-          to={AUTH_PATHS.REGISTER}
-          style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 600 }}
-        >
+        <Link to={AUTH_PATHS.REGISTER} style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 600 }}>
           Create one
         </Link>
       </Typography>

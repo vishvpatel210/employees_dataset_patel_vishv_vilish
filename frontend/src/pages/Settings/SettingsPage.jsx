@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Box, Typography, Paper, Switch, Divider, Button, Avatar,
-} from '@mui/material';
+import { Box, Typography, Paper, Switch, Divider, Button, Avatar } from '@mui/material';
 import { Sun, Moon, Palette, Lock, User, Shield, LogOut } from 'lucide-react';
 import { toggleTheme } from '../../store/slices/uiSlice';
 import { logout } from '../../store/slices/authSlice';
@@ -10,6 +8,29 @@ import { getInitials } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 import ChangePasswordDialog from '../Profile/ChangePasswordDialog';
 import toast from 'react-hot-toast';
+
+const SettingRow = ({ icon, title, description, action }) => (
+  <Box
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: 2.5,
+      py: 2.5,
+      '&:not(:last-child)': { borderBottom: '1px solid', borderColor: 'divider' },
+    }}
+  >
+    <Box sx={{ color: 'grey.500', display: 'flex', flexShrink: 0 }}>{icon}</Box>
+    <Box sx={{ flex: 1, minWidth: 0 }}>
+      <Typography variant="body2" fontWeight={600}>
+        {title}
+      </Typography>
+      <Typography variant="caption" color="text.secondary">
+        {description}
+      </Typography>
+    </Box>
+    {action}
+  </Box>
+);
 
 const SettingsPage = () => {
   const dispatch = useDispatch();
@@ -29,27 +50,11 @@ const SettingsPage = () => {
     navigate('/auth/login', { replace: true });
   };
 
-  const SettingRow = ({ icon, title, description, action }) => (
-    <Box
-      sx={{
-        display: 'flex', alignItems: 'center', gap: 2.5, py: 2.5,
-        '&:not(:last-child)': { borderBottom: '1px solid', borderColor: 'divider' },
-      }}
-    >
-      <Box sx={{ color: isDark ? 'grey.500' : 'grey.400', display: 'flex', flexShrink: 0 }}>
-        {icon}
-      </Box>
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography variant="body2" fontWeight={600}>{title}</Typography>
-        <Typography variant="caption" color="text.secondary">{description}</Typography>
-      </Box>
-      {action}
-    </Box>
-  );
-
   return (
     <Box sx={{ maxWidth: 720, mx: 'auto' }}>
-      <Typography variant="h5" fontWeight={700} sx={{ mb: 0.5 }}>Settings</Typography>
+      <Typography variant="h5" fontWeight={700} sx={{ mb: 0.5 }}>
+        Settings
+      </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
         Manage your application preferences
       </Typography>
@@ -59,16 +64,25 @@ const SettingsPage = () => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
           <Avatar
             sx={{
-              width: 52, height: 52, fontSize: '1.1rem', fontWeight: 700,
+              width: 52,
+              height: 52,
+              fontSize: '1.1rem',
+              fontWeight: 700,
               background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
             }}
           >
             {getInitials(user?.name || user?.email || 'U')}
           </Avatar>
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="subtitle1" fontWeight={600}>{user?.name || 'User'}</Typography>
-            <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
-            <Typography variant="caption" color="text.secondary">Role: {user?.role || 'User'}</Typography>
+            <Typography variant="subtitle1" fontWeight={600}>
+              {user?.name || 'User'}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {user?.email}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Role: {user?.role || 'User'}
+            </Typography>
           </Box>
           <Button
             variant="outlined"
@@ -86,7 +100,9 @@ const SettingsPage = () => {
       <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider', mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
           <Palette size={20} />
-          <Typography variant="h6" fontWeight={600}>Appearance</Typography>
+          <Typography variant="h6" fontWeight={600}>
+            Appearance
+          </Typography>
         </Box>
         <Divider sx={{ mb: 1 }} />
 
@@ -94,13 +110,7 @@ const SettingsPage = () => {
           icon={isDark ? <Moon size={20} /> : <Sun size={20} />}
           title={isDark ? 'Dark Mode' : 'Light Mode'}
           description="Toggle between light and dark themes"
-          action={
-            <Switch
-              checked={isDark}
-              onChange={handleThemeToggle}
-              color="primary"
-            />
-          }
+          action={<Switch checked={isDark} onChange={handleThemeToggle} color="primary" />}
         />
       </Paper>
 
@@ -108,7 +118,9 @@ const SettingsPage = () => {
       <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider', mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
           <Lock size={20} />
-          <Typography variant="h6" fontWeight={600}>Security</Typography>
+          <Typography variant="h6" fontWeight={600}>
+            Security
+          </Typography>
         </Box>
         <Divider sx={{ mb: 1 }} />
 
@@ -133,7 +145,9 @@ const SettingsPage = () => {
       <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
           <Shield size={20} />
-          <Typography variant="h6" fontWeight={600}>Account</Typography>
+          <Typography variant="h6" fontWeight={600}>
+            Account
+          </Typography>
         </Box>
         <Divider sx={{ mb: 1 }} />
 
@@ -155,10 +169,7 @@ const SettingsPage = () => {
         />
       </Paper>
 
-      <ChangePasswordDialog
-        open={passwordDialogOpen}
-        onClose={() => setPasswordDialogOpen(false)}
-      />
+      <ChangePasswordDialog open={passwordDialogOpen} onClose={() => setPasswordDialogOpen(false)} />
     </Box>
   );
 };

@@ -1,8 +1,16 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Box, Typography, Paper, Avatar, TextField, Button, Divider,
-  IconButton, Tooltip, Skeleton,
+  Box,
+  Typography,
+  Paper,
+  Avatar,
+  TextField,
+  Button,
+  Divider,
+  IconButton,
+  Tooltip,
+  Skeleton,
 } from '@mui/material';
 import { Edit2, Save, X, Mail, User, Shield, Calendar } from 'lucide-react';
 import { getInitials } from '../../utils/helpers';
@@ -41,15 +49,21 @@ const ProfilePage = () => {
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 1.5 }}>
       <Box sx={{ color: isDark ? 'grey.500' : 'grey.400', display: 'flex' }}>{icon}</Box>
       <Box sx={{ minWidth: 0 }}>
-        <Typography variant="caption" color="text.secondary" fontWeight={500}>{label}</Typography>
-        <Typography variant="body2" fontWeight={600}>{value || '--'}</Typography>
+        <Typography variant="caption" color="text.secondary" fontWeight={500}>
+          {label}
+        </Typography>
+        <Typography variant="body2" fontWeight={600}>
+          {value || '--'}
+        </Typography>
       </Box>
     </Box>
   );
 
   return (
     <Box sx={{ maxWidth: 720, mx: 'auto' }}>
-      <Typography variant="h5" fontWeight={700} sx={{ mb: 0.5 }}>My Profile</Typography>
+      <Typography variant="h5" fontWeight={700} sx={{ mb: 0.5 }}>
+        My Profile
+      </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
         Manage your personal information
       </Typography>
@@ -59,7 +73,8 @@ const ProfilePage = () => {
         <Box
           sx={{
             position: 'relative',
-            p: 4, pb: 0,
+            p: 4,
+            pb: 0,
             background: isDark
               ? 'linear-gradient(135deg, #1e3a5f, #1e293b)'
               : 'linear-gradient(135deg, #eff6ff, #f0f0ff)',
@@ -68,7 +83,10 @@ const ProfilePage = () => {
           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 3, flexWrap: 'wrap' }}>
             <Avatar
               sx={{
-                width: 80, height: 80, fontSize: '1.75rem', fontWeight: 700,
+                width: 80,
+                height: 80,
+                fontSize: '1.75rem',
+                fontWeight: 700,
                 background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
                 border: '4px solid',
                 borderColor: isDark ? '#1e293b' : '#fff',
@@ -89,11 +107,15 @@ const ProfilePage = () => {
                   slotProps={{ input: { sx: { borderRadius: 2, fontWeight: 600, fontSize: '1.1rem' } } }}
                 />
               ) : (
-                <Typography variant="h5" fontWeight={700}>{user?.name || 'User'}</Typography>
+                <Typography variant="h5" fontWeight={700}>
+                  {user?.name || 'User'}
+                </Typography>
               )}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.5 }}>
                 <Shield size={14} />
-                <Typography variant="body2" color="text.secondary">{user?.role || 'User'}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {user?.role || 'User'}
+                </Typography>
               </Box>
             </Box>
             <Tooltip title={editing ? 'Cancel' : 'Edit profile'}>
@@ -113,7 +135,12 @@ const ProfilePage = () => {
 
         <Box sx={{ p: 4 }}>
           {/* Contact Information */}
-          <Typography variant="subtitle2" fontWeight={600} color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: '0.05em', mb: 2 }}>
+          <Typography
+            variant="subtitle2"
+            fontWeight={600}
+            color="text.secondary"
+            sx={{ textTransform: 'uppercase', letterSpacing: '0.05em', mb: 2 }}
+          >
             Contact Information
           </Typography>
 
@@ -125,7 +152,12 @@ const ProfilePage = () => {
           <Divider sx={{ my: 3 }} />
 
           {/* Account Information */}
-          <Typography variant="subtitle2" fontWeight={600} color="text.secondary" sx={{ textTransform: 'uppercase', letterSpacing: '0.05em', mb: 2 }}>
+          <Typography
+            variant="subtitle2"
+            fontWeight={600}
+            color="text.secondary"
+            sx={{ textTransform: 'uppercase', letterSpacing: '0.05em', mb: 2 }}
+          >
             Account Information
           </Typography>
 
@@ -136,11 +168,7 @@ const ProfilePage = () => {
 
           {editing && (
             <Box sx={{ display: 'flex', gap: 2, mt: 4, justifyContent: 'flex-end' }}>
-              <Button
-                variant="outlined"
-                onClick={handleCancel}
-                sx={{ borderRadius: 2, textTransform: 'none' }}
-              >
+              <Button variant="outlined" onClick={handleCancel} sx={{ borderRadius: 2, textTransform: 'none' }}>
                 Cancel
               </Button>
               <Button

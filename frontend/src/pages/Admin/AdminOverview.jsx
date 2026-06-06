@@ -1,8 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Paper, Skeleton, Grid, Chip, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, Avatar, AvatarGroup,
+  Box,
+  Typography,
+  Paper,
+  Skeleton,
+  Grid,
+  Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Avatar,
+  AvatarGroup,
 } from '@mui/material';
 import { Shield, Users, UserCog, UserCheck, Calendar } from 'lucide-react';
 import { getAdminDashboard } from '../../services/adminService';
@@ -18,17 +30,39 @@ const StatCard = ({ label, icon: Icon, color, bgColor, value, loading }) => (
   <Paper
     elevation={0}
     sx={{
-      p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider',
-      display: 'flex', alignItems: 'center', gap: 2.5,
+      p: 3,
+      borderRadius: 2,
+      border: '1px solid',
+      borderColor: 'divider',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 2.5,
       transition: 'all 0.2s',
       '&:hover': { borderColor: color, boxShadow: `0 4px 12px ${color}15` },
     }}
   >
-    <Box sx={{ width: 48, height: 48, borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: bgColor, color, flexShrink: 0 }}>
+    <Box
+      sx={{
+        width: 48,
+        height: 48,
+        borderRadius: 2,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: bgColor,
+        color,
+        flexShrink: 0,
+      }}
+    >
       <Icon size={22} />
     </Box>
     <Box>
-      <Typography variant="caption" color="text.secondary" fontWeight={500} sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        fontWeight={500}
+        sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}
+      >
         {label}
       </Typography>
       {loading ? (
@@ -51,7 +85,9 @@ const roleColors = {
 
 const RoleChip = ({ role }) => {
   const c = roleColors[role] || roleColors.User;
-  return <Chip label={role} size="small" sx={{ bgcolor: c.bg, color: c.color, fontWeight: 600, fontSize: '0.75rem' }} />;
+  return (
+    <Chip label={role} size="small" sx={{ bgcolor: c.bg, color: c.color, fontWeight: 600, fontSize: '0.75rem' }} />
+  );
 };
 
 const AdminOverview = () => {
@@ -84,7 +120,9 @@ const AdminOverview = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <Box>
-        <Typography variant="h5" fontWeight={700}>Admin Dashboard</Typography>
+        <Typography variant="h5" fontWeight={700}>
+          Admin Dashboard
+        </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
           System overview and user management
         </Typography>
@@ -100,10 +138,14 @@ const AdminOverview = () => {
         {/* Role Distribution */}
         <Paper elevation={0} sx={{ borderRadius: 2, border: '1px solid', borderColor: 'divider', overflow: 'hidden' }}>
           <Box sx={{ p: 3, pb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
-            <Typography variant="h6" fontWeight={600}>Role Distribution</Typography>
+            <Typography variant="h6" fontWeight={600}>
+              Role Distribution
+            </Typography>
           </Box>
           {loading ? (
-            <Box sx={{ p: 3 }}><Skeleton variant="rectangular" height={200} sx={{ borderRadius: 1 }} /></Box>
+            <Box sx={{ p: 3 }}>
+              <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 1 }} />
+            </Box>
           ) : (
             <Box sx={{ p: 3 }}>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -115,7 +157,17 @@ const AdminOverview = () => {
                     <Box key={item._id}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
                         <Typography variant="body2" fontWeight={500}>
-                          <Box component="span" sx={{ display: 'inline-block', width: 10, height: 10, borderRadius: '2px', bgcolor: c.color, mr: 1 }} />
+                          <Box
+                            component="span"
+                            sx={{
+                              display: 'inline-block',
+                              width: 10,
+                              height: 10,
+                              borderRadius: '2px',
+                              bgcolor: c.color,
+                              mr: 1,
+                            }}
+                          />
                           {item._id}
                         </Typography>
                         <Typography variant="body2" fontWeight={600} color="text.secondary">
@@ -123,7 +175,15 @@ const AdminOverview = () => {
                         </Typography>
                       </Box>
                       <Box sx={{ width: '100%', bgcolor: 'grey.100', borderRadius: 1, height: 8, overflow: 'hidden' }}>
-                        <Box sx={{ width: `${pct}%`, bgcolor: c.color, height: '100%', borderRadius: 1, transition: 'width 0.5s' }} />
+                        <Box
+                          sx={{
+                            width: `${pct}%`,
+                            bgcolor: c.color,
+                            height: '100%',
+                            borderRadius: 1,
+                            transition: 'width 0.5s',
+                          }}
+                        />
                       </Box>
                     </Box>
                   );
@@ -135,8 +195,20 @@ const AdminOverview = () => {
 
         {/* Recent Users */}
         <Paper elevation={0} sx={{ borderRadius: 2, border: '1px solid', borderColor: 'divider', overflow: 'hidden' }}>
-          <Box sx={{ p: 3, pb: 2, borderBottom: '1px solid', borderColor: 'divider', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6" fontWeight={600}>Recent Users</Typography>
+          <Box
+            sx={{
+              p: 3,
+              pb: 2,
+              borderBottom: '1px solid',
+              borderColor: 'divider',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6" fontWeight={600}>
+              Recent Users
+            </Typography>
             <Chip
               label="View All"
               size="small"
@@ -147,22 +219,32 @@ const AdminOverview = () => {
             />
           </Box>
           {loading ? (
-            <Box sx={{ p: 3 }}><Skeleton variant="rectangular" height={200} sx={{ borderRadius: 1 }} /></Box>
+            <Box sx={{ p: 3 }}>
+              <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 1 }} />
+            </Box>
           ) : (
             <TableContainer>
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>User</TableCell>
-                    <TableCell sx={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>Role</TableCell>
-                    <TableCell sx={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>Joined</TableCell>
+                    <TableCell sx={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>
+                      User
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>
+                      Role
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase' }}>
+                      Joined
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {(data?.recentUsers || []).length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={3} align="center" sx={{ py: 4 }}>
-                        <Typography color="text.secondary" variant="body2">No users yet</Typography>
+                        <Typography color="text.secondary" variant="body2">
+                          No users yet
+                        </Typography>
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -171,18 +253,33 @@ const AdminOverview = () => {
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                             <Avatar sx={{ width: 28, height: 28, fontSize: '0.75rem', bgcolor: '#2563eb' }}>
-                              {(user.name || user.email || '?').split(' ').map((n) => n[0]).join('').toUpperCase().substring(0, 2)}
+                              {(user.name || user.email || '?')
+                                .split(' ')
+                                .map((n) => n[0])
+                                .join('')
+                                .toUpperCase()
+                                .substring(0, 2)}
                             </Avatar>
                             <Box>
-                              <Typography variant="body2" fontWeight={600}>{user.name}</Typography>
-                              <Typography variant="caption" color="text.secondary">{user.email}</Typography>
+                              <Typography variant="body2" fontWeight={600}>
+                                {user.name}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                {user.email}
+                              </Typography>
                             </Box>
                           </Box>
                         </TableCell>
-                        <TableCell><RoleChip role={user.role} /></TableCell>
+                        <TableCell>
+                          <RoleChip role={user.role} />
+                        </TableCell>
                         <TableCell>
                           <Typography variant="caption" color="text.secondary">
-                            {new Date(user.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}
+                            {new Date(user.createdAt).toLocaleDateString('en-IN', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            })}
                           </Typography>
                         </TableCell>
                       </TableRow>

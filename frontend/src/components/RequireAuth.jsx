@@ -22,9 +22,20 @@ const RequireAuth = () => {
 
   if (token && !user) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', gap: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          gap: 2,
+        }}
+      >
         <CircularProgress />
-        <Typography variant="body2" color="text.secondary">Verifying session...</Typography>
+        <Typography variant="body2" color="text.secondary">
+          Verifying session...
+        </Typography>
       </Box>
     );
   }

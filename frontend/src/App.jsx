@@ -37,53 +37,53 @@ const App = () => {
   return (
     <ErrorBoundary>
       <Suspense fallback={<Fallback />}>
-      <Routes>
-        {/* Public Auth Routes */}
-        <Route element={<AuthLayout />}>
-          <Route path={AUTH_PATHS.LOGIN} element={<LoginPage />} />
-          <Route path={AUTH_PATHS.REGISTER} element={<RegisterPage />} />
-          <Route path={AUTH_PATHS.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
-          <Route path={AUTH_PATHS.RESET_PASSWORD} element={<ResetPasswordPage />} />
-        </Route>
+        <Routes>
+          {/* Public Auth Routes */}
+          <Route element={<AuthLayout />}>
+            <Route path={AUTH_PATHS.LOGIN} element={<LoginPage />} />
+            <Route path={AUTH_PATHS.REGISTER} element={<RegisterPage />} />
+            <Route path={AUTH_PATHS.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
+            <Route path={AUTH_PATHS.RESET_PASSWORD} element={<ResetPasswordPage />} />
+          </Route>
 
-        {/* Protected Routes */}
-        <Route element={<RequireAuth />}>
-          <Route element={<MasterLayout />}>
-            <Route path="/" element={<Dashboard />} />
+          {/* Protected Routes */}
+          <Route element={<RequireAuth />}>
+            <Route element={<MasterLayout />}>
+              <Route path="/" element={<Dashboard />} />
 
-            {/* Employees - All authenticated users */}
-            <Route path="/employees" element={<EmployeeList />} />
-            <Route path="/employees/new" element={<EmployeeCreate />} />
-            <Route path="/employees/:id" element={<EmployeeDetail />} />
-            <Route path="/employees/:id/edit" element={<EmployeeEdit />} />
+              {/* Employees - All authenticated users */}
+              <Route path="/employees" element={<EmployeeList />} />
+              <Route path="/employees/new" element={<EmployeeCreate />} />
+              <Route path="/employees/:id" element={<EmployeeDetail />} />
+              <Route path="/employees/:id/edit" element={<EmployeeEdit />} />
 
-            {/* Departments - All authenticated users */}
-            <Route path="/departments" element={<DepartmentList />} />
+              {/* Departments - All authenticated users */}
+              <Route path="/departments" element={<DepartmentList />} />
 
-{/* Projects - All authenticated users */}
-<Route path="/projects" element={<ProjectList />} />
+              {/* Projects - All authenticated users */}
+              <Route path="/projects" element={<ProjectList />} />
 
-{/* Tasks - All authenticated users */}
-<Route path="/tasks" element={<TaskList />} />
+              {/* Tasks - All authenticated users */}
+              <Route path="/tasks" element={<TaskList />} />
 
-            {/* Analytics - All authenticated users */}
-            <Route path="/analytics" element={<AnalyticsDashboard />} />
+              {/* Analytics - All authenticated users */}
+              <Route path="/analytics" element={<AnalyticsDashboard />} />
 
-            {/* Profile & Settings - All authenticated users */}
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
+              {/* Profile & Settings - All authenticated users */}
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
 
-            {/* Admin Only Routes */}
-            <Route element={<RoleBasedRoute allowedRoles={[ROLES.ADMIN, ROLES.HR]} />}>
-              <Route path="/admin" element={<AdminOverview />} />
-              <Route path="/admin/users" element={<UserManagement />} />
+              {/* Admin Only Routes */}
+              <Route element={<RoleBasedRoute allowedRoles={[ROLES.ADMIN, ROLES.HR]} />}>
+                <Route path="/admin" element={<AdminOverview />} />
+                <Route path="/admin/users" element={<UserManagement />} />
+              </Route>
             </Route>
           </Route>
-        </Route>
 
-        {/* Fallback Route */}
-        <Route path="*" element={<Navigate to={AUTH_PATHS.LOGIN} replace />} />
-      </Routes>
+          {/* Fallback Route */}
+          <Route path="*" element={<Navigate to={AUTH_PATHS.LOGIN} replace />} />
+        </Routes>
       </Suspense>
     </ErrorBoundary>
   );

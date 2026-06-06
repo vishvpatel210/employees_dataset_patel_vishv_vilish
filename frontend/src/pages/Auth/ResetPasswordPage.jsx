@@ -2,16 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Alert,
-  IconButton,
-  InputAdornment,
-  CircularProgress,
-} from '@mui/material';
+import { Box, Typography, TextField, Button, Alert, IconButton, InputAdornment, CircularProgress } from '@mui/material';
 import { Eye, EyeOff, KeyRound } from 'lucide-react';
 import { resetPasswordAction, clearError, clearSuccess } from '../../store/slices/authSlice';
 import { resetPasswordSchema } from '../../utils/validators';
@@ -42,10 +33,12 @@ const ResetPasswordPage = () => {
   }, [successMessage, navigate]);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    dispatch(resetPasswordAction({
-      token: token || undefined,
-      password: values.password,
-    })).finally(() => setSubmitting(false));
+    dispatch(
+      resetPasswordAction({
+        token: token || undefined,
+        password: values.password,
+      })
+    ).finally(() => setSubmitting(false));
   };
 
   return (
@@ -100,12 +93,7 @@ const ResetPasswordPage = () => {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowPassword((p) => !p)}
-                            edge="end"
-                            size="small"
-                            tabIndex={-1}
-                          >
+                          <IconButton onClick={() => setShowPassword((p) => !p)} edge="end" size="small" tabIndex={-1}>
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>
@@ -132,12 +120,7 @@ const ResetPasswordPage = () => {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowConfirm((p) => !p)}
-                            edge="end"
-                            size="small"
-                            tabIndex={-1}
-                          >
+                          <IconButton onClick={() => setShowConfirm((p) => !p)} edge="end" size="small" tabIndex={-1}>
                             {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>

@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions, Button,
-  Typography, TextField, InputAdornment, IconButton, CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  TextField,
+  InputAdornment,
+  IconButton,
+  CircularProgress,
 } from '@mui/material';
 import { Eye, EyeOff, Lock, KeyRound } from 'lucide-react';
 import { changePassword } from '../../services/authService';
@@ -53,7 +61,9 @@ const ChangePasswordDialog = ({ open, onClose }) => {
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ pb: 1 }}>
-        <Typography variant="h6" fontWeight={700}>Change Password</Typography>
+        <Typography variant="h6" fontWeight={700}>
+          Change Password
+        </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
           Enter your current password and a new password
         </Typography>
@@ -72,7 +82,11 @@ const ChangePasswordDialog = ({ open, onClose }) => {
           sx={{ mb: 2.5 }}
           slotProps={{
             input: {
-              startAdornment: <InputAdornment position="start"><Lock size={18} /></InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Lock size={18} />
+                </InputAdornment>
+              ),
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton size="small" onClick={() => setShow({ ...show, current: !show.current })} edge="end">
@@ -97,7 +111,11 @@ const ChangePasswordDialog = ({ open, onClose }) => {
           sx={{ mb: 2.5 }}
           slotProps={{
             input: {
-              startAdornment: <InputAdornment position="start"><KeyRound size={18} /></InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <KeyRound size={18} />
+                </InputAdornment>
+              ),
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton size="small" onClick={() => setShow({ ...show, new: !show.new })} edge="end">
@@ -121,7 +139,11 @@ const ChangePasswordDialog = ({ open, onClose }) => {
           helperText={errors.confirmPassword}
           slotProps={{
             input: {
-              startAdornment: <InputAdornment position="start"><KeyRound size={18} /></InputAdornment>,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <KeyRound size={18} />
+                </InputAdornment>
+              ),
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton size="small" onClick={() => setShow({ ...show, confirm: !show.confirm })} edge="end">

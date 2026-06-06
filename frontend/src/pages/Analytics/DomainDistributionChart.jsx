@@ -1,17 +1,28 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Skeleton } from '@mui/material';
-import {
-  PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend,
-} from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { getDomainDistribution } from '../../services/analyticsService';
 
-const COLORS = ['#2563eb', '#7c3aed', '#059669', '#d97706', '#dc2626', '#0891b2', '#db2777', '#65a30d', '#0d9488', '#9333ea'];
+const COLORS = [
+  '#2563eb',
+  '#7c3aed',
+  '#059669',
+  '#d97706',
+  '#dc2626',
+  '#0891b2',
+  '#db2777',
+  '#65a30d',
+  '#0d9488',
+  '#9333ea',
+];
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
       <Paper elevation={3} sx={{ px: 2, py: 1.5, borderRadius: 1.5 }}>
-        <Typography variant="body2" fontWeight={600}>{payload[0].name}</Typography>
+        <Typography variant="body2" fontWeight={600}>
+          {payload[0].name}
+        </Typography>
         <Typography variant="body2" color="primary.main" fontWeight={600}>
           {payload[0].value} ({((payload[0].value / payload[0].payload.total) * 100).toFixed(1)}%)
         </Typography>
@@ -53,7 +64,9 @@ const DomainDistributionChart = () => {
         {payload.map((entry, index) => (
           <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <Box sx={{ width: 10, height: 10, borderRadius: '2px', bgcolor: entry.color }} />
-            <Typography variant="caption" color="text.secondary">{entry.value}</Typography>
+            <Typography variant="caption" color="text.secondary">
+              {entry.value}
+            </Typography>
           </Box>
         ))}
       </Box>
@@ -62,8 +75,12 @@ const DomainDistributionChart = () => {
 
   return (
     <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
-      <Typography variant="h6" fontWeight={600} sx={{ mb: 0.5 }}>Domain Distribution</Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>Breakdown of employee domains</Typography>
+      <Typography variant="h6" fontWeight={600} sx={{ mb: 0.5 }}>
+        Domain Distribution
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        Breakdown of employee domains
+      </Typography>
       {loading ? (
         <Skeleton variant="circular" width={280} height={280} sx={{ mx: 'auto' }} />
       ) : data.length === 0 ? (
@@ -73,15 +90,7 @@ const DomainDistributionChart = () => {
       ) : (
         <ResponsiveContainer width="100%" height={350}>
           <PieChart>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={120}
-              paddingAngle={3}
-              dataKey="value"
-            >
+            <Pie data={data} cx="50%" cy="50%" innerRadius={60} outerRadius={120} paddingAngle={3} dataKey="value">
               {data.map((_, index) => (
                 <Cell key={index} fill={COLORS[index % COLORS.length]} />
               ))}

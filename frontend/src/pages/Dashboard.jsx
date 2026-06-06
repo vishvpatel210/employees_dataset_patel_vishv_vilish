@@ -4,7 +4,7 @@ const Dashboard = () => {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Placeholder Stat Cards */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">

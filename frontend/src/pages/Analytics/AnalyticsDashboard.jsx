@@ -9,7 +9,9 @@ const AnalyticsDashboard = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <Box>
-        <Typography variant="h5" fontWeight={700}>Analytics Dashboard</Typography>
+        <Typography variant="h5" fontWeight={700}>
+          Analytics Dashboard
+        </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
           Comprehensive insights into your workforce
         </Typography>

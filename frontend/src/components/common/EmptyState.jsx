@@ -49,12 +49,7 @@ const EmptyState = ({
         }}
         color="inherit"
       />
-      <Typography
-        variant={size === 'small' ? 'body1' : 'h6'}
-        fontWeight={600}
-        gutterBottom
-        color="text.primary"
-      >
+      <Typography variant={size === 'small' ? 'body1' : 'h6'} fontWeight={600} gutterBottom color="text.primary">
         {title}
       </Typography>
       <Typography
@@ -69,11 +64,7 @@ const EmptyState = ({
         {description}
       </Typography>
       {actionLabel && onAction && (
-        <Button
-          variant="contained"
-          onClick={onAction}
-          sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600 }}
-        >
+        <Button variant="contained" onClick={onAction} sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600 }}>
           {actionLabel}
         </Button>
       )}

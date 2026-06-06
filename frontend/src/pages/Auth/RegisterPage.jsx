@@ -54,7 +54,11 @@ const PasswordStrength = ({ value }) => {
           '& .MuiLinearProgress-bar': { bgcolor: strengthConfig.colors[level], transition: '0.3s' },
         }}
       />
-      <Typography variant="caption" color={strengthConfig.colors[level]} sx={{ mt: 0.5, display: 'block', fontWeight: 500 }}>
+      <Typography
+        variant="caption"
+        color={strengthConfig.colors[level]}
+        sx={{ mt: 0.5, display: 'block', fontWeight: 500 }}
+      >
         {strengthConfig.labels[level]}
       </Typography>
     </Box>
@@ -64,7 +68,9 @@ const PasswordStrength = ({ value }) => {
 const PasswordRequirement = ({ met, label }) => (
   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.25 }}>
     {met ? <Check size={14} style={{ color: '#22c55e' }} /> : <X size={14} style={{ color: '#94a3b8' }} />}
-    <Typography variant="caption" color={met ? 'success.main' : 'text.disabled'}>{label}</Typography>
+    <Typography variant="caption" color={met ? 'success.main' : 'text.disabled'}>
+      {label}
+    </Typography>
   </Box>
 );
 
@@ -84,12 +90,14 @@ const RegisterPage = () => {
   }, [dispatch]);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    dispatch(register({
-      name: values.name,
-      email: values.email,
-      password: values.password,
-      role: values.role,
-    })).finally(() => setSubmitting(false));
+    dispatch(
+      register({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        role: values.role,
+      })
+    ).finally(() => setSubmitting(false));
   };
 
   return (
@@ -167,12 +175,7 @@ const RegisterPage = () => {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowPassword((p) => !p)}
-                            edge="end"
-                            size="small"
-                            tabIndex={-1}
-                          >
+                          <IconButton onClick={() => setShowPassword((p) => !p)} edge="end" size="small" tabIndex={-1}>
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>
@@ -206,12 +209,7 @@ const RegisterPage = () => {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowConfirm((p) => !p)}
-                            edge="end"
-                            size="small"
-                            tabIndex={-1}
-                          >
+                          <IconButton onClick={() => setShowConfirm((p) => !p)} edge="end" size="small" tabIndex={-1}>
                             {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>
@@ -236,9 +234,7 @@ const RegisterPage = () => {
                     <MenuItem value="HR">HR</MenuItem>
                     <MenuItem value="Admin">Admin</MenuItem>
                   </Select>
-                  {touched.role && errors.role && (
-                    <FormHelperText error>{errors.role}</FormHelperText>
-                  )}
+                  {touched.role && errors.role && <FormHelperText error>{errors.role}</FormHelperText>}
                 </FormControl>
               )}
             </Field>
@@ -270,15 +266,14 @@ const RegisterPage = () => {
       </Formik>
 
       <Divider sx={{ my: 3 }}>
-        <Typography variant="caption" color="text.secondary">OR</Typography>
+        <Typography variant="caption" color="text.secondary">
+          OR
+        </Typography>
       </Divider>
 
       <Typography variant="body2" align="center" color="text.secondary">
         Already have an account?{' '}
-        <Link
-          to={AUTH_PATHS.LOGIN}
-          style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 600 }}
-        >
+        <Link to={AUTH_PATHS.LOGIN} style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 600 }}>
           Sign in
         </Link>
       </Typography>

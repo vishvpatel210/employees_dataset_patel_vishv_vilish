@@ -10,13 +10,8 @@ const passwordRules = {
 };
 
 export const loginSchema = yup.object({
-  email: yup
-    .string()
-    .email('Enter a valid email address')
-    .required('Email is required'),
-  password: yup
-    .string()
-    .required('Password is required'),
+  email: yup.string().email('Enter a valid email address').required('Email is required'),
+  password: yup.string().required('Password is required'),
   rememberMe: yup.boolean(),
 });
 
@@ -27,10 +22,7 @@ export const registerSchema = yup.object({
     .max(50, 'Name must be at most 50 characters')
     .matches(/^[a-zA-Z\s'-]+$/, 'Name can only contain letters, spaces, hyphens, and apostrophes')
     .required('Full name is required'),
-  email: yup
-    .string()
-    .email('Enter a valid email address')
-    .required('Email is required'),
+  email: yup.string().email('Enter a valid email address').required('Email is required'),
   password: yup
     .string()
     .min(passwordRules.minLength, `Password must be at least ${passwordRules.minLength} characters`)
@@ -43,17 +35,11 @@ export const registerSchema = yup.object({
     .string()
     .oneOf([yup.ref('password')], 'Passwords must match')
     .required('Please confirm your password'),
-  role: yup
-    .string()
-    .oneOf(['User', 'Employee', 'HR', 'Admin'], 'Select a valid role')
-    .required('Role is required'),
+  role: yup.string().oneOf(['User', 'Employee', 'HR', 'Admin'], 'Select a valid role').required('Role is required'),
 });
 
 export const forgotPasswordSchema = yup.object({
-  email: yup
-    .string()
-    .email('Enter a valid email address')
-    .required('Email is required'),
+  email: yup.string().email('Enter a valid email address').required('Email is required'),
 });
 
 export const resetPasswordSchema = yup.object({
@@ -79,20 +65,10 @@ export const employeeSchema = yup.object({
     .min(2, 'Name must be at least 2 characters')
     .max(100, 'Name must be at most 100 characters')
     .required('Name is required'),
-  email: yup
-    .string()
-    .email('Enter a valid email address')
-    .required('Email is required'),
-  phone: yup
-    .string()
-    .matches(phoneRegex, 'Enter a valid phone number')
-    .required('Phone is required'),
-  department: yup
-    .string()
-    .required('Department is required'),
-  designation: yup
-    .string()
-    .required('Designation is required'),
+  email: yup.string().email('Enter a valid email address').required('Email is required'),
+  phone: yup.string().matches(phoneRegex, 'Enter a valid phone number').required('Phone is required'),
+  department: yup.string().required('Department is required'),
+  designation: yup.string().required('Designation is required'),
   salary: yup
     .number()
     .typeError('Salary must be a number')

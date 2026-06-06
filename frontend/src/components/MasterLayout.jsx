@@ -23,16 +23,14 @@ const MasterLayout = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-200 ${
-      isDark ? 'bg-gray-950' : 'bg-gray-50'
-    }`}>
+    <div
+      className={`min-h-screen flex flex-col transition-colors duration-200 ${isDark ? 'bg-gray-950' : 'bg-gray-50'}`}
+    >
       <Navbar />
 
       <div className="flex flex-1">
         {/* Desktop Sidebar */}
-        <div className={`hidden lg:flex transition-all duration-300 ${
-          sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'
-        }`}>
+        <div className={`hidden lg:flex transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'}`}>
           <Sidebar />
         </div>
 
@@ -55,9 +53,9 @@ const MasterLayout = () => {
 
         {/* Main Content */}
         <main className="flex-1 flex flex-col min-h-[calc(100vh-65px)] w-full overflow-x-hidden">
-          <div className={`flex-1 p-4 lg:p-6 transition-colors duration-200 ${
-            isDark ? 'text-gray-100' : 'text-gray-800'
-          }`}>
+          <div
+            className={`flex-1 p-4 lg:p-6 transition-colors duration-200 ${isDark ? 'text-gray-100' : 'text-gray-800'}`}
+          >
             <Outlet />
           </div>
           <Footer />

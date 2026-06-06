@@ -39,11 +39,7 @@ import {
   Layers,
   User,
 } from 'lucide-react';
-import {
-  getEmployeeById,
-  getEmployeeStatsById,
-  getEmployeePerformance,
-} from '../services/employeeService';
+import { getEmployeeById, getEmployeeStatsById, getEmployeePerformance } from '../services/employeeService';
 import { getProjects } from '../services/projectService';
 import { getTasks } from '../services/taskService';
 import { getInitials, formatDate } from '../utils/helpers';
@@ -92,9 +88,7 @@ const EmployeeDetail = () => {
         const allProjects = allProjectsRes.data.data || allProjectsRes.data.projects || [];
         const allTasks = allTasksRes.data.data || allTasksRes.data.tasks || [];
 
-        const empProjectIds = (emp.profile?.projects || []).map((p) =>
-          typeof p === 'string' ? p : p._id || p
-        );
+        const empProjectIds = (emp.profile?.projects || []).map((p) => (typeof p === 'string' ? p : p._id || p));
         const empProjects = allProjects.filter((p) => empProjectIds.includes(p._id));
         setProjects(empProjects);
 
@@ -128,12 +122,20 @@ const EmployeeDetail = () => {
   if (loading) {
     return (
       <Box sx={{ spaceY: 4 }}>
-        <Button onClick={() => navigate('/employees')} startIcon={<ArrowLeft size={18} />} sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}>
+        <Button
+          onClick={() => navigate('/employees')}
+          startIcon={<ArrowLeft size={18} />}
+          sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}
+        >
           Back to Employees
         </Button>
         <CardSkeleton count={4} />
-        <Box sx={{ mt: 4 }}><TableSkeleton rows={3} /></Box>
-        <Box sx={{ mt: 4 }}><TableSkeleton rows={3} /></Box>
+        <Box sx={{ mt: 4 }}>
+          <TableSkeleton rows={3} />
+        </Box>
+        <Box sx={{ mt: 4 }}>
+          <TableSkeleton rows={3} />
+        </Box>
       </Box>
     );
   }
@@ -141,10 +143,16 @@ const EmployeeDetail = () => {
   if (error) {
     return (
       <Box>
-        <Button onClick={() => navigate('/employees')} startIcon={<ArrowLeft size={18} />} sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}>
+        <Button
+          onClick={() => navigate('/employees')}
+          startIcon={<ArrowLeft size={18} />}
+          sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}
+        >
           Back to Employees
         </Button>
-        <Alert severity="error" sx={{ borderRadius: 2 }}>{error}</Alert>
+        <Alert severity="error" sx={{ borderRadius: 2 }}>
+          {error}
+        </Alert>
       </Box>
     );
   }
@@ -152,7 +160,11 @@ const EmployeeDetail = () => {
   if (!employee) {
     return (
       <Box>
-        <Button onClick={() => navigate('/employees')} startIcon={<ArrowLeft size={18} />} sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}>
+        <Button
+          onClick={() => navigate('/employees')}
+          startIcon={<ArrowLeft size={18} />}
+          sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}
+        >
           Back to Employees
         </Button>
         <EmptyState title="Employee not found" description="The employee you are looking for does not exist." />
@@ -174,9 +186,22 @@ const EmployeeDetail = () => {
   return (
     <Box sx={{ spaceY: 6 }}>
       {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 2, mb: 1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          flexWrap: 'wrap',
+          gap: 2,
+          mb: 1,
+        }}
+      >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Button onClick={() => navigate('/employees')} startIcon={<ArrowLeft size={18} />} sx={{ borderRadius: 2, textTransform: 'none' }}>
+          <Button
+            onClick={() => navigate('/employees')}
+            startIcon={<ArrowLeft size={18} />}
+            sx={{ borderRadius: 2, textTransform: 'none' }}
+          >
             Back
           </Button>
           <Avatar
@@ -191,12 +216,16 @@ const EmployeeDetail = () => {
             {getInitials(employee.name)}
           </Avatar>
           <Box>
-            <Typography variant="h5" fontWeight={700}>{employee.name}</Typography>
+            <Typography variant="h5" fontWeight={700}>
+              {employee.name}
+            </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
               <Typography variant="body2" color="text.secondary">
                 {employee.designation || 'N/A'}
               </Typography>
-              <Typography variant="body2" color="text.disabled">|</Typography>
+              <Typography variant="body2" color="text.disabled">
+                |
+              </Typography>
               <Typography variant="body2" color="text.secondary">
                 {employee.department?.name || 'No Department'}
               </Typography>
@@ -223,7 +252,11 @@ const EmployeeDetail = () => {
       {/* Profile Info Card */}
       <Card sx={{ borderRadius: 3, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
         <CardContent sx={{ p: 3 }}>
-          <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography
+            variant="subtitle1"
+            fontWeight={600}
+            sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}
+          >
             <User size={18} /> Profile Information
           </Typography>
           <Grid container spacing={3}>
@@ -231,8 +264,12 @@ const EmployeeDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Mail size={16} style={{ color: '#64748b' }} />
                 <Box>
-                  <Typography variant="caption" color="text.secondary">Email</Typography>
-                  <Typography variant="body2" fontWeight={500}>{contact.email || 'N/A'}</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Email
+                  </Typography>
+                  <Typography variant="body2" fontWeight={500}>
+                    {contact.email || 'N/A'}
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
@@ -240,8 +277,12 @@ const EmployeeDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Phone size={16} style={{ color: '#64748b' }} />
                 <Box>
-                  <Typography variant="caption" color="text.secondary">Phone</Typography>
-                  <Typography variant="body2" fontWeight={500}>{contact.phone || 'N/A'}</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Phone
+                  </Typography>
+                  <Typography variant="body2" fontWeight={500}>
+                    {contact.phone || 'N/A'}
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
@@ -249,7 +290,9 @@ const EmployeeDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <MapPin size={16} style={{ color: '#64748b' }} />
                 <Box>
-                  <Typography variant="caption" color="text.secondary">Location</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Location
+                  </Typography>
                   <Typography variant="body2" fontWeight={500}>
                     {[address.city, location.state, location.country].filter(Boolean).join(', ') || 'N/A'}
                   </Typography>
@@ -260,8 +303,12 @@ const EmployeeDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Calendar size={16} style={{ color: '#64748b' }} />
                 <Box>
-                  <Typography variant="caption" color="text.secondary">Joined</Typography>
-                  <Typography variant="body2" fontWeight={500}>{formatDate(employee.joiningDate)}</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Joined
+                  </Typography>
+                  <Typography variant="body2" fontWeight={500}>
+                    {formatDate(employee.joiningDate)}
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
@@ -269,8 +316,12 @@ const EmployeeDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Code2 size={16} style={{ color: '#64748b' }} />
                 <Box>
-                  <Typography variant="caption" color="text.secondary">Primary Skill</Typography>
-                  <Typography variant="body2" fontWeight={500}>{skills.primary || 'N/A'}</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Primary Skill
+                  </Typography>
+                  <Typography variant="body2" fontWeight={500}>
+                    {skills.primary || 'N/A'}
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
@@ -278,7 +329,9 @@ const EmployeeDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Layers size={16} style={{ color: '#64748b' }} />
                 <Box>
-                  <Typography variant="caption" color="text.secondary">Domains</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Domains
+                  </Typography>
                   <Typography variant="body2" fontWeight={500}>
                     {(experience.domains || []).join(', ') || 'N/A'}
                   </Typography>
@@ -289,7 +342,9 @@ const EmployeeDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Shield size={16} style={{ color: '#64748b' }} />
                 <Box>
-                  <Typography variant="caption" color="text.secondary">Certifications</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Certifications
+                  </Typography>
                   <Typography variant="body2" fontWeight={500}>
                     {(certifications.current || []).length > 0
                       ? `${certifications.current.length} certification${certifications.current.length !== 1 ? 's' : ''}`
@@ -302,7 +357,9 @@ const EmployeeDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Globe size={16} style={{ color: '#64748b' }} />
                 <Box>
-                  <Typography variant="caption" color="text.secondary">Timezone</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Timezone
+                  </Typography>
                   <Typography variant="body2" fontWeight={500}>
                     {location.geo?.timezone?.name || 'N/A'}
                   </Typography>
@@ -316,27 +373,57 @@ const EmployeeDetail = () => {
       {/* Statistics Section */}
       {displayData && (
         <Box>
-          <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography
+            variant="subtitle1"
+            fontWeight={600}
+            sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}
+          >
             <Briefcase size={18} /> Statistics
           </Typography>
           <Grid container spacing={2}>
             {[
-              { label: 'Total Projects', value: stats?.totalProjects ?? profile.projects?.length ?? 0, icon: <Projector size={20} />, color: '#2563eb' },
-              { label: 'Total Tasks', value: stats?.totalTasks ?? tasks.length, icon: <ListTodo size={20} />, color: '#7c3aed' },
-              { label: 'Experience', value: stats?.yearsOfExperience ?? experience.years ?? 0, suffix: ' yrs', icon: <Clock size={20} />, color: '#059669' },
-              { label: 'Primary Skill', value: stats?.primarySkill ?? skills.primary ?? 'N/A', icon: <Award size={20} />, color: '#d97706' },
+              {
+                label: 'Total Projects',
+                value: stats?.totalProjects ?? profile.projects?.length ?? 0,
+                icon: <Projector size={20} />,
+                color: '#2563eb',
+              },
+              {
+                label: 'Total Tasks',
+                value: stats?.totalTasks ?? tasks.length,
+                icon: <ListTodo size={20} />,
+                color: '#7c3aed',
+              },
+              {
+                label: 'Experience',
+                value: stats?.yearsOfExperience ?? experience.years ?? 0,
+                suffix: ' yrs',
+                icon: <Clock size={20} />,
+                color: '#059669',
+              },
+              {
+                label: 'Primary Skill',
+                value: stats?.primarySkill ?? skills.primary ?? 'N/A',
+                icon: <Award size={20} />,
+                color: '#d97706',
+              },
             ].map((stat) => (
               <Grid item xs={6} md={3} key={stat.label}>
                 <Card sx={{ borderRadius: 3, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
                   <CardContent sx={{ p: 3 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
-                      <Box sx={{ p: 1, borderRadius: 2, bgcolor: `${stat.color}15`, color: stat.color, display: 'flex' }}>
+                      <Box
+                        sx={{ p: 1, borderRadius: 2, bgcolor: `${stat.color}15`, color: stat.color, display: 'flex' }}
+                      >
                         {stat.icon}
                       </Box>
-                      <Typography variant="caption" color="text.secondary" fontWeight={500}>{stat.label}</Typography>
+                      <Typography variant="caption" color="text.secondary" fontWeight={500}>
+                        {stat.label}
+                      </Typography>
                     </Box>
                     <Typography variant="h4" fontWeight={700} sx={{ ml: 0.5 }}>
-                      {stat.value}{stat.suffix || ''}
+                      {stat.value}
+                      {stat.suffix || ''}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -350,7 +437,11 @@ const EmployeeDetail = () => {
       {performance && (
         <Card sx={{ borderRadius: 3, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
           <CardContent sx={{ p: 3 }}>
-            <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography
+              variant="subtitle1"
+              fontWeight={600}
+              sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}
+            >
               <Star size={18} /> Performance Score
             </Typography>
             <Grid container spacing={4} alignItems="center">
@@ -369,15 +460,35 @@ const EmployeeDetail = () => {
                     size={120}
                     thickness={6}
                     sx={{
-                      color: performance.performanceScore >= 90 ? '#059669'
-                        : performance.performanceScore >= 80 ? '#2563eb'
-                        : performance.performanceScore >= 70 ? '#d97706'
-                        : '#dc2626',
+                      color:
+                        performance.performanceScore >= 90
+                          ? '#059669'
+                          : performance.performanceScore >= 80
+                            ? '#2563eb'
+                            : performance.performanceScore >= 70
+                              ? '#d97706'
+                              : '#dc2626',
                     }}
                   />
-                  <Box sx={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <Typography variant="h4" fontWeight={700}>{performance.performanceScore}</Typography>
-                    <Typography variant="caption" color="text.secondary">/ 100</Typography>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      bottom: 0,
+                      right: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Typography variant="h4" fontWeight={700}>
+                      {performance.performanceScore}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      / 100
+                    </Typography>
                   </Box>
                 </Box>
                 <Chip
@@ -392,17 +503,35 @@ const EmployeeDetail = () => {
                 />
               </Grid>
               <Grid item xs={12} md={8}>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Score Breakdown</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  Score Breakdown
+                </Typography>
                 {[
                   { label: 'Base Score', value: 60, max: 100 },
-                  { label: `Experience Bonus (${displayData?.yearsOfExperience ?? experience.years ?? 0} yrs × 2)`, value: performance.metrics?.experienceContribution || 0, max: 40 },
-                  { label: `Project Bonus (${stats?.totalProjects ?? profile.projects?.length ?? 0} projects × 3)`, value: performance.metrics?.projectContribution || 0, max: 30 },
-                  { label: `Task Bonus (${stats?.totalTasks ?? tasks.length} tasks × 1)`, value: performance.metrics?.taskContribution || 0, max: 10 },
+                  {
+                    label: `Experience Bonus (${displayData?.yearsOfExperience ?? experience.years ?? 0} yrs × 2)`,
+                    value: performance.metrics?.experienceContribution || 0,
+                    max: 40,
+                  },
+                  {
+                    label: `Project Bonus (${stats?.totalProjects ?? profile.projects?.length ?? 0} projects × 3)`,
+                    value: performance.metrics?.projectContribution || 0,
+                    max: 30,
+                  },
+                  {
+                    label: `Task Bonus (${stats?.totalTasks ?? tasks.length} tasks × 1)`,
+                    value: performance.metrics?.taskContribution || 0,
+                    max: 10,
+                  },
                 ].map((item) => (
                   <Box key={item.label} sx={{ mb: 1.5 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                      <Typography variant="caption" color="text.secondary">{item.label}</Typography>
-                      <Typography variant="caption" fontWeight={600}>+{item.value}</Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {item.label}
+                      </Typography>
+                      <Typography variant="caption" fontWeight={600}>
+                        +{item.value}
+                      </Typography>
                     </Box>
                     <LinearProgress
                       variant="determinate"
@@ -447,10 +576,14 @@ const EmployeeDetail = () => {
                 {projects.map((project) => (
                   <TableRow key={project._id} hover>
                     <TableCell>
-                      <Typography variant="body2" fontWeight={500}>{project.projectId || project._id}</Typography>
+                      <Typography variant="body2" fontWeight={500}>
+                        {project.projectId || project._id}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="body2" fontWeight={600}>{project.name}</Typography>
+                      <Typography variant="body2" fontWeight={600}>
+                        {project.name}
+                      </Typography>
                     </TableCell>
                     <TableCell>
                       <Chip
@@ -460,7 +593,9 @@ const EmployeeDetail = () => {
                       />
                     </TableCell>
                     <TableCell>
-                      <Typography variant="body2" color="text.secondary">{formatDate(project.createdAt)}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {formatDate(project.createdAt)}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -492,7 +627,9 @@ const EmployeeDetail = () => {
                 {tasks.map((task) => (
                   <TableRow key={task._id} hover>
                     <TableCell>
-                      <Typography variant="body2" fontWeight={500}>{task.taskId || task._id}</Typography>
+                      <Typography variant="body2" fontWeight={500}>
+                        {task.taskId || task._id}
+                      </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2">{task.description}</Typography>
@@ -503,7 +640,9 @@ const EmployeeDetail = () => {
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="body2" color="text.secondary">{formatDate(task.createdAt)}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {formatDate(task.createdAt)}
+                      </Typography>
                     </TableCell>
                   </TableRow>
                 ))}
