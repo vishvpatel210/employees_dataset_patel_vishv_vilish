@@ -13,6 +13,7 @@ const ForgotPasswordPage = lazy(() => import('./pages/Auth/ForgotPasswordPage'))
 const ResetPasswordPage = lazy(() => import('./pages/Auth/ResetPasswordPage'));
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const EmployeeList = lazy(() => import('./pages/EmployeeList'));
 
 const Fallback = () => (
   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -38,7 +39,7 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
 
             {/* Employees - All authenticated users */}
-            <Route path="/employees" element={<div className="p-4">Employees Listing Page</div>} />
+            <Route path="/employees" element={<EmployeeList />} />
             <Route path="/employees/new" element={<div className="p-4">Add Employee Page</div>} />
             <Route path="/employees/:id" element={<div className="p-4">Employee Detail Page</div>} />
             <Route path="/employees/:id/edit" element={<div className="p-4">Edit Employee Page</div>} />
