@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Skeleton, Card, CardContent } from '@mui/material';
 
 export const TableSkeleton = ({ rows = 5 }) => (

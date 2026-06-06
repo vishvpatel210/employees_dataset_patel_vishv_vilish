@@ -15,6 +15,18 @@ export const registerSchema = yup.object({
     .required('Confirm password is required'),
 });
 
+export const forgotPasswordSchema = yup.object({
+  email: yup.string().email('Invalid email').required('Email is required'),
+});
+
+export const resetPasswordSchema = yup.object({
+  password: yup.string().min(6, 'Min 6 characters').required('Password is required'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Passwords must match')
+    .required('Confirm password is required'),
+});
+
 export const employeeSchema = yup.object({
   name: yup.string().min(2, 'Min 2 characters').required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
