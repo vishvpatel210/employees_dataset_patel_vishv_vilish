@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -12,120 +12,11 @@ import {
   Tooltip,
 } from '@mui/material';
 import { Plus, Search, Eye, Edit2, Trash2 } from 'lucide-react';
-import { fetchEmployees, deleteEmployee, clearEmployeeError } from '../store/slices/employeeSlice';
+import { fetchEmployees, deleteEmployee, bulkDeleteEmployees, clearEmployeeError } from '../store/slices/employeeSlice';
 import { getInitials, formatDate } from '../utils/helpers';
 import DataTable from '../components/common/DataTable';
 import ConfirmDialog from '../components/common/ConfirmDialog';
 import toast from 'react-hot-toast';
-
-const columns = [
-  {
-    field: 'name',
-    label: 'Employee',
-    sortable: true,
-    render: (row) => (
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <Box
-          sx={{
-            width: 32,
-            height: 32,
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#fff',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            flexShrink: 0,
-          }}
-        >
-          {getInitials(row.name)}
-        </Box>
-        <Box>
-          <Typography variant="body2" fontWeight={600}>
-            {row.name}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            {row.profile?.contact?.email || row.email || '-'}
-          </Typography>
-        </Box>
-      </Box>
-    ),
-  },
-  {
-    field: 'designation',
-    label: 'Designation',
-    sortable: true,
-    render: (row) => row.designation || '-',
-  },
-  {
-    field: 'department',
-    label: 'Department',
-    render: (row) => row.department?.name || '-',
-  },
-  {
-    field: 'salary',
-    label: 'Salary',
-    sortable: true,
-    render: (row) => {
-      const val = row.salary;
-      if (val == null) return '-';
-      return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
-    },
-  },
-  {
-    field: 'status',
-    label: 'Status',
-    render: (row) => {
-      const status = row.status || 'active';
-      const colors = {
-        active: { bg: '#dcfce7', color: '#166534' },
-        inactive: { bg: '#fef3c7', color: '#92400e' },
-        suspended: { bg: '#fce4ec', color: '#c62828' },
-      };
-      const c = colors[status] || colors.active;
-      return (
-        <Chip
-          label={status.charAt(0).toUpperCase() + status.slice(1)}
-          size="small"
-          sx={{ bgcolor: c.bg, color: c.color, fontWeight: 600, fontSize: '0.75rem' }}
-        />
-      );
-    },
-  },
-  {
-    field: 'joiningDate',
-    label: 'Joined',
-    sortable: true,
-    render: (row) => formatDate(row.joiningDate),
-  },
-  {
-    field: 'actions',
-    label: 'Actions',
-    sortable: false,
-    nowrap: true,
-    render: (row) => (
-      <Box sx={{ display: 'flex', gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
-        <Tooltip title="View">
-          <IconButton size="small" color="primary">
-            <Eye size={16} />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Edit">
-          <IconButton size="small" color="info">
-            <Edit2 size={16} />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton size="small" color="error">
-            <Trash2 size={16} />
-          </IconButton>
-        </Tooltip>
-      </Box>
-    ),
-  },
-];
 
 const EmployeeList = () => {
   const dispatch = useDispatch();
@@ -133,6 +24,8 @@ const EmployeeList = () => {
   const { items, total, page, limit, sort, order, search, loading, error } = useSelector((state) => state.employees);
   const [searchInput, setSearchInput] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   const loadEmployees = useCallback(() => {
     const params = { page, limit };
@@ -148,6 +41,10 @@ const EmployeeList = () => {
   useEffect(() => {
     return () => dispatch(clearEmployeeError());
   }, [dispatch]);
+
+  useEffect(() => {
+    setSelectedIds([]);
+  }, [page, search]);
 
   const handleSearch = () => {
     if (searchInput !== search) {
@@ -182,6 +79,128 @@ const EmployeeList = () => {
     }
     setDeleteTarget(null);
   };
+
+  const handleBulkDeleteConfirm = async () => {
+    if (selectedIds.length === 0) return;
+    try {
+      await dispatch(bulkDeleteEmployees(selectedIds)).unwrap();
+      toast.success(`${selectedIds.length} employee${selectedIds.length !== 1 ? 's' : ''} deleted successfully`);
+      setSelectedIds([]);
+      loadEmployees();
+    } catch (err) {
+      toast.error(err || 'Failed to delete employees');
+    }
+    setBulkDeleteOpen(false);
+  };
+
+  const columns = useMemo(() => [
+    {
+      field: 'name',
+      label: 'Employee',
+      sortable: true,
+      render: (row) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box
+            sx={{
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              flexShrink: 0,
+            }}
+          >
+            {getInitials(row.name)}
+          </Box>
+          <Box>
+            <Typography variant="body2" fontWeight={600}>
+              {row.name}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {row.profile?.contact?.email || row.email || '-'}
+            </Typography>
+          </Box>
+        </Box>
+      ),
+    },
+    {
+      field: 'designation',
+      label: 'Designation',
+      sortable: true,
+      render: (row) => row.designation || '-',
+    },
+    {
+      field: 'department',
+      label: 'Department',
+      render: (row) => row.department?.name || '-',
+    },
+    {
+      field: 'salary',
+      label: 'Salary',
+      sortable: true,
+      render: (row) => {
+        const val = row.salary;
+        if (val == null) return '-';
+        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+      },
+    },
+    {
+      field: 'status',
+      label: 'Status',
+      render: (row) => {
+        const status = row.status || 'active';
+        const colors = {
+          active: { bg: '#dcfce7', color: '#166534' },
+          inactive: { bg: '#fef3c7', color: '#92400e' },
+          suspended: { bg: '#fce4ec', color: '#c62828' },
+        };
+        const c = colors[status] || colors.active;
+        return (
+          <Chip
+            label={status.charAt(0).toUpperCase() + status.slice(1)}
+            size="small"
+            sx={{ bgcolor: c.bg, color: c.color, fontWeight: 600, fontSize: '0.75rem' }}
+          />
+        );
+      },
+    },
+    {
+      field: 'joiningDate',
+      label: 'Joined',
+      sortable: true,
+      render: (row) => formatDate(row.joiningDate),
+    },
+    {
+      field: 'actions',
+      label: 'Actions',
+      sortable: false,
+      nowrap: true,
+      render: (row) => (
+        <Box sx={{ display: 'flex', gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
+          <Tooltip title="View">
+            <IconButton size="small" color="primary" onClick={() => navigate(`/employees/${row._id || row.id}`)}>
+              <Eye size={16} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Edit">
+            <IconButton size="small" color="info" onClick={() => navigate(`/employees/${row._id || row.id}/edit`)}>
+              <Edit2 size={16} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton size="small" color="error" onClick={() => setDeleteTarget(row)}>
+              <Trash2 size={16} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
+    },
+  ], [navigate]);
 
   return (
     <Box sx={{ spaceY: 3 }}>
@@ -245,6 +264,45 @@ const EmployeeList = () => {
         )}
       </Box>
 
+      {selectedIds.length > 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            mb: 2,
+            p: 1.5,
+            bgcolor: 'error.50',
+            border: '1px solid',
+            borderColor: 'error.200',
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="body2" fontWeight={600} color="error.main">
+            {selectedIds.length} selected
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button
+            size="small"
+            variant="contained"
+            color="error"
+            startIcon={<Trash2 size={16} />}
+            onClick={() => setBulkDeleteOpen(true)}
+            sx={{ borderRadius: 1.5, textTransform: 'none', fontWeight: 600 }}
+          >
+            Delete Selected
+          </Button>
+          <Button
+            size="small"
+            variant="text"
+            onClick={() => setSelectedIds([])}
+            sx={{ borderRadius: 1.5, textTransform: 'none' }}
+          >
+            Clear
+          </Button>
+        </Box>
+      )}
+
       <DataTable
         columns={columns}
         rows={items}
@@ -262,6 +320,9 @@ const EmployeeList = () => {
         onRowClick={(row) => navigate(`/employees/${row._id || row.id}`)}
         emptyTitle="No employees found"
         emptyDescription={search ? 'Try a different search term.' : 'Add your first employee to get started.'}
+        selectable
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
       />
 
       <ConfirmDialog
@@ -270,6 +331,16 @@ const EmployeeList = () => {
         message={`Are you sure you want to delete ${deleteTarget?.name || 'this employee'}?`}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteTarget(null)}
+      />
+
+      <ConfirmDialog
+        open={bulkDeleteOpen}
+        title="Delete Selected Employees"
+        message={`Are you sure you want to delete ${selectedIds.length} employee${selectedIds.length !== 1 ? 's' : ''}? This action cannot be undone.`}
+        onConfirm={handleBulkDeleteConfirm}
+        onCancel={() => setBulkDeleteOpen(false)}
+        confirmLabel={`Delete ${selectedIds.length}`}
+        color="error"
       />
     </Box>
   );

@@ -62,6 +62,18 @@ export const deleteEmployee = createAsyncThunk(
   }
 );
 
+export const bulkDeleteEmployees = createAsyncThunk(
+  'employees/bulkDelete',
+  async (ids, { rejectWithValue }) => {
+    try {
+      await employeeService.bulkDeleteEmployees(ids);
+      return ids;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Failed to delete employees');
+    }
+  }
+);
+
 const employeeSlice = createSlice({
   name: 'employees',
   initialState: {
@@ -117,6 +129,11 @@ const employeeSlice = createSlice({
       .addCase(deleteEmployee.fulfilled, (state, action) => {
         state.items = state.items.filter((e) => (e._id || e.id) !== action.payload);
         state.total = Math.max(0, state.total - 1);
+      })
+      .addCase(bulkDeleteEmployees.fulfilled, (state, action) => {
+        const ids = action.payload;
+        state.items = state.items.filter((e) => !ids.includes(e._id || e.id));
+        state.total = Math.max(0, state.total - ids.length);
       });
   },
 });
