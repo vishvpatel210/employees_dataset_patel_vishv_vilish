@@ -11,6 +11,7 @@ import {
   Skeleton,
   Box,
   Typography,
+  Checkbox,
 } from '@mui/material';
 import { InboxOutlined } from '@mui/icons-material';
 
@@ -84,12 +85,70 @@ const DataTable = ({
   emptyDescription = 'There are no records to display.',
   stickyHeader = true,
   sx,
+  selectable = false,
+  selectedIds = [],
+  onSelectionChange,
+  getRowId = (row) => row._id || row.id,
 }) => {
   const handleSort = (field) => {
     if (!onSort) return;
     const isAsc = sortField === field && sortOrder === 'asc';
     onSort(field, isAsc ? 'desc' : 'asc');
   };
+
+  const visibleIds = rows.map(getRowId);
+  const allSelected = visibleIds.length > 0 && visibleIds.every((id) => selectedIds.includes(id));
+  const someSelected = visibleIds.some((id) => selectedIds.includes(id));
+
+  const handleSelectAll = () => {
+    if (!onSelectionChange) return;
+    if (allSelected) {
+      onSelectionChange(selectedIds.filter((id) => !visibleIds.includes(id)));
+    } else {
+      const newSelected = [...selectedIds];
+      visibleIds.forEach((id) => {
+        if (!newSelected.includes(id)) newSelected.push(id);
+      });
+      onSelectionChange(newSelected);
+    }
+  };
+
+  const handleSelectOne = (id) => {
+    if (!onSelectionChange) return;
+    const idx = selectedIds.indexOf(id);
+    if (idx !== -1) {
+      onSelectionChange(selectedIds.filter((x) => x !== id));
+    } else {
+      onSelectionChange([...selectedIds, id]);
+    }
+  };
+
+  const checkboxColumn = {
+    field: '_checkbox',
+    label: '',
+    sortable: false,
+    renderHeader: () => (
+      <Checkbox
+        size="small"
+        checked={allSelected}
+        indeterminate={!allSelected && someSelected}
+        onChange={handleSelectAll}
+        onClick={(e) => e.stopPropagation()}
+      />
+    ),
+    render: (row) => (
+      <Checkbox
+        size="small"
+        checked={selectedIds.includes(getRowId(row))}
+        onChange={() => handleSelectOne(getRowId(row))}
+        onClick={(e) => e.stopPropagation()}
+      />
+    ),
+    headerSx: { width: 48, px: 0.5 },
+    cellSx: { width: 48, px: 0.5 },
+  };
+
+  const actualColumns = selectable ? [checkboxColumn, ...columns] : columns;
 
   return (
     <Paper
@@ -106,7 +165,7 @@ const DataTable = ({
         <Table stickyHeader={stickyHeader}>
           <TableHead>
             <TableRow>
-              {columns.map((col) => (
+              {actualColumns.map((col) => (
                 <TableCell
                   key={col.field || col.label}
                   sx={{
@@ -119,7 +178,9 @@ const DataTable = ({
                     ...col.headerSx,
                   }}
                 >
-                  {col.sortable !== false && onSort ? (
+                  {col.renderHeader ? (
+                    col.renderHeader()
+                  ) : col.sortable !== false && onSort ? (
                     <TableSortLabel
                       active={sortField === col.field}
                       direction={sortField === col.field ? sortOrder : 'asc'}
@@ -135,11 +196,11 @@ const DataTable = ({
             </TableRow>
           </TableHead>
           {loading ? (
-            <DataTableSkeleton rows={5} columns={columns.length} />
+            <DataTableSkeleton rows={5} columns={actualColumns.length} />
           ) : error ? (
-            <ErrorTable colSpan={columns.length} message={error} onRetry={onRetry} />
+            <ErrorTable colSpan={actualColumns.length} message={error} onRetry={onRetry} />
           ) : rows.length === 0 ? (
-            <EmptyTable colSpan={columns.length} title={emptyTitle} description={emptyDescription} />
+            <EmptyTable colSpan={actualColumns.length} title={emptyTitle} description={emptyDescription} />
           ) : (
             <TableBody>
               {rows.map((row, i) => (
@@ -152,7 +213,7 @@ const DataTable = ({
                     '&:last-child td': { borderBottom: 0 },
                   }}
                 >
-                  {columns.map((col) => (
+                  {actualColumns.map((col) => (
                     <TableCell
                       key={col.field || col.label}
                       sx={{
