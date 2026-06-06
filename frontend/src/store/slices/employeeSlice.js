@@ -5,7 +5,10 @@ export const fetchEmployees = createAsyncThunk(
   'employees/fetchAll',
   async (params, { rejectWithValue }) => {
     try {
-      const { data } = await employeeService.getEmployees(params);
+      const hasSearch = params?.search;
+      const { data } = hasSearch
+        ? await employeeService.searchEmployees(params.search, params)
+        : await employeeService.getEmployees(params);
       const currentPage = params?.page || 1;
       const pageLimit = params?.limit || 10;
       const pagination = data.pagination || {};
@@ -84,6 +87,12 @@ const employeeSlice = createSlice({
     sort: '',
     order: '',
     search: '',
+    filters: {
+      primarySkill: '',
+      domain: '',
+      country: '',
+      experience: '',
+    },
     loading: false,
     error: null,
     current: null,
@@ -101,6 +110,13 @@ const employeeSlice = createSlice({
     },
     setEmployeeSearch(state, action) {
       state.search = action.payload;
+    },
+    setEmployeeFilters(state, action) {
+      state.filters = { ...state.filters, ...action.payload };
+    },
+    clearEmployeeFilters(state) {
+      state.filters = { primarySkill: '', domain: '', country: '', experience: '' };
+      state.search = '';
     },
   },
   extraReducers: (builder) => {
@@ -138,5 +154,5 @@ const employeeSlice = createSlice({
   },
 });
 
-export const { setCurrentEmployee, clearEmployeeError, setEmployeeSort, setEmployeeSearch } = employeeSlice.actions;
+export const { setCurrentEmployee, clearEmployeeError, setEmployeeSort, setEmployeeSearch, setEmployeeFilters, clearEmployeeFilters } = employeeSlice.actions;
 export default employeeSlice.reducer;

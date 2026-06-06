@@ -10,9 +10,11 @@ import {
   Chip,
   IconButton,
   Tooltip,
+  Collapse,
+  Grid,
 } from '@mui/material';
-import { Plus, Search, Eye, Edit2, Trash2 } from 'lucide-react';
-import { fetchEmployees, deleteEmployee, bulkDeleteEmployees, clearEmployeeError } from '../store/slices/employeeSlice';
+import { Plus, Search, Eye, Edit2, Trash2, SlidersHorizontal, X } from 'lucide-react';
+import { fetchEmployees, deleteEmployee, bulkDeleteEmployees, clearEmployeeError, setEmployeeFilters, clearEmployeeFilters } from '../store/slices/employeeSlice';
 import { getInitials, formatDate } from '../utils/helpers';
 import DataTable from '../components/common/DataTable';
 import ConfirmDialog from '../components/common/ConfirmDialog';
@@ -21,8 +23,10 @@ import toast from 'react-hot-toast';
 const EmployeeList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { items, total, page, limit, sort, order, search, loading, error } = useSelector((state) => state.employees);
-  const [searchInput, setSearchInput] = useState('');
+  const { items, total, page, limit, sort, order, search, filters, loading, error } = useSelector((state) => state.employees);
+  const [searchInput, setSearchInput] = useState(search || '');
+  const [filterInputs, setFilterInputs] = useState({ ...filters });
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -31,8 +35,11 @@ const EmployeeList = () => {
     const params = { page, limit };
     if (sort) params.sort = order === 'desc' ? `-${sort}` : sort;
     if (search) params.search = search;
+    Object.entries(filters).forEach(([key, val]) => {
+      if (val) params[key] = val;
+    });
     dispatch(fetchEmployees(params));
-  }, [dispatch, page, limit, sort, order, search]);
+  }, [dispatch, page, limit, sort, order, search, filters]);
 
   useEffect(() => {
     loadEmployees();
@@ -45,6 +52,10 @@ const EmployeeList = () => {
   useEffect(() => {
     setSelectedIds([]);
   }, [page, search]);
+
+  useEffect(() => {
+    setFilterInputs({ ...filters });
+  }, [filters]);
 
   const handleSearch = () => {
     if (searchInput !== search) {
@@ -61,12 +72,25 @@ const EmployeeList = () => {
   };
 
   const handlePageChange = (_, newPage) => {
-    dispatch(fetchEmployees({ page: newPage + 1, limit, sort, order: order || undefined, search: search || undefined }));
+    dispatch(fetchEmployees({ page: newPage + 1, limit, sort, order: order || undefined, search: search || undefined, ...filters }));
   };
 
   const handleRowsPerPageChange = (e) => {
-    dispatch(fetchEmployees({ page: 1, limit: parseInt(e.target.value, 10), sort, order: order || undefined, search: search || undefined }));
+    dispatch(fetchEmployees({ page: 1, limit: parseInt(e.target.value, 10), sort, order: order || undefined, search: search || undefined, ...filters }));
   };
+
+  const handleApplyFilters = () => {
+    dispatch(setEmployeeFilters(filterInputs));
+  };
+
+  const handleResetFilters = () => {
+    setFilterInputs({ primarySkill: '', domain: '', country: '', experience: '' });
+    dispatch(clearEmployeeFilters());
+    setSearchInput('');
+  };
+
+  const hasActiveFilters = Object.values(filters).some(Boolean);
+  const hasAnyFilter = !!(search || hasActiveFilters);
 
   const handleDeleteConfirm = async () => {
     if (!deleteTarget) return;
@@ -221,14 +245,14 @@ const EmployeeList = () => {
         </Button>
       </Box>
 
-      <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center', flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center', flexWrap: 'wrap' }}>
         <TextField
           size="small"
           placeholder="Search employees..."
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           onKeyDown={handleSearchKeyDown}
-          sx={{ minWidth: 300, maxWidth: 400 }}
+          sx={{ minWidth: 280, maxWidth: 360 }}
           slotProps={{
             input: {
               startAdornment: (
@@ -248,21 +272,115 @@ const EmployeeList = () => {
         >
           Search
         </Button>
-        {(sort || search) && (
+        <Button
+          variant={filtersOpen ? 'contained' : 'outlined'}
+          color={filtersOpen ? 'primary' : 'inherit'}
+          size="small"
+          startIcon={<SlidersHorizontal size={16} />}
+          onClick={() => setFiltersOpen(!filtersOpen)}
+          sx={{ borderRadius: 2, textTransform: 'none' }}
+        >
+          Filters{hasActiveFilters ? ` (${Object.values(filters).filter(Boolean).length})` : ''}
+        </Button>
+        {hasAnyFilter && (
           <Button
             variant="text"
             size="small"
-            onClick={() => {
-              dispatch({ type: 'employees/setEmployeeSort', payload: { sort: '', order: '' } });
-              dispatch({ type: 'employees/setEmployeeSearch', payload: '' });
-              setSearchInput('');
-            }}
+            color="error"
+            startIcon={<X size={16} />}
+            onClick={handleResetFilters}
             sx={{ borderRadius: 2, textTransform: 'none' }}
           >
-            Clear filters
+            Reset all
           </Button>
         )}
       </Box>
+
+      {/* Advanced Filters Panel */}
+      <Collapse in={filtersOpen}>
+        <Box
+          sx={{
+            p: 2.5,
+            mb: 2.5,
+            borderRadius: 2,
+            border: '1px solid',
+            borderColor: 'divider',
+            bgcolor: 'grey.50',
+          }}
+        >
+          <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 2 }}>
+            Advanced Filters
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3}>
+              <TextField
+                size="small"
+                label="Primary Skill"
+                placeholder="e.g. JavaScript"
+                value={filterInputs.primarySkill || ''}
+                onChange={(e) => setFilterInputs((prev) => ({ ...prev, primarySkill: e.target.value }))}
+                fullWidth
+                slotProps={{ input: { sx: { borderRadius: 2, bgcolor: '#fff' } } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <TextField
+                size="small"
+                label="Domain"
+                placeholder="e.g. Cloud, AI"
+                value={filterInputs.domain || ''}
+                onChange={(e) => setFilterInputs((prev) => ({ ...prev, domain: e.target.value }))}
+                fullWidth
+                slotProps={{ input: { sx: { borderRadius: 2, bgcolor: '#fff' } } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <TextField
+                size="small"
+                label="Country"
+                placeholder="e.g. India"
+                value={filterInputs.country || ''}
+                onChange={(e) => setFilterInputs((prev) => ({ ...prev, country: e.target.value }))}
+                fullWidth
+                slotProps={{ input: { sx: { borderRadius: 2, bgcolor: '#fff' } } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <TextField
+                size="small"
+                label="Min Experience (years)"
+                placeholder="e.g. 5"
+                type="number"
+                value={filterInputs.experience || ''}
+                onChange={(e) => setFilterInputs((prev) => ({ ...prev, experience: e.target.value }))}
+                fullWidth
+                slotProps={{ input: { sx: { borderRadius: 2, bgcolor: '#fff' } } }}
+              />
+            </Grid>
+          </Grid>
+          <Box sx={{ display: 'flex', gap: 1.5, mt: 2, justifyContent: 'flex-end' }}>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => {
+                setFilterInputs({ primarySkill: '', domain: '', country: '', experience: '' });
+              }}
+              sx={{ borderRadius: 2, textTransform: 'none' }}
+            >
+              Clear
+            </Button>
+            <Button
+              size="small"
+              variant="contained"
+              onClick={handleApplyFilters}
+              disabled={loading}
+              sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600 }}
+            >
+              Apply Filters
+            </Button>
+          </Box>
+        </Box>
+      </Collapse>
 
       {selectedIds.length > 0 && (
         <Box
@@ -319,7 +437,7 @@ const EmployeeList = () => {
         onRowsPerPageChange={handleRowsPerPageChange}
         onRowClick={(row) => navigate(`/employees/${row._id || row.id}`)}
         emptyTitle="No employees found"
-        emptyDescription={search ? 'Try a different search term.' : 'Add your first employee to get started.'}
+        emptyDescription={hasAnyFilter ? 'Try different search terms or filters.' : 'Add your first employee to get started.'}
         selectable
         selectedIds={selectedIds}
         onSelectionChange={setSelectedIds}

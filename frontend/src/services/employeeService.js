@@ -74,6 +74,9 @@ export const getEmployeesByProject = (projectId, params) => api.get(`/employees/
 
 export const getEmployeeByTask = (taskId, params) => api.get(`/employees/task/${taskId}`, { params });
 
+/* ────────── Search ────────── */
+export const searchEmployees = (q, params) => api.get('/search/employees', { params: { q, ...params } });
+
 /* ────────── Sort / Filter / Performance ────────── */
 export const getSortedEmployees = (sortType, params) => api.get(`/employees/sort/${sortType}`, { params });
 
