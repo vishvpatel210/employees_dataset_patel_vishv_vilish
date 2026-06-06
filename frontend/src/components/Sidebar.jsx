@@ -8,45 +8,56 @@ import {
   CheckSquare,
   PieChart,
   Settings,
-  ChevronDown,
-  ChevronRight,
+  Shield,
+  UserCog,
 } from 'lucide-react';
-import { useState } from 'react';
+import { ROLES } from '../utils/constants';
 
-const menuGroups = [
-  {
-    label: 'Main',
-    items: [
-      { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
-    ],
-  },
-  {
-    label: 'Management',
-    items: [
-      { name: 'Employees', path: '/employees', icon: <Users size={20} /> },
-      { name: 'Departments', path: '/departments', icon: <Building2 size={20} /> },
-      { name: 'Projects', path: '/projects', icon: <FolderKanban size={20} /> },
-      { name: 'Tasks', path: '/tasks', icon: <CheckSquare size={20} /> },
-    ],
-  },
-  {
-    label: 'Insights',
-    items: [
-      { name: 'Analytics', path: '/analytics', icon: <PieChart size={20} /> },
-    ],
-  },
-  {
-    label: 'System',
-    items: [
-      { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
-    ],
-  },
-];
+const isAdminOrHr = (user) => user?.role === ROLES.ADMIN || user?.role === ROLES.HR;
 
 const Sidebar = () => {
   const { theme } = useSelector((state) => state.ui);
   const { user } = useSelector((state) => state.auth);
   const isDark = theme === 'dark';
+
+  const menuGroups = [
+    {
+      label: 'Main',
+      items: [
+        { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
+      ],
+    },
+    {
+      label: 'Management',
+      items: [
+        { name: 'Employees', path: '/employees', icon: <Users size={20} /> },
+        { name: 'Departments', path: '/departments', icon: <Building2 size={20} /> },
+        { name: 'Projects', path: '/projects', icon: <FolderKanban size={20} /> },
+        { name: 'Tasks', path: '/tasks', icon: <CheckSquare size={20} /> },
+      ],
+    },
+    {
+      label: 'Insights',
+      items: [
+        { name: 'Analytics', path: '/analytics', icon: <PieChart size={20} /> },
+      ],
+    },
+    ...(isAdminOrHr(user)
+      ? [{
+          label: 'Administration',
+          items: [
+            { name: 'Admin Dashboard', path: '/admin', icon: <Shield size={20} /> },
+            { name: 'User Management', path: '/admin/users', icon: <UserCog size={20} /> },
+          ],
+        }]
+      : []),
+    {
+      label: 'System',
+      items: [
+        { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
+      ],
+    },
+  ];
 
   return (
     <aside
