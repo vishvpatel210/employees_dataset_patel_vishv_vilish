@@ -6,3 +6,4 @@ export * from './departmentService';
 export * from './projectService';
 export * from './taskService';
 export * from './analyticsService';
+export * from './adminService';
