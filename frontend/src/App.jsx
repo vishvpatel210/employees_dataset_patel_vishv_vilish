@@ -4,6 +4,7 @@ import { Box, CircularProgress } from '@mui/material';
 import MasterLayout from './components/MasterLayout';
 import RequireAuth from './components/RequireAuth';
 import RoleBasedRoute from './components/RoleBasedRoute';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import AuthLayout from './pages/Auth/AuthLayout';
 import { AUTH_PATHS, ROLES } from './utils/constants';
 
@@ -34,7 +35,8 @@ const Fallback = () => (
 
 const App = () => {
   return (
-    <Suspense fallback={<Fallback />}>
+    <ErrorBoundary>
+      <Suspense fallback={<Fallback />}>
       <Routes>
         {/* Public Auth Routes */}
         <Route element={<AuthLayout />}>
@@ -82,7 +84,8 @@ const App = () => {
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to={AUTH_PATHS.LOGIN} replace />} />
       </Routes>
-    </Suspense>
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
