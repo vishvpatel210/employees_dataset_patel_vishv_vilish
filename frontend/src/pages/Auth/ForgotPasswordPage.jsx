@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
   Alert,
+  CircularProgress,
 } from '@mui/material';
 import { Mail, ArrowLeft } from 'lucide-react';
 import { forgotPasswordAction, clearError, clearSuccess } from '../../store/slices/authSlice';
@@ -26,9 +27,7 @@ const ForgotPasswordPage = () => {
   }, [dispatch]);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    dispatch(forgotPasswordAction(values.email)).finally(() => {
-      setSubmitting(false);
-    });
+    dispatch(forgotPasswordAction(values.email)).finally(() => setSubmitting(false));
   };
 
   return (
@@ -67,6 +66,8 @@ const ForgotPasswordPage = () => {
                   type="email"
                   fullWidth
                   size="medium"
+                  autoFocus
+                  autoComplete="email"
                   error={touched.email && Boolean(errors.email)}
                   helperText={touched.email && errors.email}
                   sx={{ mb: 3 }}
@@ -100,6 +101,7 @@ const ForgotPasswordPage = () => {
                   boxShadow: '0 6px 20px rgba(37,99,235,0.4)',
                 },
               }}
+              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
             >
               {loading ? 'Sending...' : 'Send reset link'}
             </Button>

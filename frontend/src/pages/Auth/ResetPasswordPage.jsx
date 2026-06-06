@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
@@ -10,6 +10,7 @@ import {
   Alert,
   IconButton,
   InputAdornment,
+  CircularProgress,
 } from '@mui/material';
 import { Eye, EyeOff, KeyRound } from 'lucide-react';
 import { resetPasswordAction, clearError, clearSuccess } from '../../store/slices/authSlice';
@@ -21,8 +22,8 @@ const ResetPasswordPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { loading, error, successMessage } = useSelector((state) => state.auth);
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [showConfirm, setShowConfirm] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const token = searchParams.get('token');
 
@@ -44,9 +45,7 @@ const ResetPasswordPage = () => {
     dispatch(resetPasswordAction({
       token: token || undefined,
       password: values.password,
-    })).finally(() => {
-      setSubmitting(false);
-    });
+    })).finally(() => setSubmitting(false));
   };
 
   return (
@@ -91,6 +90,8 @@ const ResetPasswordPage = () => {
                   type={showPassword ? 'text' : 'password'}
                   fullWidth
                   size="medium"
+                  autoFocus={!!token}
+                  autoComplete="new-password"
                   error={touched.password && Boolean(errors.password)}
                   helperText={touched.password && errors.password}
                   sx={{ mb: 2.5 }}
@@ -99,7 +100,12 @@ const ResetPasswordPage = () => {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" size="small">
+                          <IconButton
+                            onClick={() => setShowPassword((p) => !p)}
+                            edge="end"
+                            size="small"
+                            tabIndex={-1}
+                          >
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>
@@ -117,6 +123,7 @@ const ResetPasswordPage = () => {
                   type={showConfirm ? 'text' : 'password'}
                   fullWidth
                   size="medium"
+                  autoComplete="new-password"
                   error={touched.confirmPassword && Boolean(errors.confirmPassword)}
                   helperText={touched.confirmPassword && errors.confirmPassword}
                   sx={{ mb: 3 }}
@@ -125,7 +132,12 @@ const ResetPasswordPage = () => {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton onClick={() => setShowConfirm(!showConfirm)} edge="end" size="small">
+                          <IconButton
+                            onClick={() => setShowConfirm((p) => !p)}
+                            edge="end"
+                            size="small"
+                            tabIndex={-1}
+                          >
                             {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>
@@ -154,7 +166,7 @@ const ResetPasswordPage = () => {
                   boxShadow: '0 6px 20px rgba(37,99,235,0.4)',
                 },
               }}
-              startIcon={<KeyRound size={20} />}
+              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <KeyRound size={20} />}
             >
               {loading ? 'Resetting...' : 'Reset password'}
             </Button>
