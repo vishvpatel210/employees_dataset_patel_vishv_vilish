@@ -1,12 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { Provider, useSelector } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
-import { Toaster } from 'react-hot-toast'
-import App from './App.jsx'
-import store from './store'
-import './index.css'
+/* eslint-disable react-refresh/only-export-components */
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider, useSelector } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { Toaster } from 'react-hot-toast';
+import App from './App.jsx';
+import store from './store';
+import './index.css';
 
 const ThemedApp = () => {
   const themeMode = useSelector((state) => state.ui.theme);
@@ -64,9 +65,7 @@ const ThemedToaster = () => {
           color: isDark ? '#f8fafc' : '#1e293b',
           fontSize: '0.875rem',
           border: isDark ? '1px solid #334155' : '1px solid #e2e8f0',
-          boxShadow: isDark
-            ? '0 10px 40px rgba(0,0,0,0.4)'
-            : '0 10px 40px rgba(0,0,0,0.1)',
+          boxShadow: isDark ? '0 10px 40px rgba(0,0,0,0.4)' : '0 10px 40px rgba(0,0,0,0.1)',
         },
         success: {
           iconTheme: { primary: '#22c55e', secondary: isDark ? '#1e293b' : '#fff' },
@@ -87,5 +86,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <ThemedToaster />
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

@@ -136,16 +136,13 @@ const EmployeeForm = ({ employee, isEdit }) => {
         </Alert>
       )}
 
-      <Formik
-        initialValues={initVals}
-        validationSchema={employeeSchema}
-        onSubmit={handleSubmit}
-        enableReinitialize
-      >
+      <Formik initialValues={initVals} validationSchema={employeeSchema} onSubmit={handleSubmit} enableReinitialize>
         {({ errors, touched, isSubmitting, setFieldValue, values }) => (
           <Form>
             <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider', mb: 3 }}>
-              <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>Basic Information</Typography>
+              <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
+                Basic Information
+              </Typography>
               <Grid container spacing={2.5}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Field name="id">
@@ -255,7 +252,9 @@ const EmployeeForm = ({ employee, isEdit }) => {
                           onChange={(e) => setFieldValue('status', e.target.value)}
                         >
                           {Object.entries(EMPLOYEE_STATUS).map(([key, val]) => (
-                            <MenuItem key={key} value={val}>{val.charAt(0).toUpperCase() + val.slice(1)}</MenuItem>
+                            <MenuItem key={key} value={val}>
+                              {val.charAt(0).toUpperCase() + val.slice(1)}
+                            </MenuItem>
                           ))}
                         </Select>
                         {touched.status && errors.status && <FormHelperText>{errors.status}</FormHelperText>}
@@ -267,7 +266,9 @@ const EmployeeForm = ({ employee, isEdit }) => {
             </Paper>
 
             <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider', mb: 3 }}>
-              <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>Contact Information</Typography>
+              <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
+                Contact Information
+              </Typography>
               <Grid container spacing={2.5}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Field name="email">
@@ -303,28 +304,52 @@ const EmployeeForm = ({ employee, isEdit }) => {
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Field name="street">
                     {({ field }) => (
-                      <TextField {...field} label="Street" fullWidth size="medium" slotProps={{ input: { sx: { borderRadius: 2 } } }} />
+                      <TextField
+                        {...field}
+                        label="Street"
+                        fullWidth
+                        size="medium"
+                        slotProps={{ input: { sx: { borderRadius: 2 } } }}
+                      />
                     )}
                   </Field>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Field name="city">
                     {({ field }) => (
-                      <TextField {...field} label="City" fullWidth size="medium" slotProps={{ input: { sx: { borderRadius: 2 } } }} />
+                      <TextField
+                        {...field}
+                        label="City"
+                        fullWidth
+                        size="medium"
+                        slotProps={{ input: { sx: { borderRadius: 2 } } }}
+                      />
                     )}
                   </Field>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Field name="state">
                     {({ field }) => (
-                      <TextField {...field} label="State" fullWidth size="medium" slotProps={{ input: { sx: { borderRadius: 2 } } }} />
+                      <TextField
+                        {...field}
+                        label="State"
+                        fullWidth
+                        size="medium"
+                        slotProps={{ input: { sx: { borderRadius: 2 } } }}
+                      />
                     )}
                   </Field>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Field name="country">
                     {({ field }) => (
-                      <TextField {...field} label="Country" fullWidth size="medium" slotProps={{ input: { sx: { borderRadius: 2 } } }} />
+                      <TextField
+                        {...field}
+                        label="Country"
+                        fullWidth
+                        size="medium"
+                        slotProps={{ input: { sx: { borderRadius: 2 } } }}
+                      />
                     )}
                   </Field>
                 </Grid>
@@ -332,7 +357,9 @@ const EmployeeForm = ({ employee, isEdit }) => {
             </Paper>
 
             <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider', mb: 3 }}>
-              <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>Skills</Typography>
+              <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
+                Skills
+              </Typography>
               <Grid container spacing={2.5}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Field name="primarySkill">

@@ -1,3 +1,4 @@
+import { memo, useMemo, useCallback } from 'react';
 import {
   Table,
   TableBody,
@@ -15,7 +16,7 @@ import {
 } from '@mui/material';
 import { InboxOutlined } from '@mui/icons-material';
 
-const DataTableSkeleton = ({ rows, columns }) => (
+const DataTableSkeleton = memo(({ rows, columns }) => (
   <TableBody>
     {Array.from({ length: rows }).map((_, i) => (
       <TableRow key={i}>
@@ -27,28 +28,36 @@ const DataTableSkeleton = ({ rows, columns }) => (
       </TableRow>
     ))}
   </TableBody>
-);
+));
+DataTableSkeleton.displayName = 'DataTableSkeleton';
 
-const EmptyTable = ({ colSpan, title, description }) => (
+const EmptyTable = memo(({ colSpan, title, description }) => (
   <TableBody>
     <TableRow>
       <TableCell colSpan={colSpan} align="center" sx={{ py: 8 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
           <InboxOutlined sx={{ fontSize: 48, opacity: 0.3 }} />
-          <Typography variant="h6" fontWeight={600} color="text.secondary">{title}</Typography>
-          <Typography variant="body2" color="text.secondary">{description}</Typography>
+          <Typography variant="h6" fontWeight={600} color="text.secondary">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
         </Box>
       </TableCell>
     </TableRow>
   </TableBody>
-);
+));
+EmptyTable.displayName = 'EmptyTable';
 
-const ErrorTable = ({ colSpan, message, onRetry }) => (
+const ErrorTable = memo(({ colSpan, message, onRetry }) => (
   <TableBody>
     <TableRow>
       <TableCell colSpan={colSpan} align="center" sx={{ py: 8 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-          <Typography variant="h6" fontWeight={600} color="error">{message || 'Failed to load data'}</Typography>
+          <Typography variant="h6" fontWeight={600} color="error">
+            {message || 'Failed to load data'}
+          </Typography>
           {onRetry && (
             <Typography
               variant="body2"
@@ -63,7 +72,8 @@ const ErrorTable = ({ colSpan, message, onRetry }) => (
       </TableCell>
     </TableRow>
   </TableBody>
-);
+));
+ErrorTable.displayName = 'ErrorTable';
 
 const DataTable = ({
   columns,
@@ -88,19 +98,27 @@ const DataTable = ({
   selectable = false,
   selectedIds = [],
   onSelectionChange,
-  getRowId = (row) => row._id || row.id,
+  getRowId: getRowIdProp,
 }) => {
-  const handleSort = (field) => {
-    if (!onSort) return;
-    const isAsc = sortField === field && sortOrder === 'asc';
-    onSort(field, isAsc ? 'desc' : 'asc');
-  };
+  const getRowId = useCallback(
+    (row) => (getRowIdProp ? getRowIdProp(row) : row?._id || row?.id),
+    [getRowIdProp]
+  );
 
-  const visibleIds = rows.map(getRowId);
+  const handleSort = useCallback(
+    (field) => {
+      if (!onSort) return;
+      const isAsc = sortField === field && sortOrder === 'asc';
+      onSort(field, isAsc ? 'desc' : 'asc');
+    },
+    [onSort, sortField, sortOrder]
+  );
+
+  const visibleIds = useMemo(() => rows.map((row) => row._id || row.id), [rows]);
   const allSelected = visibleIds.length > 0 && visibleIds.every((id) => selectedIds.includes(id));
   const someSelected = visibleIds.some((id) => selectedIds.includes(id));
 
-  const handleSelectAll = () => {
+  const handleSelectAll = useCallback(() => {
     if (!onSelectionChange) return;
     if (allSelected) {
       onSelectionChange(selectedIds.filter((id) => !visibleIds.includes(id)));
@@ -111,44 +129,57 @@ const DataTable = ({
       });
       onSelectionChange(newSelected);
     }
-  };
+  }, [onSelectionChange, allSelected, selectedIds, visibleIds]);
 
-  const handleSelectOne = (id) => {
-    if (!onSelectionChange) return;
-    const idx = selectedIds.indexOf(id);
-    if (idx !== -1) {
-      onSelectionChange(selectedIds.filter((x) => x !== id));
-    } else {
-      onSelectionChange([...selectedIds, id]);
-    }
-  };
+  const handleSelectOne = useCallback(
+    (id) => {
+      if (!onSelectionChange) return;
+      const idx = selectedIds.indexOf(id);
+      if (idx !== -1) {
+        onSelectionChange(selectedIds.filter((x) => x !== id));
+      } else {
+        onSelectionChange([...selectedIds, id]);
+      }
+    },
+    [onSelectionChange, selectedIds]
+  );
 
-  const checkboxColumn = {
-    field: '_checkbox',
-    label: '',
-    sortable: false,
-    renderHeader: () => (
-      <Checkbox
-        size="small"
-        checked={allSelected}
-        indeterminate={!allSelected && someSelected}
-        onChange={handleSelectAll}
-        onClick={(e) => e.stopPropagation()}
-      />
-    ),
-    render: (row) => (
-      <Checkbox
-        size="small"
-        checked={selectedIds.includes(getRowId(row))}
-        onChange={() => handleSelectOne(getRowId(row))}
-        onClick={(e) => e.stopPropagation()}
-      />
-    ),
-    headerSx: { width: 48, px: 0.5 },
-    cellSx: { width: 48, px: 0.5 },
-  };
+  const checkboxColumn = useMemo(
+    () => ({
+      field: '_checkbox',
+      label: '',
+      sortable: false,
+      renderHeader: () => (
+        <Checkbox
+          size="small"
+          checked={allSelected}
+          indeterminate={!allSelected && someSelected}
+          onChange={handleSelectAll}
+          onClick={(e) => e.stopPropagation()}
+        />
+      ),
+      render: (row) => (
+        <Checkbox
+          size="small"
+          checked={selectedIds.includes(getRowId(row))}
+          onChange={() => handleSelectOne(getRowId(row))}
+          onClick={(e) => e.stopPropagation()}
+        />
+      ),
+      headerSx: { width: 48, px: 0.5 },
+      cellSx: { width: 48, px: 0.5 },
+    }),
+    [allSelected, someSelected, handleSelectAll, selectedIds, handleSelectOne, getRowId]
+  );
 
-  const actualColumns = selectable ? [checkboxColumn, ...columns] : columns;
+  const actualColumns = useMemo(
+    () => (selectable ? [checkboxColumn, ...columns] : columns),
+    [selectable, checkboxColumn, columns]
+  );
+
+  const colSpan = actualColumns.length;
+
+  const handleRowClick = useCallback((row) => onRowClick?.(row), [onRowClick]);
 
   return (
     <Paper
@@ -196,18 +227,18 @@ const DataTable = ({
             </TableRow>
           </TableHead>
           {loading ? (
-            <DataTableSkeleton rows={5} columns={actualColumns.length} />
+            <DataTableSkeleton rows={5} columns={colSpan} />
           ) : error ? (
-            <ErrorTable colSpan={actualColumns.length} message={error} onRetry={onRetry} />
+            <ErrorTable colSpan={colSpan} message={error} onRetry={onRetry} />
           ) : rows.length === 0 ? (
-            <EmptyTable colSpan={actualColumns.length} title={emptyTitle} description={emptyDescription} />
+            <EmptyTable colSpan={colSpan} title={emptyTitle} description={emptyDescription} />
           ) : (
             <TableBody>
               {rows.map((row, i) => (
                 <TableRow
                   key={row._id || row.id || i}
                   hover={!!onRowClick}
-                  onClick={() => onRowClick?.(row)}
+                  onClick={() => handleRowClick(row)}
                   sx={{
                     cursor: onRowClick ? 'pointer' : 'default',
                     '&:last-child td': { borderBottom: 0 },
@@ -221,7 +252,7 @@ const DataTable = ({
                         ...col.cellSx,
                       }}
                     >
-                      {col.render ? col.render(row) : row[col.field] ?? '-'}
+                      {col.render ? col.render(row) : (row[col.field] ?? '-')}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -243,4 +274,4 @@ const DataTable = ({
   );
 };
 
-export default DataTable;
+export default memo(DataTable);

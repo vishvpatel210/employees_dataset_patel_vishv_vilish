@@ -1,45 +1,39 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as employeeService from '../../services/employeeService';
 
-export const fetchEmployees = createAsyncThunk(
-  'employees/fetchAll',
-  async (params, { rejectWithValue }) => {
-    try {
-      const hasSearch = params?.search;
-      const { data } = hasSearch
-        ? await employeeService.searchEmployees(params.search, params)
-        : await employeeService.getEmployees(params);
-      const currentPage = params?.page || 1;
-      const pageLimit = params?.limit || 10;
-      const pagination = data.pagination || {};
-      const count = data.data?.length || data.count || 0;
-      const total = pagination.next
-        ? (pagination.next.page - 1) * pageLimit + count + 1
-        : (currentPage - 1) * pageLimit + count;
-      return {
-        employees: data.data || data.employees || [],
-        total,
-        page: currentPage,
-        limit: pageLimit,
-        pagination,
-      };
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to fetch employees');
-    }
+export const fetchEmployees = createAsyncThunk('employees/fetchAll', async (params, { rejectWithValue }) => {
+  try {
+    const hasSearch = params?.search;
+    const { data } = hasSearch
+      ? await employeeService.searchEmployees(params.search, params)
+      : await employeeService.getEmployees(params);
+    const currentPage = params?.page || 1;
+    const pageLimit = params?.limit || 10;
+    const pagination = data.pagination || {};
+    const count = data.data?.length || data.count || 0;
+    const total = pagination.next
+      ? (pagination.next.page - 1) * pageLimit + count + 1
+      : (currentPage - 1) * pageLimit + count;
+    return {
+      employees: data.data || data.employees || [],
+      total,
+      page: currentPage,
+      limit: pageLimit,
+      pagination,
+    };
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to fetch employees');
   }
-);
+});
 
-export const createEmployee = createAsyncThunk(
-  'employees/create',
-  async (employeeData, { rejectWithValue }) => {
-    try {
-      const { data } = await employeeService.createEmployee(employeeData);
-      return data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to create employee');
-    }
+export const createEmployee = createAsyncThunk('employees/create', async (employeeData, { rejectWithValue }) => {
+  try {
+    const { data } = await employeeService.createEmployee(employeeData);
+    return data;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to create employee');
   }
-);
+});
 
 export const updateEmployee = createAsyncThunk(
   'employees/update',
@@ -53,29 +47,23 @@ export const updateEmployee = createAsyncThunk(
   }
 );
 
-export const deleteEmployee = createAsyncThunk(
-  'employees/delete',
-  async (id, { rejectWithValue }) => {
-    try {
-      await employeeService.deleteEmployee(id);
-      return id;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to delete employee');
-    }
+export const deleteEmployee = createAsyncThunk('employees/delete', async (id, { rejectWithValue }) => {
+  try {
+    await employeeService.deleteEmployee(id);
+    return id;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to delete employee');
   }
-);
+});
 
-export const bulkDeleteEmployees = createAsyncThunk(
-  'employees/bulkDelete',
-  async (ids, { rejectWithValue }) => {
-    try {
-      await employeeService.bulkDeleteEmployees(ids);
-      return ids;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to delete employees');
-    }
+export const bulkDeleteEmployees = createAsyncThunk('employees/bulkDelete', async (ids, { rejectWithValue }) => {
+  try {
+    await employeeService.bulkDeleteEmployees(ids);
+    return ids;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to delete employees');
   }
-);
+});
 
 const employeeSlice = createSlice({
   name: 'employees',
@@ -121,7 +109,10 @@ const employeeSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchEmployees.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(fetchEmployees.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchEmployees.fulfilled, (state, action) => {
         state.loading = false;
         state.items = action.payload.employees;
@@ -154,5 +145,12 @@ const employeeSlice = createSlice({
   },
 });
 
-export const { setCurrentEmployee, clearEmployeeError, setEmployeeSort, setEmployeeSearch, setEmployeeFilters, clearEmployeeFilters } = employeeSlice.actions;
+export const {
+  setCurrentEmployee,
+  clearEmployeeError,
+  setEmployeeSort,
+  setEmployeeSearch,
+  setEmployeeFilters,
+  clearEmployeeFilters,
+} = employeeSlice.actions;
 export default employeeSlice.reducer;

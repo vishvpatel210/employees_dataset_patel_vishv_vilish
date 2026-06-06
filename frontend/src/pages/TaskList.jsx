@@ -32,20 +32,14 @@ import ConfirmDialog from '../components/common/ConfirmDialog';
 import toast from 'react-hot-toast';
 
 const taskSchema = yup.object({
-  taskId: yup
-    .string()
-    .required('Task ID is required'),
+  taskId: yup.string().required('Task ID is required'),
   description: yup
     .string()
     .min(3, 'Description must be at least 3 characters')
     .max(500, 'Description must be at most 500 characters')
     .required('Description is required'),
-  project: yup
-    .string()
-    .required('Project is required'),
-  assignedTo: yup
-    .string()
-    .required('Assigned employee is required'),
+  project: yup.string().required('Project is required'),
+  assignedTo: yup.string().required('Assigned employee is required'),
 });
 
 const initialValues = { taskId: '', description: '', project: '', assignedTo: '' };
@@ -75,13 +69,10 @@ const TaskList = () => {
     return () => dispatch(clearTaskError());
   }, [dispatch]);
 
-  const loadFormOptions = async () => {
+  const loadFormOptions = useCallback(async () => {
     setOptionsLoading(true);
     try {
-      const [projRes, empRes] = await Promise.all([
-        getProjects(),
-        getEmployees({ limit: 200 }),
-      ]);
+      const [projRes, empRes] = await Promise.all([getProjects(), getEmployees({ limit: 200 })]);
       setProjectOptions(projRes.data.data || []);
       const empData = empRes.data.data || empRes.data.employees || [];
       setEmployeeOptions(empData);
@@ -90,43 +81,49 @@ const TaskList = () => {
     } finally {
       setOptionsLoading(false);
     }
-  };
+  }, []);
 
-  const handleOpenCreate = async () => {
+  const handleOpenCreate = useCallback(async () => {
     setEditTarget(null);
     await loadFormOptions();
     setModalOpen(true);
-  };
+  }, [loadFormOptions]);
 
-  const handleOpenEdit = async (task) => {
-    setEditTarget(task);
-    await loadFormOptions();
-    setModalOpen(true);
-  };
+  const handleOpenEdit = useCallback(
+    async (task) => {
+      setEditTarget(task);
+      await loadFormOptions();
+      setModalOpen(true);
+    },
+    [loadFormOptions]
+  );
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setModalOpen(false);
     setEditTarget(null);
-  };
+  }, []);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      if (editTarget) {
-        await dispatch(updateTask({ id: editTarget._id || editTarget.id, ...values })).unwrap();
-        toast.success('Task updated successfully');
-      } else {
-        await dispatch(createTask(values)).unwrap();
-        toast.success('Task created successfully');
+  const handleSubmit = useCallback(
+    async (values, { setSubmitting }) => {
+      try {
+        if (editTarget) {
+          await dispatch(updateTask({ id: editTarget._id || editTarget.id, ...values })).unwrap();
+          toast.success('Task updated successfully');
+        } else {
+          await dispatch(createTask(values)).unwrap();
+          toast.success('Task created successfully');
+        }
+        handleCloseModal();
+      } catch (err) {
+        toast.error(err || `Failed to ${editTarget ? 'update' : 'create'} task`);
+      } finally {
+        setSubmitting(false);
       }
-      handleCloseModal();
-    } catch (err) {
-      toast.error(err || `Failed to ${editTarget ? 'update' : 'create'} task`);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    },
+    [dispatch, editTarget, handleCloseModal]
+  );
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteConfirm = useCallback(async () => {
     if (!deleteTarget) return;
     try {
       await dispatch(deleteTask(deleteTarget._id || deleteTarget.id)).unwrap();
@@ -135,93 +132,104 @@ const TaskList = () => {
       toast.error(err || 'Failed to delete task');
     }
     setDeleteTarget(null);
-  };
+  }, [dispatch, deleteTarget]);
 
-  const columns = useMemo(() => [
-    {
-      field: 'taskId',
-      label: 'Task ID',
-      sortable: true,
-      render: (row) => (
-        <Typography variant="body2" fontWeight={600}>
-          {row.taskId || row._id}
-        </Typography>
-      ),
-    },
-    {
-      field: 'description',
-      label: 'Description',
-      render: (row) => (
-        <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {row.description}
-        </Typography>
-      ),
-    },
-    {
-      field: 'project',
-      label: 'Project',
-      render: (row) => {
-        const project = row.project || {};
-        return (
-          <Chip
-            label={project.name || 'N/A'}
-            size="small"
-            sx={{ bgcolor: '#e0e7ff', color: '#3730a3', fontWeight: 500 }}
-          />
-        );
-      },
-    },
-    {
-      field: 'assignedTo',
-      label: 'Assigned To',
-      render: (row) => {
-        const assigned = row.assignedTo || {};
-        return (
-          <Typography variant="body2" fontWeight={500}>
-            {assigned.name || 'N/A'}
+  const columns = useMemo(
+    () => [
+      {
+        field: 'taskId',
+        label: 'Task ID',
+        sortable: true,
+        render: (row) => (
+          <Typography variant="body2" fontWeight={600}>
+            {row.taskId || row._id}
           </Typography>
-        );
+        ),
       },
-    },
-    {
-      field: 'createdAt',
-      label: 'Created',
-      sortable: true,
-      render: (row) => (
-        <Typography variant="body2" color="text.secondary">
-          {formatDate(row.createdAt)}
-        </Typography>
-      ),
-    },
-    {
-      field: 'actions',
-      label: 'Actions',
-      sortable: false,
-      nowrap: true,
-      render: (row) => (
-        <Box sx={{ display: 'flex', gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
-          <Tooltip title="Edit">
-            <IconButton size="small" color="info" onClick={() => handleOpenEdit(row)}>
-              <Edit2 size={16} />
-            </IconButton>
-          </Tooltip>
-          {isAdmin && (
-            <Tooltip title="Delete">
-              <IconButton size="small" color="error" onClick={() => setDeleteTarget(row)}>
-                <Trash2 size={16} />
+      {
+        field: 'description',
+        label: 'Description',
+        render: (row) => (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+          >
+            {row.description}
+          </Typography>
+        ),
+      },
+      {
+        field: 'project',
+        label: 'Project',
+        render: (row) => {
+          const project = row.project || {};
+          return (
+            <Chip
+              label={project.name || 'N/A'}
+              size="small"
+              sx={{ bgcolor: '#e0e7ff', color: '#3730a3', fontWeight: 500 }}
+            />
+          );
+        },
+      },
+      {
+        field: 'assignedTo',
+        label: 'Assigned To',
+        render: (row) => {
+          const assigned = row.assignedTo || {};
+          return (
+            <Typography variant="body2" fontWeight={500}>
+              {assigned.name || 'N/A'}
+            </Typography>
+          );
+        },
+      },
+      {
+        field: 'createdAt',
+        label: 'Created',
+        sortable: true,
+        render: (row) => (
+          <Typography variant="body2" color="text.secondary">
+            {formatDate(row.createdAt)}
+          </Typography>
+        ),
+      },
+      {
+        field: 'actions',
+        label: 'Actions',
+        sortable: false,
+        nowrap: true,
+        render: (row) => (
+          <Box sx={{ display: 'flex', gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
+            <Tooltip title="Edit">
+              <IconButton size="small" color="info" onClick={() => handleOpenEdit(row)}>
+                <Edit2 size={16} />
               </IconButton>
             </Tooltip>
-          )}
-        </Box>
-      ),
-    },
-  ], [isAdmin]);
+            {isAdmin && (
+              <Tooltip title="Delete">
+                <IconButton size="small" color="error" onClick={() => setDeleteTarget(row)}>
+                  <Trash2 size={16} />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Box>
+        ),
+      },
+    ],
+    [isAdmin]
+  );
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}
+      >
         <Box>
-          <Typography variant="h5" fontWeight={700}>Tasks</Typography>
+          <Typography variant="h5" fontWeight={700}>
+            Tasks
+          </Typography>
           <Typography variant="body2" color="text.secondary">
             {items.length > 0 ? `${items.length} task${items.length !== 1 ? 's' : ''} found` : 'Manage your tasks'}
           </Typography>
@@ -265,9 +273,7 @@ const TaskList = () => {
         >
           {({ errors, touched, isSubmitting, values, setFieldValue }) => (
             <Form>
-              <DialogTitle sx={{ fontWeight: 700 }}>
-                {editTarget ? 'Edit Task' : 'Add Task'}
-              </DialogTitle>
+              <DialogTitle sx={{ fontWeight: 700 }}>{editTarget ? 'Edit Task' : 'Add Task'}</DialogTitle>
               <DialogContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, pt: 1 }}>
                   <Field name="taskId">
@@ -337,7 +343,9 @@ const TaskList = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                        {touched.assignedTo && errors.assignedTo && <FormHelperText>{errors.assignedTo}</FormHelperText>}
+                        {touched.assignedTo && errors.assignedTo && (
+                          <FormHelperText>{errors.assignedTo}</FormHelperText>
+                        )}
                       </FormControl>
                     )}
                   </Field>

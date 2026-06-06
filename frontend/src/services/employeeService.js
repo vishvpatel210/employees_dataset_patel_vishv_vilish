@@ -40,7 +40,8 @@ export const getEmployeesByTimezone = (timezone, params) => api.get(`/employees/
 /* ────────── Skills & Domains ────────── */
 export const getEmployeesByPrimarySkill = (skill, params) => api.get(`/employees/primary-skill/${skill}`, { params });
 
-export const getEmployeesBySecondarySkill = (skill, params) => api.get(`/employees/secondary-skill/${skill}`, { params });
+export const getEmployeesBySecondarySkill = (skill, params) =>
+  api.get(`/employees/secondary-skill/${skill}`, { params });
 
 export const getEmployeesByDomain = (domain, params) => api.get(`/employees/domain/${domain}`, { params });
 
@@ -59,7 +60,8 @@ export const getEmployeesByExperience = (years, params) => api.get(`/employees/e
 
 export const getTopExperience = () => api.get('/employees/top-experience');
 
-export const getEmployeesByCertification = (certification, params) => api.get(`/employees/certification/${certification}`, { params });
+export const getEmployeesByCertification = (certification, params) =>
+  api.get(`/employees/certification/${certification}`, { params });
 
 export const getRecentCertifications = () => api.get('/employees/recent-certifications');
 

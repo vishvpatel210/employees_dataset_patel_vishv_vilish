@@ -38,10 +38,16 @@ const EmployeeEdit = () => {
   if (error) {
     return (
       <Box>
-        <Button onClick={() => navigate('/employees')} startIcon={<ArrowLeft size={18} />} sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}>
+        <Button
+          onClick={() => navigate('/employees')}
+          startIcon={<ArrowLeft size={18} />}
+          sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}
+        >
           Back to Employees
         </Button>
-        <Alert severity="error" sx={{ borderRadius: 2 }}>{error}</Alert>
+        <Alert severity="error" sx={{ borderRadius: 2 }}>
+          {error}
+        </Alert>
       </Box>
     );
   }
@@ -49,10 +55,16 @@ const EmployeeEdit = () => {
   if (!employee) {
     return (
       <Box>
-        <Button onClick={() => navigate('/employees')} startIcon={<ArrowLeft size={18} />} sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}>
+        <Button
+          onClick={() => navigate('/employees')}
+          startIcon={<ArrowLeft size={18} />}
+          sx={{ borderRadius: 2, textTransform: 'none', mb: 2 }}
+        >
           Back to Employees
         </Button>
-        <Alert severity="warning" sx={{ borderRadius: 2 }}>Employee not found.</Alert>
+        <Alert severity="warning" sx={{ borderRadius: 2 }}>
+          Employee not found.
+        </Alert>
       </Box>
     );
   }

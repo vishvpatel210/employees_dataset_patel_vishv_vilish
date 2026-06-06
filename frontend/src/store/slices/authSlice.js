@@ -1,5 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { loginUser, registerUser, getProfile, updateProfile, forgotPassword, resetPassword, logoutUser } from '../../services/authService';
+import {
+  loginUser,
+  registerUser,
+  getProfile,
+  updateProfile,
+  forgotPassword,
+  resetPassword,
+  logoutUser,
+} from '../../services/authService';
 import { STORAGE_KEYS } from '../../utils/constants';
 
 const getStored = (key) => {
@@ -114,7 +122,11 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => { state.loading = true; state.error = null; state.successMessage = null; })
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
@@ -125,7 +137,11 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(register.pending, (state) => { state.loading = true; state.error = null; state.successMessage = null; })
+      .addCase(register.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
@@ -142,7 +158,11 @@ const authSlice = createSlice({
         const remember = !!localStorage.getItem(STORAGE_KEYS.TOKEN);
         persistAuth(state.token, userData, remember);
       })
-      .addCase(forgotPasswordAction.pending, (state) => { state.loading = true; state.error = null; state.successMessage = null; })
+      .addCase(forgotPasswordAction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
       .addCase(forgotPasswordAction.fulfilled, (state, action) => {
         state.loading = false;
         state.successMessage = action.payload.message || 'Password reset link sent to email';
@@ -151,7 +171,11 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(resetPasswordAction.pending, (state) => { state.loading = true; state.error = null; state.successMessage = null; })
+      .addCase(resetPasswordAction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
       .addCase(resetPasswordAction.fulfilled, (state, action) => {
         state.loading = false;
         state.successMessage = action.payload.message || 'Password has been reset successfully';
@@ -160,7 +184,10 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(updateProfileAction.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(updateProfileAction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateProfileAction.fulfilled, (state, action) => {
         state.loading = false;
         const userData = action.payload.data || action.payload.user || action.payload;

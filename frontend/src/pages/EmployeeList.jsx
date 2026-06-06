@@ -14,7 +14,14 @@ import {
   Grid,
 } from '@mui/material';
 import { Plus, Search, Eye, Edit2, Trash2, SlidersHorizontal, X } from 'lucide-react';
-import { fetchEmployees, deleteEmployee, bulkDeleteEmployees, clearEmployeeError, setEmployeeFilters, clearEmployeeFilters } from '../store/slices/employeeSlice';
+import {
+  fetchEmployees,
+  deleteEmployee,
+  bulkDeleteEmployees,
+  clearEmployeeError,
+  setEmployeeFilters,
+  clearEmployeeFilters,
+} from '../store/slices/employeeSlice';
 import { getInitials, formatDate } from '../utils/helpers';
 import DataTable from '../components/common/DataTable';
 import ConfirmDialog from '../components/common/ConfirmDialog';
@@ -23,7 +30,9 @@ import toast from 'react-hot-toast';
 const EmployeeList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { items, total, page, limit, sort, order, search, filters, loading, error } = useSelector((state) => state.employees);
+  const { items, total, page, limit, sort, order, search, filters, loading, error } = useSelector(
+    (state) => state.employees
+  );
   const [searchInput, setSearchInput] = useState(search || '');
   const [filterInputs, setFilterInputs] = useState({ ...filters });
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -50,10 +59,12 @@ const EmployeeList = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSelectedIds([]);
   }, [page, search]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFilterInputs({ ...filters });
   }, [filters]);
 
@@ -72,11 +83,29 @@ const EmployeeList = () => {
   };
 
   const handlePageChange = (_, newPage) => {
-    dispatch(fetchEmployees({ page: newPage + 1, limit, sort, order: order || undefined, search: search || undefined, ...filters }));
+    dispatch(
+      fetchEmployees({
+        page: newPage + 1,
+        limit,
+        sort,
+        order: order || undefined,
+        search: search || undefined,
+        ...filters,
+      })
+    );
   };
 
   const handleRowsPerPageChange = (e) => {
-    dispatch(fetchEmployees({ page: 1, limit: parseInt(e.target.value, 10), sort, order: order || undefined, search: search || undefined, ...filters }));
+    dispatch(
+      fetchEmployees({
+        page: 1,
+        limit: parseInt(e.target.value, 10),
+        sort,
+        order: order || undefined,
+        search: search || undefined,
+        ...filters,
+      })
+    );
   };
 
   const handleApplyFilters = () => {
@@ -117,120 +146,131 @@ const EmployeeList = () => {
     setBulkDeleteOpen(false);
   };
 
-  const columns = useMemo(() => [
-    {
-      field: 'name',
-      label: 'Employee',
-      sortable: true,
-      render: (row) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box
-            sx={{
-              width: 32,
-              height: 32,
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              flexShrink: 0,
-            }}
-          >
-            {getInitials(row.name)}
+  const columns = useMemo(
+    () => [
+      {
+        field: 'name',
+        label: 'Employee',
+        sortable: true,
+        render: (row) => (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Box
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#fff',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                flexShrink: 0,
+              }}
+            >
+              {getInitials(row.name)}
+            </Box>
+            <Box>
+              <Typography variant="body2" fontWeight={600}>
+                {row.name}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {row.profile?.contact?.email || row.email || '-'}
+              </Typography>
+            </Box>
           </Box>
-          <Box>
-            <Typography variant="body2" fontWeight={600}>
-              {row.name}
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {row.profile?.contact?.email || row.email || '-'}
-            </Typography>
+        ),
+      },
+      {
+        field: 'designation',
+        label: 'Designation',
+        sortable: true,
+        render: (row) => row.designation || '-',
+      },
+      {
+        field: 'department',
+        label: 'Department',
+        render: (row) => row.department?.name || '-',
+      },
+      {
+        field: 'salary',
+        label: 'Salary',
+        sortable: true,
+        render: (row) => {
+          const val = row.salary;
+          if (val == null) return '-';
+          return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 0,
+          }).format(val);
+        },
+      },
+      {
+        field: 'status',
+        label: 'Status',
+        render: (row) => {
+          const status = row.status || 'active';
+          const colors = {
+            active: { bg: '#dcfce7', color: '#166534' },
+            inactive: { bg: '#fef3c7', color: '#92400e' },
+            suspended: { bg: '#fce4ec', color: '#c62828' },
+          };
+          const c = colors[status] || colors.active;
+          return (
+            <Chip
+              label={status.charAt(0).toUpperCase() + status.slice(1)}
+              size="small"
+              sx={{ bgcolor: c.bg, color: c.color, fontWeight: 600, fontSize: '0.75rem' }}
+            />
+          );
+        },
+      },
+      {
+        field: 'joiningDate',
+        label: 'Joined',
+        sortable: true,
+        render: (row) => formatDate(row.joiningDate),
+      },
+      {
+        field: 'actions',
+        label: 'Actions',
+        sortable: false,
+        nowrap: true,
+        render: (row) => (
+          <Box sx={{ display: 'flex', gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
+            <Tooltip title="View">
+              <IconButton size="small" color="primary" onClick={() => navigate(`/employees/${row._id || row.id}`)}>
+                <Eye size={16} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit">
+              <IconButton size="small" color="info" onClick={() => navigate(`/employees/${row._id || row.id}/edit`)}>
+                <Edit2 size={16} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton size="small" color="error" onClick={() => setDeleteTarget(row)}>
+                <Trash2 size={16} />
+              </IconButton>
+            </Tooltip>
           </Box>
-        </Box>
-      ),
-    },
-    {
-      field: 'designation',
-      label: 'Designation',
-      sortable: true,
-      render: (row) => row.designation || '-',
-    },
-    {
-      field: 'department',
-      label: 'Department',
-      render: (row) => row.department?.name || '-',
-    },
-    {
-      field: 'salary',
-      label: 'Salary',
-      sortable: true,
-      render: (row) => {
-        const val = row.salary;
-        if (val == null) return '-';
-        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+        ),
       },
-    },
-    {
-      field: 'status',
-      label: 'Status',
-      render: (row) => {
-        const status = row.status || 'active';
-        const colors = {
-          active: { bg: '#dcfce7', color: '#166534' },
-          inactive: { bg: '#fef3c7', color: '#92400e' },
-          suspended: { bg: '#fce4ec', color: '#c62828' },
-        };
-        const c = colors[status] || colors.active;
-        return (
-          <Chip
-            label={status.charAt(0).toUpperCase() + status.slice(1)}
-            size="small"
-            sx={{ bgcolor: c.bg, color: c.color, fontWeight: 600, fontSize: '0.75rem' }}
-          />
-        );
-      },
-    },
-    {
-      field: 'joiningDate',
-      label: 'Joined',
-      sortable: true,
-      render: (row) => formatDate(row.joiningDate),
-    },
-    {
-      field: 'actions',
-      label: 'Actions',
-      sortable: false,
-      nowrap: true,
-      render: (row) => (
-        <Box sx={{ display: 'flex', gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
-          <Tooltip title="View">
-            <IconButton size="small" color="primary" onClick={() => navigate(`/employees/${row._id || row.id}`)}>
-              <Eye size={16} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit">
-            <IconButton size="small" color="info" onClick={() => navigate(`/employees/${row._id || row.id}/edit`)}>
-              <Edit2 size={16} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete">
-            <IconButton size="small" color="error" onClick={() => setDeleteTarget(row)}>
-              <Trash2 size={16} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-  ], [navigate]);
+    ],
+    [navigate]
+  );
 
   return (
     <Box sx={{ spaceY: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}
+      >
         <Box>
-          <Typography variant="h5" fontWeight={700}>Employees</Typography>
+          <Typography variant="h5" fontWeight={700}>
+            Employees
+          </Typography>
           <Typography variant="body2" color="text.secondary">
             {total > 0 ? `${total} employee${total !== 1 ? 's' : ''} found` : 'Manage your workforce'}
           </Typography>
@@ -437,7 +477,9 @@ const EmployeeList = () => {
         onRowsPerPageChange={handleRowsPerPageChange}
         onRowClick={(row) => navigate(`/employees/${row._id || row.id}`)}
         emptyTitle="No employees found"
-        emptyDescription={hasAnyFilter ? 'Try different search terms or filters.' : 'Add your first employee to get started.'}
+        emptyDescription={
+          hasAnyFilter ? 'Try different search terms or filters.' : 'Add your first employee to get started.'
+        }
         selectable
         selectedIds={selectedIds}
         onSelectionChange={setSelectedIds}

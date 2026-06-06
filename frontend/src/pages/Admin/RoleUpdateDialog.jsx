@@ -1,7 +1,17 @@
 import { useState, useEffect } from 'react';
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions, Button,
-  Typography, Box, Avatar, RadioGroup, FormControlLabel, Radio, CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  Box,
+  Avatar,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  CircularProgress,
 } from '@mui/material';
 import { updateUserRole } from '../../services/adminService';
 import toast from 'react-hot-toast';
@@ -26,6 +36,7 @@ const RoleUpdateDialog = ({ open, onClose, user, onUpdated }) => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (user) setSelectedRole(user.role);
   }, [user]);
 
@@ -51,16 +62,38 @@ const RoleUpdateDialog = ({ open, onClose, user, onUpdated }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ pb: 1 }}>
-        <Typography variant="h6" fontWeight={700}>Update User Role</Typography>
+        <Typography variant="h6" fontWeight={700}>
+          Update User Role
+        </Typography>
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3, mt: 1, p: 2, bgcolor: 'grey.50', borderRadius: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+            mb: 3,
+            mt: 1,
+            p: 2,
+            bgcolor: 'grey.50',
+            borderRadius: 2,
+          }}
+        >
           <Avatar sx={{ width: 40, height: 40, bgcolor: '#2563eb', fontSize: '0.875rem' }}>
-            {(user.name || user.email || '?').split(' ').map((n) => n[0]).join('').toUpperCase().substring(0, 2)}
+            {(user.name || user.email || '?')
+              .split(' ')
+              .map((n) => n[0])
+              .join('')
+              .toUpperCase()
+              .substring(0, 2)}
           </Avatar>
           <Box>
-            <Typography variant="subtitle2" fontWeight={600}>{user.name}</Typography>
-            <Typography variant="caption" color="text.secondary">{user.email}</Typography>
+            <Typography variant="subtitle2" fontWeight={600}>
+              {user.name}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {user.email}
+            </Typography>
           </Box>
         </Box>
 

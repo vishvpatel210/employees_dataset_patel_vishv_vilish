@@ -5,12 +5,7 @@ export const TableSkeleton = ({ rows = 5, columns = 5 }) => (
     {Array.from({ length: rows }).map((_, i) => (
       <Box key={i} sx={{ display: 'flex', gap: 2, mb: 1 }}>
         {Array.from({ length: columns }).map((_, j) => (
-          <Skeleton
-            key={j}
-            variant="rectangular"
-            height={48}
-            sx={{ borderRadius: 1, flex: j === 0 ? 2 : 1 }}
-          />
+          <Skeleton key={j} variant="rectangular" height={48} sx={{ borderRadius: 1, flex: j === 0 ? 2 : 1 }} />
         ))}
       </Box>
     ))}
@@ -18,7 +13,17 @@ export const TableSkeleton = ({ rows = 5, columns = 5 }) => (
 );
 
 export const CardSkeleton = ({ count = 3 }) => (
-  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: `repeat(${Math.min(count, 2)}, 1fr)`, md: `repeat(${Math.min(count, 4)}, 1fr)` }, gap: 2.5 }}>
+  <Box
+    sx={{
+      display: 'grid',
+      gridTemplateColumns: {
+        xs: '1fr',
+        sm: `repeat(${Math.min(count, 2)}, 1fr)`,
+        md: `repeat(${Math.min(count, 4)}, 1fr)`,
+      },
+      gap: 2.5,
+    }}
+  >
     {Array.from({ length: count }).map((_, i) => (
       <Card key={i} sx={{ borderRadius: 2 }} elevation={0}>
         <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2.5, p: 3 }}>

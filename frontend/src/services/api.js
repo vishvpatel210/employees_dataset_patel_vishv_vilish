@@ -31,10 +31,7 @@ api.interceptors.response.use(
     }
 
     const message =
-      error.response?.data?.message ||
-      error.response?.data?.error ||
-      error.message ||
-      'Something went wrong';
+      error.response?.data?.message || error.response?.data?.error || error.message || 'Something went wrong';
 
     if (error.config?.silent !== true) {
       const shouldToast = error.config?.showToast !== false;

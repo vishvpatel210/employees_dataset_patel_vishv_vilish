@@ -1,8 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
-  Box, Typography, Paper, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, TablePagination, TextField, InputAdornment,
-  Avatar, Chip, IconButton, Tooltip, Skeleton, Button,
+  Box,
+  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  TextField,
+  InputAdornment,
+  Avatar,
+  Chip,
+  IconButton,
+  Tooltip,
+  Skeleton,
+  Button,
 } from '@mui/material';
 import { Search, Shield, Trash2 } from 'lucide-react';
 import { getUsers, deleteUser } from '../../services/adminService';
@@ -20,11 +35,7 @@ const roleColors = {
 const RoleChip = ({ role }) => {
   const c = roleColors[role] || roleColors.User;
   return (
-    <Chip
-      label={role}
-      size="small"
-      sx={{ bgcolor: c.bg, color: c.color, fontWeight: 600, fontSize: '0.75rem' }}
-    />
+    <Chip label={role} size="small" sx={{ bgcolor: c.bg, color: c.color, fontWeight: 600, fontSize: '0.75rem' }} />
   );
 };
 
@@ -58,6 +69,7 @@ const UserManagement = () => {
   }, [page, limit, search]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchUsers();
   }, [fetchUsers]);
 
@@ -85,7 +97,9 @@ const UserManagement = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <Box>
-        <Typography variant="h5" fontWeight={700}>User Management</Typography>
+        <Typography variant="h5" fontWeight={700}>
+          User Management
+        </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
           {total > 0 ? `${total} user${total !== 1 ? 's' : ''} registered` : 'Manage system users and roles'}
         </Typography>
@@ -123,7 +137,11 @@ const UserManagement = () => {
             variant="text"
             size="small"
             color="error"
-            onClick={() => { setSearch(''); setSearchInput(''); setPage(0); }}
+            onClick={() => {
+              setSearch('');
+              setSearchInput('');
+              setPage(0);
+            }}
             sx={{ borderRadius: 2, textTransform: 'none' }}
           >
             Clear
@@ -136,11 +154,24 @@ const UserManagement = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}>User</TableCell>
-                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}>Email</TableCell>
-                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}>Role</TableCell>
-                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}>Joined</TableCell>
-                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }} align="right">Actions</TableCell>
+                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}>
+                  User
+                </TableCell>
+                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}>
+                  Email
+                </TableCell>
+                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}>
+                  Role
+                </TableCell>
+                <TableCell sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}>
+                  Joined
+                </TableCell>
+                <TableCell
+                  sx={{ fontWeight: 600, fontSize: '0.8rem', textTransform: 'uppercase', bgcolor: 'grey.50' }}
+                  align="right"
+                >
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -157,7 +188,9 @@ const UserManagement = () => {
               ) : error ? (
                 <TableRow>
                   <TableCell colSpan={5} align="center" sx={{ py: 8 }}>
-                    <Typography color="error" fontWeight={600}>{error}</Typography>
+                    <Typography color="error" fontWeight={600}>
+                      {error}
+                    </Typography>
                     <Button size="small" onClick={fetchUsers} sx={{ mt: 1, textTransform: 'none', borderRadius: 2 }}>
                       Try again
                     </Button>
@@ -177,18 +210,33 @@ const UserManagement = () => {
                     <TableCell>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                         <Avatar sx={{ width: 32, height: 32, fontSize: '0.75rem', bgcolor: '#2563eb' }}>
-                          {(user.name || user.email || '?').split(' ').map((n) => n[0]).join('').toUpperCase().substring(0, 2)}
+                          {(user.name || user.email || '?')
+                            .split(' ')
+                            .map((n) => n[0])
+                            .join('')
+                            .toUpperCase()
+                            .substring(0, 2)}
                         </Avatar>
-                        <Typography variant="body2" fontWeight={600}>{user.name}</Typography>
+                        <Typography variant="body2" fontWeight={600}>
+                          {user.name}
+                        </Typography>
                       </Box>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="body2" color="text.secondary">{user.email}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {user.email}
+                      </Typography>
                     </TableCell>
-                    <TableCell><RoleChip role={user.role} /></TableCell>
+                    <TableCell>
+                      <RoleChip role={user.role} />
+                    </TableCell>
                     <TableCell>
                       <Typography variant="body2" color="text.secondary">
-                        {new Date(user.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        {new Date(user.createdAt).toLocaleDateString('en-IN', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })}
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
@@ -217,7 +265,10 @@ const UserManagement = () => {
           page={page}
           onPageChange={(_, newPage) => setPage(newPage)}
           rowsPerPage={limit}
-          onRowsPerPageChange={(e) => { setLimit(parseInt(e.target.value, 10)); setPage(0); }}
+          onRowsPerPageChange={(e) => {
+            setLimit(parseInt(e.target.value, 10));
+            setPage(0);
+          }}
           rowsPerPageOptions={[5, 10, 25, 50]}
         />
       </Paper>

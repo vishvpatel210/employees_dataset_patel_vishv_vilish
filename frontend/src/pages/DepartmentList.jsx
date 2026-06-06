@@ -17,7 +17,13 @@ import {
   Alert,
 } from '@mui/material';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { fetchDepartments, createDepartment, updateDepartment, deleteDepartment, clearDepartmentError } from '../store/slices/departmentSlice';
+import {
+  fetchDepartments,
+  createDepartment,
+  updateDepartment,
+  deleteDepartment,
+  clearDepartmentError,
+} from '../store/slices/departmentSlice';
 import { formatDate } from '../utils/helpers';
 import DataTable from '../components/common/DataTable';
 import ConfirmDialog from '../components/common/ConfirmDialog';
@@ -29,10 +35,7 @@ const departmentSchema = yup.object({
     .min(2, 'Name must be at least 2 characters')
     .max(50, 'Name must be at most 50 characters')
     .required('Department name is required'),
-  description: yup
-    .string()
-    .max(500, 'Description must be at most 500 characters')
-    .required('Description is required'),
+  description: yup.string().max(500, 'Description must be at most 500 characters').required('Description is required'),
 });
 
 const initialValues = { name: '', description: '' };
@@ -59,39 +62,42 @@ const DepartmentList = () => {
     return () => dispatch(clearDepartmentError());
   }, [dispatch]);
 
-  const handleOpenCreate = () => {
+  const handleOpenCreate = useCallback(() => {
     setEditTarget(null);
     setModalOpen(true);
-  };
+  }, []);
 
-  const handleOpenEdit = (dept) => {
+  const handleOpenEdit = useCallback((dept) => {
     setEditTarget(dept);
     setModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setModalOpen(false);
     setEditTarget(null);
-  };
+  }, []);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      if (editTarget) {
-        await dispatch(updateDepartment({ id: editTarget._id || editTarget.id, ...values })).unwrap();
-        toast.success('Department updated successfully');
-      } else {
-        await dispatch(createDepartment(values)).unwrap();
-        toast.success('Department created successfully');
+  const handleSubmit = useCallback(
+    async (values, { setSubmitting }) => {
+      try {
+        if (editTarget) {
+          await dispatch(updateDepartment({ id: editTarget._id || editTarget.id, ...values })).unwrap();
+          toast.success('Department updated successfully');
+        } else {
+          await dispatch(createDepartment(values)).unwrap();
+          toast.success('Department created successfully');
+        }
+        handleCloseModal();
+      } catch (err) {
+        toast.error(err || `Failed to ${editTarget ? 'update' : 'create'} department`);
+      } finally {
+        setSubmitting(false);
       }
-      handleCloseModal();
-    } catch (err) {
-      toast.error(err || `Failed to ${editTarget ? 'update' : 'create'} department`);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    },
+    [dispatch, editTarget, handleCloseModal]
+  );
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteConfirm = useCallback(async () => {
     if (!deleteTarget) return;
     try {
       await dispatch(deleteDepartment(deleteTarget._id || deleteTarget.id)).unwrap();
@@ -100,69 +106,82 @@ const DepartmentList = () => {
       toast.error(err || 'Failed to delete department');
     }
     setDeleteTarget(null);
-  };
+  }, [dispatch, deleteTarget]);
 
-  const columns = useMemo(() => [
-    {
-      field: 'name',
-      label: 'Name',
-      sortable: true,
-      render: (row) => (
-        <Typography variant="body2" fontWeight={600}>
-          {row.name}
-        </Typography>
-      ),
-    },
-    {
-      field: 'description',
-      label: 'Description',
-      render: (row) => (
-        <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {row.description}
-        </Typography>
-      ),
-    },
-    {
-      field: 'createdAt',
-      label: 'Created',
-      sortable: true,
-      render: (row) => (
-        <Typography variant="body2" color="text.secondary">
-          {formatDate(row.createdAt)}
-        </Typography>
-      ),
-    },
-    {
-      field: 'actions',
-      label: 'Actions',
-      sortable: false,
-      nowrap: true,
-      render: (row) => (
-        <Box sx={{ display: 'flex', gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
-          <Tooltip title="Edit">
-            <IconButton size="small" color="info" onClick={() => handleOpenEdit(row)}>
-              <Edit2 size={16} />
-            </IconButton>
-          </Tooltip>
-          {isAdmin && (
-            <Tooltip title="Delete">
-              <IconButton size="small" color="error" onClick={() => setDeleteTarget(row)}>
-                <Trash2 size={16} />
+  const columns = useMemo(
+    () => [
+      {
+        field: 'name',
+        label: 'Name',
+        sortable: true,
+        render: (row) => (
+          <Typography variant="body2" fontWeight={600}>
+            {row.name}
+          </Typography>
+        ),
+      },
+      {
+        field: 'description',
+        label: 'Description',
+        render: (row) => (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ maxWidth: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+          >
+            {row.description}
+          </Typography>
+        ),
+      },
+      {
+        field: 'createdAt',
+        label: 'Created',
+        sortable: true,
+        render: (row) => (
+          <Typography variant="body2" color="text.secondary">
+            {formatDate(row.createdAt)}
+          </Typography>
+        ),
+      },
+      {
+        field: 'actions',
+        label: 'Actions',
+        sortable: false,
+        nowrap: true,
+        render: (row) => (
+          <Box sx={{ display: 'flex', gap: 0.5 }} onClick={(e) => e.stopPropagation()}>
+            <Tooltip title="Edit">
+              <IconButton size="small" color="info" onClick={() => handleOpenEdit(row)}>
+                <Edit2 size={16} />
               </IconButton>
             </Tooltip>
-          )}
-        </Box>
-      ),
-    },
-  ], [isAdmin]);
+            {isAdmin && (
+              <Tooltip title="Delete">
+                <IconButton size="small" color="error" onClick={() => setDeleteTarget(row)}>
+                  <Trash2 size={16} />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Box>
+        ),
+      },
+    ],
+    [isAdmin]
+  );
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}
+      >
         <Box>
-          <Typography variant="h5" fontWeight={700}>Departments</Typography>
+          <Typography variant="h5" fontWeight={700}>
+            Departments
+          </Typography>
           <Typography variant="body2" color="text.secondary">
-            {items.length > 0 ? `${items.length} department${items.length !== 1 ? 's' : ''} found` : 'Manage your departments'}
+            {items.length > 0
+              ? `${items.length} department${items.length !== 1 ? 's' : ''} found`
+              : 'Manage your departments'}
           </Typography>
         </Box>
         <Button
@@ -188,16 +207,16 @@ const DepartmentList = () => {
       {/* Create / Edit Modal */}
       <Dialog open={modalOpen} onClose={handleCloseModal} maxWidth="sm" fullWidth>
         <Formik
-          initialValues={editTarget ? { name: editTarget.name || '', description: editTarget.description || '' } : initialValues}
+          initialValues={
+            editTarget ? { name: editTarget.name || '', description: editTarget.description || '' } : initialValues
+          }
           validationSchema={departmentSchema}
           onSubmit={handleSubmit}
           enableReinitialize
         >
           {({ errors, touched, isSubmitting }) => (
             <Form>
-              <DialogTitle sx={{ fontWeight: 700 }}>
-                {editTarget ? 'Edit Department' : 'Add Department'}
-              </DialogTitle>
+              <DialogTitle sx={{ fontWeight: 700 }}>{editTarget ? 'Edit Department' : 'Add Department'}</DialogTitle>
               <DialogContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, pt: 1 }}>
                   <Field name="name">

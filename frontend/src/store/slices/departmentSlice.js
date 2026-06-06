@@ -1,29 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as departmentService from '../../services/departmentService';
 
-export const fetchDepartments = createAsyncThunk(
-  'departments/fetchAll',
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await departmentService.getDepartments();
-      return { departments: data.data || [] };
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to fetch departments');
-    }
+export const fetchDepartments = createAsyncThunk('departments/fetchAll', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await departmentService.getDepartments();
+    return { departments: data.data || [] };
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to fetch departments');
   }
-);
+});
 
-export const createDepartment = createAsyncThunk(
-  'departments/create',
-  async (departmentData, { rejectWithValue }) => {
-    try {
-      const { data } = await departmentService.createDepartment(departmentData);
-      return data.data || data.department || data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to create department');
-    }
+export const createDepartment = createAsyncThunk('departments/create', async (departmentData, { rejectWithValue }) => {
+  try {
+    const { data } = await departmentService.createDepartment(departmentData);
+    return data.data || data.department || data;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to create department');
   }
-);
+});
 
 export const updateDepartment = createAsyncThunk(
   'departments/update',
@@ -37,17 +31,14 @@ export const updateDepartment = createAsyncThunk(
   }
 );
 
-export const deleteDepartment = createAsyncThunk(
-  'departments/delete',
-  async (id, { rejectWithValue }) => {
-    try {
-      await departmentService.deleteDepartment(id);
-      return id;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to delete department');
-    }
+export const deleteDepartment = createAsyncThunk('departments/delete', async (id, { rejectWithValue }) => {
+  try {
+    await departmentService.deleteDepartment(id);
+    return id;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to delete department');
   }
-);
+});
 
 const departmentSlice = createSlice({
   name: 'departments',
@@ -63,7 +54,10 @@ const departmentSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDepartments.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(fetchDepartments.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchDepartments.fulfilled, (state, action) => {
         state.loading = false;
         state.items = action.payload.departments;

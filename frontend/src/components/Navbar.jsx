@@ -1,29 +1,11 @@
-import { useState, useRef } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import {
-  LogOut,
-  Sun,
-  Moon,
-  Menu,
-  User,
-  Settings,
-  ChevronRight,
-  Home,
-} from 'lucide-react';
+import { LogOut, Sun, Moon, Menu, User, Settings, ChevronRight, Home } from 'lucide-react';
 import { logout } from '../store/slices/authSlice';
 import { toggleTheme, toggleSidebar } from '../store/slices/uiSlice';
 import { getInitials } from '../utils/helpers';
-import {
-  Box,
-  Typography,
-  Menu as MuiMenu,
-  MenuItem,
-  ListItemIcon,
-  Divider,
-  Avatar,
-  Tooltip,
-} from '@mui/material';
+import { Box, Typography, Menu as MuiMenu, MenuItem, ListItemIcon, Divider, Avatar, Tooltip } from '@mui/material';
 
 const routeLabels = {
   '/': 'Dashboard',
@@ -33,6 +15,9 @@ const routeLabels = {
   '/tasks': 'Tasks',
   '/analytics': 'Analytics',
   '/settings': 'Settings',
+  '/profile': 'Profile',
+  '/admin': 'Admin Dashboard',
+  '/admin/users': 'User Management',
 };
 
 const Navbar = () => {
@@ -45,17 +30,23 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
 
-  const pathSegments = location.pathname.split('/').filter(Boolean);
-  const currentLabel = routeLabels[location.pathname] || pathSegments[pathSegments.length - 1] || 'Dashboard';
+  const pathSegments = useMemo(() => location.pathname.split('/').filter(Boolean), [location.pathname]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     setAnchorEl(null);
     dispatch(logout());
     navigate('/auth/login', { replace: true });
-  };
+  }, [dispatch, navigate]);
 
-  const handleMenuOpen = (e) => setAnchorEl(e.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
+  const handleMenuOpen = useCallback((e) => setAnchorEl(e.currentTarget), []);
+  const handleMenuClose = useCallback(() => setAnchorEl(null), []);
+  const handleNavigate = useCallback(
+    (path) => {
+      setAnchorEl(null);
+      navigate(path);
+    },
+    [navigate]
+  );
 
   return (
     <header
@@ -93,9 +84,7 @@ const Navbar = () => {
           >
             <Home size={16} />
           </Link>
-          {pathSegments.length > 0 && (
-            <ChevronRight size={14} className={isDark ? 'text-gray-600' : 'text-gray-300'} />
-          )}
+          {pathSegments.length > 0 && <ChevronRight size={14} className={isDark ? 'text-gray-600' : 'text-gray-300'} />}
           {pathSegments.map((seg, i) => {
             const path = '/' + pathSegments.slice(0, i + 1).join('/');
             const label = routeLabels[path] || seg.charAt(0).toUpperCase() + seg.slice(1);
@@ -166,21 +155,31 @@ const Navbar = () => {
             }}
           >
             <Box sx={{ px: 2, py: 1.5 }}>
-              <Typography variant="subtitle2" fontWeight={600}>{user?.name || 'User'}</Typography>
-              <Typography variant="caption" color="text.secondary">{user?.email || ''}</Typography>
+              <Typography variant="subtitle2" fontWeight={600}>
+                {user?.name || 'User'}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {user?.email || ''}
+              </Typography>
             </Box>
             <Divider />
-            <MenuItem onClick={() => { handleMenuClose(); navigate('/profile'); }}>
-              <ListItemIcon><User size={18} /></ListItemIcon>
+            <MenuItem onClick={() => handleNavigate('/profile')}>
+              <ListItemIcon>
+                <User size={18} />
+              </ListItemIcon>
               Profile
             </MenuItem>
-            <MenuItem onClick={() => { handleMenuClose(); navigate('/settings'); }}>
-              <ListItemIcon><Settings size={18} /></ListItemIcon>
+            <MenuItem onClick={() => handleNavigate('/settings')}>
+              <ListItemIcon>
+                <Settings size={18} />
+              </ListItemIcon>
               Settings
             </MenuItem>
             <Divider />
             <MenuItem onClick={handleLogout} sx={{ color: '#ef4444' }}>
-              <ListItemIcon sx={{ color: '#ef4444' }}><LogOut size={18} /></ListItemIcon>
+              <ListItemIcon sx={{ color: '#ef4444' }}>
+                <LogOut size={18} />
+              </ListItemIcon>
               Logout
             </MenuItem>
           </MuiMenu>

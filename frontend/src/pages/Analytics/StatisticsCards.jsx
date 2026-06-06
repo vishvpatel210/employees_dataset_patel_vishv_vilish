@@ -1,20 +1,44 @@
 import { useState, useEffect } from 'react';
-import {
-  Box, Typography, Paper, Skeleton
-} from '@mui/material';
+import { Box, Typography, Paper, Skeleton } from '@mui/material';
 import { Users, FolderKanban, CheckSquare, Briefcase, Globe, Award } from 'lucide-react';
 import {
-  getEmployeeCount, getProjectCount, getTaskCount,
-  getAverageExperience, getCountryCount, getCertificationCount
+  getEmployeeCount,
+  getProjectCount,
+  getTaskCount,
+  getAverageExperience,
+  getCountryCount,
+  getCertificationCount,
 } from '../../services/analyticsService';
 
 const statCards = [
   { label: 'Total Employees', icon: Users, color: '#2563eb', bgColor: '#eff6ff', getter: getEmployeeCount, suffix: '' },
-  { label: 'Total Projects', icon: FolderKanban, color: '#7c3aed', bgColor: '#f5f3ff', getter: getProjectCount, suffix: '' },
+  {
+    label: 'Total Projects',
+    icon: FolderKanban,
+    color: '#7c3aed',
+    bgColor: '#f5f3ff',
+    getter: getProjectCount,
+    suffix: '',
+  },
   { label: 'Total Tasks', icon: CheckSquare, color: '#059669', bgColor: '#ecfdf5', getter: getTaskCount, suffix: '' },
-  { label: 'Avg Experience', icon: Briefcase, color: '#d97706', bgColor: '#fffbeb', getter: getAverageExperience, suffix: ' yrs', decimals: 1 },
+  {
+    label: 'Avg Experience',
+    icon: Briefcase,
+    color: '#d97706',
+    bgColor: '#fffbeb',
+    getter: getAverageExperience,
+    suffix: ' yrs',
+    decimals: 1,
+  },
   { label: 'Countries', icon: Globe, color: '#dc2626', bgColor: '#fef2f2', getter: getCountryCount, suffix: '' },
-  { label: 'Certifications', icon: Award, color: '#0891b2', bgColor: '#ecfeff', getter: getCertificationCount, suffix: '' },
+  {
+    label: 'Certifications',
+    icon: Award,
+    color: '#0891b2',
+    bgColor: '#ecfeff',
+    getter: getCertificationCount,
+    suffix: '',
+  },
 ];
 
 const StatCard = ({ label, icon: Icon, color, bgColor, value, loading }) => (
@@ -48,7 +72,12 @@ const StatCard = ({ label, icon: Icon, color, bgColor, value, loading }) => (
       <Icon size={22} />
     </Box>
     <Box sx={{ minWidth: 0 }}>
-      <Typography variant="caption" color="text.secondary" fontWeight={500} sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        fontWeight={500}
+        sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}
+      >
         {label}
       </Typography>
       {loading ? (
@@ -99,12 +128,7 @@ const StatisticsCards = () => {
   return (
     <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', lg: '1fr 1fr 1fr' }, gap: 2.5 }}>
       {statCards.map((card) => (
-        <StatCard
-          key={card.label}
-          {...card}
-          value={formatValue(card, data[card.label])}
-          loading={loading}
-        />
+        <StatCard key={card.label} {...card} value={formatValue(card, data[card.label])} loading={loading} />
       ))}
     </Box>
   );

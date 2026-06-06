@@ -1,17 +1,28 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Skeleton } from '@mui/material';
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { getTopSkills } from '../../services/analyticsService';
 
-const COLORS = ['#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#7c3aed', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe'];
+const COLORS = [
+  '#2563eb',
+  '#3b82f6',
+  '#60a5fa',
+  '#93c5fd',
+  '#bfdbfe',
+  '#7c3aed',
+  '#8b5cf6',
+  '#a78bfa',
+  '#c4b5fd',
+  '#ddd6fe',
+];
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <Paper elevation={3} sx={{ px: 2, py: 1.5, borderRadius: 1.5 }}>
-        <Typography variant="body2" fontWeight={600}>{label}</Typography>
+        <Typography variant="body2" fontWeight={600}>
+          {label}
+        </Typography>
         <Typography variant="body2" color="primary.main" fontWeight={600}>
           {payload[0].value} employee{payload[0].value !== 1 ? 's' : ''}
         </Typography>
@@ -31,10 +42,12 @@ const TopSkillsChart = () => {
         const res = await getTopSkills();
         const items = res.data?.data ?? [];
         setData(
-          items.map((item) => ({
-            name: item._id || 'Unknown',
-            count: item.count,
-          })).reverse()
+          items
+            .map((item) => ({
+              name: item._id || 'Unknown',
+              count: item.count,
+            }))
+            .reverse()
         );
       } catch {
         setData([]);
@@ -46,8 +59,12 @@ const TopSkillsChart = () => {
 
   return (
     <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
-      <Typography variant="h6" fontWeight={600} sx={{ mb: 0.5 }}>Top Skills</Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>Most common primary skills among employees</Typography>
+      <Typography variant="h6" fontWeight={600} sx={{ mb: 0.5 }}>
+        Top Skills
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        Most common primary skills among employees
+      </Typography>
       {loading ? (
         <Skeleton variant="rectangular" height={350} sx={{ borderRadius: 1 }} />
       ) : data.length === 0 ? (

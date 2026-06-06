@@ -2,14 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Alert,
-  CircularProgress,
-} from '@mui/material';
+import { Box, Typography, TextField, Button, Alert, CircularProgress } from '@mui/material';
 import { Mail, ArrowLeft } from 'lucide-react';
 import { forgotPasswordAction, clearError, clearSuccess } from '../../store/slices/authSlice';
 import { forgotPasswordSchema } from '../../utils/validators';
@@ -51,11 +44,7 @@ const ForgotPasswordPage = () => {
         </Alert>
       )}
 
-      <Formik
-        initialValues={{ email: '' }}
-        validationSchema={forgotPasswordSchema}
-        onSubmit={handleSubmit}
-      >
+      <Formik initialValues={{ email: '' }} validationSchema={forgotPasswordSchema} onSubmit={handleSubmit}>
         {({ errors, touched, isSubmitting }) => (
           <Form>
             <Field name="email">
@@ -74,9 +63,7 @@ const ForgotPasswordPage = () => {
                   slotProps={{
                     input: {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
-                      startAdornment: (
-                        <Mail size={20} style={{ marginRight: 8, color: '#94a3b8' }} />
-                      ),
+                      startAdornment: <Mail size={20} style={{ marginRight: 8, color: '#94a3b8' }} />,
                     },
                   }}
                 />
