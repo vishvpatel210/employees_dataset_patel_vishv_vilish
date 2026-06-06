@@ -20,6 +20,7 @@ const EmployeeDetail = lazy(() => import('./pages/EmployeeDetail'));
 const DepartmentList = lazy(() => import('./pages/DepartmentList'));
 const ProjectList = lazy(() => import('./pages/ProjectList'));
 const TaskList = lazy(() => import('./pages/TaskList'));
+const AnalyticsDashboard = lazy(() => import('./pages/Analytics/AnalyticsDashboard'));
 
 const Fallback = () => (
   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -60,7 +61,7 @@ const App = () => {
 <Route path="/tasks" element={<TaskList />} />
 
             {/* Analytics - All authenticated users */}
-            <Route path="/analytics" element={<div className="p-4">Analytics Page</div>} />
+            <Route path="/analytics" element={<AnalyticsDashboard />} />
 
             {/* Settings - All authenticated users */}
             <Route path="/settings" element={<div className="p-4">Settings Page</div>} />
