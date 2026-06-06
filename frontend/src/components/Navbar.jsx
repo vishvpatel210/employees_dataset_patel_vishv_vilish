@@ -170,6 +170,10 @@ const Navbar = () => {
               <Typography variant="caption" color="text.secondary">{user?.email || ''}</Typography>
             </Box>
             <Divider />
+            <MenuItem onClick={() => { handleMenuClose(); navigate('/profile'); }}>
+              <ListItemIcon><User size={18} /></ListItemIcon>
+              Profile
+            </MenuItem>
             <MenuItem onClick={() => { handleMenuClose(); navigate('/settings'); }}>
               <ListItemIcon><Settings size={18} /></ListItemIcon>
               Settings

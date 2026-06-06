@@ -23,6 +23,8 @@ const TaskList = lazy(() => import('./pages/TaskList'));
 const AnalyticsDashboard = lazy(() => import('./pages/Analytics/AnalyticsDashboard'));
 const AdminOverview = lazy(() => import('./pages/Admin/AdminOverview'));
 const UserManagement = lazy(() => import('./pages/Admin/UserManagement'));
+const ProfilePage = lazy(() => import('./pages/Profile/ProfilePage'));
+const SettingsPage = lazy(() => import('./pages/Settings/SettingsPage'));
 
 const Fallback = () => (
   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -65,8 +67,9 @@ const App = () => {
             {/* Analytics - All authenticated users */}
             <Route path="/analytics" element={<AnalyticsDashboard />} />
 
-            {/* Settings - All authenticated users */}
-            <Route path="/settings" element={<div className="p-4">Settings Page</div>} />
+            {/* Profile & Settings - All authenticated users */}
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
 
             {/* Admin Only Routes */}
             <Route element={<RoleBasedRoute allowedRoles={[ROLES.ADMIN, ROLES.HR]} />}>

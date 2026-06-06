@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { loginUser, registerUser, getProfile, forgotPassword, resetPassword, logoutUser } from '../../services/authService';
+import { loginUser, registerUser, getProfile, updateProfile, forgotPassword, resetPassword, logoutUser } from '../../services/authService';
 import { STORAGE_KEYS } from '../../utils/constants';
 
 const getStored = (key) => {
@@ -76,6 +76,15 @@ export const resetPasswordAction = createAsyncThunk('auth/resetPassword', async 
   }
 });
 
+export const updateProfileAction = createAsyncThunk('auth/updateProfile', async (profileData, { rejectWithValue }) => {
+  try {
+    const { data } = await updateProfile(profileData);
+    return data;
+  } catch (err) {
+    return rejectWithValue(err.response?.data?.message || 'Failed to update profile');
+  }
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -148,6 +157,18 @@ const authSlice = createSlice({
         state.successMessage = action.payload.message || 'Password has been reset successfully';
       })
       .addCase(resetPasswordAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateProfileAction.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(updateProfileAction.fulfilled, (state, action) => {
+        state.loading = false;
+        const userData = action.payload.data || action.payload.user || action.payload;
+        state.user = { ...state.user, ...userData };
+        const remember = !!localStorage.getItem(STORAGE_KEYS.TOKEN);
+        persistAuth(state.token, state.user, remember);
+      })
+      .addCase(updateProfileAction.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
