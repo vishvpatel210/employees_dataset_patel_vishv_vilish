@@ -10,6 +10,7 @@ import {
   Settings,
   Shield,
   UserCog,
+  User,
 } from 'lucide-react';
 import { ROLES } from '../utils/constants';
 
@@ -54,6 +55,7 @@ const Sidebar = () => {
     {
       label: 'System',
       items: [
+        { name: 'Profile', path: '/profile', icon: <User size={20} /> },
         { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
       ],
     },
