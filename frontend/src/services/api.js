@@ -4,6 +4,7 @@ import { API_BASE_URL, STORAGE_KEYS } from '../utils/constants';
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
+  timeout: 30000,
 });
 
 api.interceptors.request.use(
@@ -23,9 +24,14 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem(STORAGE_KEYS.TOKEN);
       localStorage.removeItem(STORAGE_KEYS.USER);
-      window.location.href = '/login';
+      window.location.href = '/auth/login';
     }
-    return Promise.reject(error);
+    const message =
+      error.response?.data?.message ||
+      error.response?.data?.error ||
+      error.message ||
+      'Something went wrong';
+    return Promise.reject({ ...error, message });
   }
 );
 
