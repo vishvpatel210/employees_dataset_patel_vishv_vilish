@@ -2,14 +2,35 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { loginUser, registerUser, getProfile, forgotPassword, resetPassword, logoutUser } from '../../services/authService';
 import { STORAGE_KEYS } from '../../utils/constants';
 
-const storedUser = localStorage.getItem(STORAGE_KEYS.USER);
-const storedToken = localStorage.getItem(STORAGE_KEYS.TOKEN);
+const getStored = (key) => {
+  try {
+    const v = sessionStorage.getItem(key) || localStorage.getItem(key);
+    return key === STORAGE_KEYS.USER ? (v ? JSON.parse(v) : null) : v;
+  } catch {
+    return null;
+  }
+};
+
+const initialUser = getStored(STORAGE_KEYS.USER);
+const initialToken = getStored(STORAGE_KEYS.TOKEN);
+
+const persistAuth = (token, user, remember) => {
+  const store = remember ? localStorage : sessionStorage;
+  store.setItem(STORAGE_KEYS.TOKEN, token);
+  store.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+};
+
+const clearAuthStorage = () => {
+  [localStorage, sessionStorage].forEach((s) => {
+    s.removeItem(STORAGE_KEYS.TOKEN);
+    s.removeItem(STORAGE_KEYS.USER);
+  });
+};
 
 export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
   try {
     const { data } = await loginUser(credentials);
-    localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
+    persistAuth(data.token, data.user, credentials.rememberMe);
     return data;
   } catch (err) {
     const message = err.response?.data?.message || err.response?.data?.error || 'Login failed';
@@ -20,8 +41,7 @@ export const login = createAsyncThunk('auth/login', async (credentials, { reject
 export const register = createAsyncThunk('auth/register', async (userData, { rejectWithValue }) => {
   try {
     const { data } = await registerUser(userData);
-    localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
+    persistAuth(data.token, data.user, true);
     return data;
   } catch (err) {
     const message = err.response?.data?.message || err.response?.data?.error || 'Registration failed';
@@ -59,9 +79,9 @@ export const resetPasswordAction = createAsyncThunk('auth/resetPassword', async 
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    user: storedUser ? JSON.parse(storedUser) : null,
-    token: storedToken || null,
-    isAuthenticated: !!storedToken,
+    user: initialUser,
+    token: initialToken,
+    isAuthenticated: !!initialToken,
     loading: false,
     error: null,
     successMessage: null,
@@ -74,8 +94,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       state.successMessage = null;
-      localStorage.removeItem(STORAGE_KEYS.TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.USER);
+      clearAuthStorage();
     },
     clearError(state) {
       state.error = null;
@@ -111,7 +130,8 @@ const authSlice = createSlice({
       .addCase(fetchProfile.fulfilled, (state, action) => {
         const userData = action.payload.data || action.payload.user || action.payload;
         state.user = userData;
-        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
+        const remember = !!localStorage.getItem(STORAGE_KEYS.TOKEN);
+        persistAuth(state.token, userData, remember);
       })
       .addCase(forgotPasswordAction.pending, (state) => { state.loading = true; state.error = null; state.successMessage = null; })
       .addCase(forgotPasswordAction.fulfilled, (state, action) => {

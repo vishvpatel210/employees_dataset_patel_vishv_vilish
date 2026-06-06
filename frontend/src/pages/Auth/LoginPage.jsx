@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
@@ -11,6 +11,9 @@ import {
   IconButton,
   InputAdornment,
   Divider,
+  Checkbox,
+  FormControlLabel,
+  CircularProgress,
 } from '@mui/material';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { login, clearError } from '../../store/slices/authSlice';
@@ -22,14 +25,13 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const emailRef = useRef(null);
 
   const from = location.state?.from?.pathname || '/';
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(from, { replace: true });
-    }
+    if (isAuthenticated) navigate(from, { replace: true });
   }, [isAuthenticated, navigate, from]);
 
   useEffect(() => {
@@ -37,9 +39,11 @@ const LoginPage = () => {
   }, [dispatch]);
 
   const handleSubmit = (values, { setSubmitting }) => {
-    dispatch(login({ email: values.email, password: values.password })).finally(() => {
-      setSubmitting(false);
-    });
+    dispatch(login({
+      email: values.email,
+      password: values.password,
+      rememberMe: values.rememberMe,
+    })).finally(() => setSubmitting(false));
   };
 
   return (
@@ -58,7 +62,7 @@ const LoginPage = () => {
       )}
 
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ email: '', password: '', rememberMe: true }}
         validationSchema={loginSchema}
         onSubmit={handleSubmit}
       >
@@ -68,10 +72,13 @@ const LoginPage = () => {
               {({ field }) => (
                 <TextField
                   {...field}
+                  inputRef={emailRef}
                   label="Email"
                   type="email"
                   fullWidth
                   size="medium"
+                  autoFocus
+                  autoComplete="email"
                   error={touched.email && Boolean(errors.email)}
                   helperText={touched.email && errors.email}
                   sx={{ mb: 2.5 }}
@@ -91,6 +98,7 @@ const LoginPage = () => {
                   type={showPassword ? 'text' : 'password'}
                   fullWidth
                   size="medium"
+                  autoComplete="current-password"
                   error={touched.password && Boolean(errors.password)}
                   helperText={touched.password && errors.password}
                   sx={{ mb: 1 }}
@@ -99,7 +107,12 @@ const LoginPage = () => {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" size="small">
+                          <IconButton
+                            onClick={() => setShowPassword((p) => !p)}
+                            edge="end"
+                            size="small"
+                            tabIndex={-1}
+                          >
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>
@@ -109,7 +122,15 @@ const LoginPage = () => {
                 />
               )}
             </Field>
-            <Box sx={{ textAlign: 'right', mb: 2.5 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2.5 }}>
+              <Field name="rememberMe">
+                {({ field }) => (
+                  <FormControlLabel
+                    control={<Checkbox {...field} checked={field.value} size="small" />}
+                    label={<Typography variant="body2">Remember me</Typography>}
+                  />
+                )}
+              </Field>
               <Link
                 to={AUTH_PATHS.FORGOT_PASSWORD}
                 style={{ color: '#2563eb', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 500 }}
@@ -136,7 +157,7 @@ const LoginPage = () => {
                   boxShadow: '0 6px 20px rgba(37,99,235,0.4)',
                 },
               }}
-              startIcon={<LogIn size={20} />}
+              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <LogIn size={20} />}
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </Button>
@@ -145,9 +166,7 @@ const LoginPage = () => {
       </Formik>
 
       <Divider sx={{ my: 3 }}>
-        <Typography variant="caption" color="text.secondary">
-          OR
-        </Typography>
+        <Typography variant="caption" color="text.secondary">OR</Typography>
       </Divider>
 
       <Typography variant="body2" align="center" color="text.secondary">

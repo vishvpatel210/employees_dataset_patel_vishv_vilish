@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
@@ -16,22 +16,67 @@ import {
   InputLabel,
   FormHelperText,
   Divider,
+  LinearProgress,
+  CircularProgress,
 } from '@mui/material';
-import { Eye, EyeOff, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, Check, X } from 'lucide-react';
 import { register, clearError } from '../../store/slices/authSlice';
 import { registerSchema } from '../../utils/validators';
 import { AUTH_PATHS } from '../../utils/constants';
+
+const strengthConfig = {
+  colors: ['#ef4444', '#f97316', '#eab308', '#22c55e', '#16a34a'],
+  labels: ['Weak', 'Fair', 'Good', 'Strong', 'Very strong'],
+};
+
+const getStrength = (pw) => {
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (pw.length >= 12) score++;
+  if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^a-zA-Z0-9]/.test(pw)) score++;
+  return Math.min(score, 4);
+};
+
+const PasswordStrength = ({ value }) => {
+  const level = useMemo(() => getStrength(value || ''), [value]);
+  if (!value) return null;
+  return (
+    <Box sx={{ mb: 2.5 }}>
+      <LinearProgress
+        variant="determinate"
+        value={((level + 1) / 5) * 100}
+        sx={{
+          height: 4,
+          borderRadius: 2,
+          bgcolor: 'rgba(0,0,0,0.06)',
+          '& .MuiLinearProgress-bar': { bgcolor: strengthConfig.colors[level], transition: '0.3s' },
+        }}
+      />
+      <Typography variant="caption" color={strengthConfig.colors[level]} sx={{ mt: 0.5, display: 'block', fontWeight: 500 }}>
+        {strengthConfig.labels[level]}
+      </Typography>
+    </Box>
+  );
+};
+
+const PasswordRequirement = ({ met, label }) => (
+  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.25 }}>
+    {met ? <Check size={14} style={{ color: '#22c55e' }} /> : <X size={14} style={{ color: '#94a3b8' }} />}
+    <Typography variant="caption" color={met ? 'success.main' : 'text.disabled'}>{label}</Typography>
+  </Box>
+);
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/', { replace: true });
-    }
+    if (isAuthenticated) navigate('/', { replace: true });
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
@@ -44,9 +89,7 @@ const RegisterPage = () => {
       email: values.email,
       password: values.password,
       role: values.role,
-    })).finally(() => {
-      setSubmitting(false);
-    });
+    })).finally(() => setSubmitting(false));
   };
 
   return (
@@ -69,7 +112,7 @@ const RegisterPage = () => {
         validationSchema={registerSchema}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched, isSubmitting, setFieldValue }) => (
+        {({ errors, touched, isSubmitting, setFieldValue, values }) => (
           <Form>
             <Field name="name">
               {({ field }) => (
@@ -78,6 +121,8 @@ const RegisterPage = () => {
                   label="Full Name"
                   fullWidth
                   size="medium"
+                  autoFocus
+                  autoComplete="name"
                   error={touched.name && Boolean(errors.name)}
                   helperText={touched.name && errors.name}
                   sx={{ mb: 2.5 }}
@@ -95,6 +140,7 @@ const RegisterPage = () => {
                   type="email"
                   fullWidth
                   size="medium"
+                  autoComplete="email"
                   error={touched.email && Boolean(errors.email)}
                   helperText={touched.email && errors.email}
                   sx={{ mb: 2.5 }}
@@ -112,15 +158,21 @@ const RegisterPage = () => {
                   type={showPassword ? 'text' : 'password'}
                   fullWidth
                   size="medium"
+                  autoComplete="new-password"
                   error={touched.password && Boolean(errors.password)}
                   helperText={touched.password && errors.password}
-                  sx={{ mb: 2.5 }}
+                  sx={{ mb: 0.5 }}
                   slotProps={{
                     input: {
                       sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" size="small">
+                          <IconButton
+                            onClick={() => setShowPassword((p) => !p)}
+                            edge="end"
+                            size="small"
+                            tabIndex={-1}
+                          >
                             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                           </IconButton>
                         </InputAdornment>
@@ -130,19 +182,41 @@ const RegisterPage = () => {
                 />
               )}
             </Field>
+            <PasswordStrength value={values.password} />
+            <Box sx={{ mb: 2.5, pl: 0.5 }}>
+              <PasswordRequirement met={values.password.length >= 8} label="At least 8 characters" />
+              <PasswordRequirement met={/[a-z]/.test(values.password)} label="One lowercase letter" />
+              <PasswordRequirement met={/[A-Z]/.test(values.password)} label="One uppercase letter" />
+              <PasswordRequirement met={/[0-9]/.test(values.password)} label="One number" />
+            </Box>
             <Field name="confirmPassword">
               {({ field }) => (
                 <TextField
                   {...field}
                   label="Confirm Password"
-                  type="password"
+                  type={showConfirm ? 'text' : 'password'}
                   fullWidth
                   size="medium"
+                  autoComplete="new-password"
                   error={touched.confirmPassword && Boolean(errors.confirmPassword)}
                   helperText={touched.confirmPassword && errors.confirmPassword}
                   sx={{ mb: 2.5 }}
                   slotProps={{
-                    input: { sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' } },
+                    input: {
+                      sx: { borderRadius: 2, bgcolor: 'rgba(0,0,0,0.02)' },
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowConfirm((p) => !p)}
+                            edge="end"
+                            size="small"
+                            tabIndex={-1}
+                          >
+                            {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
                   }}
                 />
               )}
@@ -187,7 +261,7 @@ const RegisterPage = () => {
                   boxShadow: '0 6px 20px rgba(37,99,235,0.4)',
                 },
               }}
-              startIcon={<UserPlus size={20} />}
+              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <UserPlus size={20} />}
             >
               {loading ? 'Creating account...' : 'Create account'}
             </Button>
@@ -196,9 +270,7 @@ const RegisterPage = () => {
       </Formik>
 
       <Divider sx={{ my: 3 }}>
-        <Typography variant="caption" color="text.secondary">
-          OR
-        </Typography>
+        <Typography variant="caption" color="text.secondary">OR</Typography>
       </Divider>
 
       <Typography variant="body2" align="center" color="text.secondary">
