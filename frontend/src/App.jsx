@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Box, CircularProgress } from '@mui/material';
 import MasterLayout from './components/MasterLayout';
 import RequireAuth from './components/RequireAuth';
@@ -14,6 +15,7 @@ const ForgotPasswordPage = lazy(() => import('./pages/Auth/ForgotPasswordPage'))
 const ResetPasswordPage = lazy(() => import('./pages/Auth/ResetPasswordPage'));
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const EmployeeDashboard = lazy(() => import('./pages/Dashboard/EmployeeDashboard'));
 const EmployeeList = lazy(() => import('./pages/EmployeeList'));
 const EmployeeCreate = lazy(() => import('./pages/EmployeeCreate'));
 const EmployeeEdit = lazy(() => import('./pages/EmployeeEdit'));
@@ -33,6 +35,12 @@ const Fallback = () => (
   </Box>
 );
 
+const DashboardRouter = () => {
+  const { user } = useSelector((state) => state.auth);
+  const isAdminOrHr = user?.role === ROLES.ADMIN || user?.role === ROLES.HR;
+  return isAdminOrHr ? <Dashboard /> : <EmployeeDashboard />;
+};
+
 const App = () => {
   return (
     <ErrorBoundary>
@@ -49,7 +57,7 @@ const App = () => {
           {/* Protected Routes */}
           <Route element={<RequireAuth />}>
             <Route element={<MasterLayout />}>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<DashboardRouter />} />
 
               {/* Profile & Settings - All authenticated users */}
               <Route path="/profile" element={<ProfilePage />} />
