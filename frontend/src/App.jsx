@@ -51,30 +51,31 @@ const App = () => {
             <Route element={<MasterLayout />}>
               <Route path="/" element={<Dashboard />} />
 
-              {/* Employees - All authenticated users */}
-              <Route path="/employees" element={<EmployeeList />} />
-              <Route path="/employees/new" element={<EmployeeCreate />} />
-              <Route path="/employees/:id" element={<EmployeeDetail />} />
-              <Route path="/employees/:id/edit" element={<EmployeeEdit />} />
-
-              {/* Departments - All authenticated users */}
-              <Route path="/departments" element={<DepartmentList />} />
-
-              {/* Projects - All authenticated users */}
-              <Route path="/projects" element={<ProjectList />} />
-
-              {/* Tasks - All authenticated users */}
-              <Route path="/tasks" element={<TaskList />} />
-
-              {/* Analytics - All authenticated users */}
-              <Route path="/analytics" element={<AnalyticsDashboard />} />
-
               {/* Profile & Settings - All authenticated users */}
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />
 
-              {/* Admin Only Routes */}
+              {/* Admin & HR Only Routes */}
               <Route element={<RoleBasedRoute allowedRoles={[ROLES.ADMIN, ROLES.HR]} />}>
+                {/* Employees */}
+                <Route path="/employees" element={<EmployeeList />} />
+                <Route path="/employees/new" element={<EmployeeCreate />} />
+                <Route path="/employees/:id" element={<EmployeeDetail />} />
+                <Route path="/employees/:id/edit" element={<EmployeeEdit />} />
+
+                {/* Departments */}
+                <Route path="/departments" element={<DepartmentList />} />
+
+                {/* Projects */}
+                <Route path="/projects" element={<ProjectList />} />
+
+                {/* Tasks */}
+                <Route path="/tasks" element={<TaskList />} />
+
+                {/* Analytics */}
+                <Route path="/analytics" element={<AnalyticsDashboard />} />
+
+                {/* Admin Overview */}
                 <Route path="/admin" element={<AdminOverview />} />
                 <Route path="/admin/users" element={<UserManagement />} />
               </Route>
