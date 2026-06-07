@@ -25,7 +25,11 @@ const Sidebar = () => {
     () => [
       {
         label: 'Main',
-        items: [{ name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> }],
+        items: [
+          { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
+          { name: 'My Projects', path: '/my-projects', icon: <FolderKanban size={20} /> },
+          { name: 'My Tasks', path: '/my-tasks', icon: <CheckSquare size={20} /> },
+        ],
       },
       ...(isAdminOrHr
         ? [

@@ -16,6 +16,8 @@ const ResetPasswordPage = lazy(() => import('./pages/Auth/ResetPasswordPage'));
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const EmployeeDashboard = lazy(() => import('./pages/Dashboard/EmployeeDashboard'));
+const MyTasks = lazy(() => import('./pages/MyTasks'));
+const MyProjects = lazy(() => import('./pages/MyProjects'));
 const EmployeeList = lazy(() => import('./pages/EmployeeList'));
 const EmployeeCreate = lazy(() => import('./pages/EmployeeCreate'));
 const EmployeeEdit = lazy(() => import('./pages/EmployeeEdit'));
@@ -58,6 +60,10 @@ const App = () => {
           <Route element={<RequireAuth />}>
             <Route element={<MasterLayout />}>
               <Route path="/" element={<DashboardRouter />} />
+
+              {/* Employee specific routes (accessible to all authenticated) */}
+              <Route path="/my-tasks" element={<MyTasks />} />
+              <Route path="/my-projects" element={<MyProjects />} />
 
               {/* Profile & Settings - All authenticated users */}
               <Route path="/profile" element={<ProfilePage />} />
