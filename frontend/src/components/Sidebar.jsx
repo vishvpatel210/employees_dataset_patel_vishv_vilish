@@ -27,19 +27,23 @@ const Sidebar = () => {
         label: 'Main',
         items: [{ name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> }],
       },
-      {
-        label: 'Management',
-        items: [
-          { name: 'Employees', path: '/employees', icon: <Users size={20} /> },
-          { name: 'Departments', path: '/departments', icon: <Building2 size={20} /> },
-          { name: 'Projects', path: '/projects', icon: <FolderKanban size={20} /> },
-          { name: 'Tasks', path: '/tasks', icon: <CheckSquare size={20} /> },
-        ],
-      },
-      {
-        label: 'Insights',
-        items: [{ name: 'Analytics', path: '/analytics', icon: <PieChart size={20} /> }],
-      },
+      ...(isAdminOrHr
+        ? [
+            {
+              label: 'Management',
+              items: [
+                { name: 'Employees', path: '/employees', icon: <Users size={20} /> },
+                { name: 'Departments', path: '/departments', icon: <Building2 size={20} /> },
+                { name: 'Projects', path: '/projects', icon: <FolderKanban size={20} /> },
+                { name: 'Tasks', path: '/tasks', icon: <CheckSquare size={20} /> },
+              ],
+            },
+            {
+              label: 'Insights',
+              items: [{ name: 'Analytics', path: '/analytics', icon: <PieChart size={20} /> }],
+            },
+          ]
+        : []),
       ...(isAdminOrHr
         ? [
             {
