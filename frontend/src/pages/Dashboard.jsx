@@ -1,30 +1,144 @@
+import { useState, useEffect } from 'react';
+import { Box, Typography, Paper, Grid, Skeleton } from '@mui/material';
+import { Users, FolderKanban, TrendingUp } from 'lucide-react';
+import { getEmployeeCount, getProjectCount, getAverageExperience } from '../services/analyticsService';
+
+const StatCard = ({ title, value, icon: Icon, color, bgColor, loading }) => (
+  <Paper
+    elevation={0}
+    sx={{
+      p: 3,
+      borderRadius: 2,
+      border: '1px solid',
+      borderColor: 'divider',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 2.5,
+    }}
+  >
+    <Box
+      sx={{
+        width: 48,
+        height: 48,
+        borderRadius: 2,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: bgColor,
+        color,
+        flexShrink: 0,
+      }}
+    >
+      <Icon size={24} />
+    </Box>
+    <Box>
+      <Typography variant="caption" color="text.secondary" fontWeight={500} sx={{ textTransform: 'uppercase' }}>
+        {title}
+      </Typography>
+      {loading ? (
+        <Skeleton variant="text" width={60} height={32} />
+      ) : (
+        <Typography variant="h5" fontWeight={700} color="text.primary">
+          {value}
+        </Typography>
+      )}
+    </Box>
+  </Paper>
+);
+
 const Dashboard = () => {
+  const [stats, setStats] = useState({
+    employees: null,
+    projects: null,
+    avgExperience: null,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [empRes, projRes, expRes] = await Promise.all([
+          getEmployeeCount(),
+          getProjectCount(),
+          getAverageExperience()
+        ]);
+        
+        setStats({
+          employees: empRes.data.data?.count || empRes.data.count || 0,
+          projects: projRes.data.data?.count || projRes.data.count || 0,
+          avgExperience: expRes.data.data?.average || expRes.data.average || 0,
+        });
+      } catch (err) {
+        console.error('Failed to fetch dashboard stats', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
-      </div>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box>
+        <Typography variant="h5" fontWeight={700}>
+          Dashboard Overview
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          Quick summary of your organization
+        </Typography>
+      </Box>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Placeholder Stat Cards */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Total Employees</h3>
-          <p className="text-3xl font-bold text-gray-800 mt-2">--</p>
-        </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Total Projects</h3>
-          <p className="text-3xl font-bold text-gray-800 mt-2">--</p>
-        </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Avg Experience</h3>
-          <p className="text-3xl font-bold text-gray-800 mt-2">-- yrs</p>
-        </div>
-      </div>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={4}>
+          <StatCard 
+            title="Total Employees" 
+            value={stats.employees} 
+            icon={Users} 
+            color="#2563eb" 
+            bgColor="#eff6ff"
+            loading={loading}
+          />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <StatCard 
+            title="Total Projects" 
+            value={stats.projects} 
+            icon={FolderKanban} 
+            color="#7c3aed" 
+            bgColor="#f5f3ff"
+            loading={loading}
+          />
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <StatCard 
+            title="Avg Experience" 
+            value={`${Number(stats.avgExperience).toFixed(1)} yrs`} 
+            icon={TrendingUp} 
+            color="#059669" 
+            bgColor="#ecfdf5"
+            loading={loading}
+          />
+        </Grid>
+      </Grid>
 
-      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 min-h-[400px] flex items-center justify-center">
-        <p className="text-gray-400">Analytics Charts will appear here</p>
-      </div>
-    </div>
+      <Paper 
+        elevation={0}
+        sx={{ 
+          p: 8, 
+          borderRadius: 2, 
+          border: '1px solid', 
+          borderColor: 'divider',
+          minHeight: 400,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <Typography color="text.secondary">
+          Detailed Analytics Charts can be found in the Analytics tab.
+        </Typography>
+      </Paper>
+    </Box>
   );
 };
 
