@@ -27,8 +27,10 @@ const Sidebar = () => {
         label: 'Main',
         items: [
           { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={20} /> },
-          { name: 'My Projects', path: '/my-projects', icon: <FolderKanban size={20} /> },
-          { name: 'My Tasks', path: '/my-tasks', icon: <CheckSquare size={20} /> },
+          ...(!isAdminOrHr ? [
+            { name: 'My Projects', path: '/my-projects', icon: <FolderKanban size={20} /> },
+            { name: 'My Tasks', path: '/my-tasks', icon: <CheckSquare size={20} /> },
+          ] : [])
         ],
       },
       ...(isAdminOrHr
@@ -38,8 +40,8 @@ const Sidebar = () => {
               items: [
                 { name: 'Employees', path: '/employees', icon: <Users size={20} /> },
                 { name: 'Departments', path: '/departments', icon: <Building2 size={20} /> },
-                { name: 'Projects', path: '/projects', icon: <FolderKanban size={20} /> },
-                { name: 'Tasks', path: '/tasks', icon: <CheckSquare size={20} /> },
+                { name: 'All Projects', path: '/projects', icon: <FolderKanban size={20} /> },
+                { name: 'All Tasks', path: '/tasks', icon: <CheckSquare size={20} /> },
               ],
             },
             {

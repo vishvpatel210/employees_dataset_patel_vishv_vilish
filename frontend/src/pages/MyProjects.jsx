@@ -29,7 +29,12 @@ const MyProjects = () => {
       const allTasks = tasksRes.data?.data || tasksRes.data?.tasks || [];
       const allProjects = projectsRes.data?.data || projectsRes.data?.projects || [];
       
-      const myTasks = allTasks.filter(t => t.assignedTo?.name === user?.name || t.assignedTo?._id === user?._id);
+      // Match by the exact User ID reference, fallback to name matching (case-insensitive)
+      const myTasks = allTasks.filter(t => {
+        const isUserMatch = t.assignedTo?.user === user?._id || t.assignedTo?.user?._id === user?._id;
+        const isNameMatch = (t.assignedTo?.name || '').toLowerCase().trim() === (user?.name || '').toLowerCase().trim();
+        return isUserMatch || isNameMatch;
+      });
       
       const uniqueProjectsMap = {};
       myTasks.forEach(task => {

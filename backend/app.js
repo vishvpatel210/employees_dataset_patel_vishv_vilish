@@ -28,13 +28,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // Mount routers with appropriate rate limiters
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/departments', standardLimiter, departmentRoutes);
-app.use('/api/v1/employees', standardLimiter, employeeRoutes);
-app.use('/api/v1/projects', standardLimiter, projectRoutes);
-app.use('/api/v1/tasks', standardLimiter, taskRoutes);
-app.use('/api/v1/search', heavyApiLimiter, searchRoutes);
-app.use('/api/v1/analytics/employees', heavyApiLimiter, analyticsRoutes);
-app.use('/api/v1/stats/employees', heavyApiLimiter, statsRoutes);
+app.use('/api/v1/departments', departmentRoutes);
+app.use('/api/v1/employees', employeeRoutes);
+app.use('/api/v1/projects', projectRoutes);
+app.use('/api/v1/tasks', taskRoutes);
+app.use('/api/v1/search', searchRoutes);
+app.use('/api/v1/analytics/employees', analyticsRoutes);
+app.use('/api/v1/stats/employees', statsRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/protected', protectedRoutes);
 app.use('/api/v1/middleware', middlewareRoutes);
