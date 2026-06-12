@@ -6,7 +6,7 @@ const Project = require('../models/Project');
 // @access  Private
 exports.getTasks = async (req, res, next) => {
     try {
-        const tasks = await Task.find().populate('project', 'name').populate('assignedTo', 'name id');
+        const tasks = await Task.find().populate('project', 'name').populate('assignedTo', 'name id user');
         res.status(200).json({ success: true, count: tasks.length, data: tasks });
     } catch (err) { 
         next(err); 
@@ -18,7 +18,7 @@ exports.getTasks = async (req, res, next) => {
 // @access  Private
 exports.getTask = async (req, res, next) => {
     try {
-        const task = await Task.findById(req.params.id).populate('project', 'name').populate('assignedTo', 'name id');
+        const task = await Task.findById(req.params.id).populate('project', 'name').populate('assignedTo', 'name id user');
         if (!task) {
             return res.status(404).json({ success: false, message: `Task not found with id of ${req.params.id}` });
         }

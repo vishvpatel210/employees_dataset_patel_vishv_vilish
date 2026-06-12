@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Grid, Skeleton } from '@mui/material';
 import { Users, FolderKanban, TrendingUp } from 'lucide-react';
 import { getEmployeeCount, getProjectCount, getAverageExperience } from '../services/analyticsService';
+import TopSkillsChart from './Analytics/TopSkillsChart';
+import DomainDistributionChart from './Analytics/DomainDistributionChart';
 
 const StatCard = ({ title, value, icon: Icon, color, bgColor, loading }) => (
   <Paper
@@ -64,9 +66,9 @@ const Dashboard = () => {
         ]);
         
         setStats({
-          employees: empRes.data.data?.count || empRes.data.count || 0,
-          projects: projRes.data.data?.count || projRes.data.count || 0,
-          avgExperience: expRes.data.data?.average || expRes.data.average || 0,
+          employees: empRes.data?.data || 0,
+          projects: projRes.data?.data || 0,
+          avgExperience: expRes.data?.data || 0,
         });
       } catch (err) {
         console.error('Failed to fetch dashboard stats', err);
@@ -121,23 +123,10 @@ const Dashboard = () => {
         </Grid>
       </Grid>
 
-      <Paper 
-        elevation={0}
-        sx={{ 
-          p: 8, 
-          borderRadius: 2, 
-          border: '1px solid', 
-          borderColor: 'divider',
-          minHeight: 400,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <Typography color="text.secondary">
-          Detailed Analytics Charts can be found in the Analytics tab.
-        </Typography>
-      </Paper>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: 3 }}>
+        <TopSkillsChart />
+        <DomainDistributionChart />
+      </Box>
     </Box>
   );
 };

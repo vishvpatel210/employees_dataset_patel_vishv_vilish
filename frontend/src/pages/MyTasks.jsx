@@ -41,8 +41,12 @@ const MyTasks = () => {
       const allTasks = res.data?.data || res.data?.tasks || [];
       
       // Filter tasks assigned to the logged-in user by matching name
-      // (Since backend doesn't filter natively for Employees)
-      const myTasks = allTasks.filter(t => t.assignedTo?.name === user?.name || t.assignedTo?._id === user?._id);
+      // Match by the exact User ID reference, fallback to name matching (case-insensitive)
+      const myTasks = allTasks.filter(t => {
+        const isUserMatch = t.assignedTo?.user === user?._id || t.assignedTo?.user?._id === user?._id;
+        const isNameMatch = (t.assignedTo?.name || '').toLowerCase().trim() === (user?.name || '').toLowerCase().trim();
+        return isUserMatch || isNameMatch;
+      });
       setTasks(myTasks);
     } catch (err) {
       setError('Failed to load your tasks.');
