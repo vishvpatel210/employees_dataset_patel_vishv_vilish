@@ -18,9 +18,9 @@ import {
   CircularProgress
 } from '@mui/material';
 import { Edit2 } from 'lucide-react';
-import { getTasks, updateTask } from '../../services/taskService';
-import { formatDate } from '../../utils/helpers';
-import DataTable from '../../components/common/DataTable';
+import { getTasks, updateTaskStatus } from '../services/taskService';
+import { formatDate } from '../utils/helpers';
+import DataTable from '../components/common/DataTable';
 import toast from 'react-hot-toast';
 
 const MyTasks = () => {
@@ -71,7 +71,7 @@ const MyTasks = () => {
     if (!editTarget) return;
     try {
       setIsSubmitting(true);
-      await updateTask(editTarget._id || editTarget.id, { status: newStatus });
+      await updateTaskStatus(editTarget._id || editTarget.id, { status: newStatus });
       toast.success('Task status updated successfully');
       loadMyTasks();
       handleCloseModal();

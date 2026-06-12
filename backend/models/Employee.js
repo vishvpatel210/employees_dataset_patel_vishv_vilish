@@ -1,24 +1,24 @@
 const mongoose = require('mongoose');
 
 const GeoSchema = new mongoose.Schema({
-    lat: { type: String, required: true },
-    long: { type: String, required: true },
+    lat: { type: String },
+    long: { type: String },
     timezone: {
-        name: { type: String, required: true },
-        utc_offset: { type: String, required: true }
+        name: { type: String },
+        utc_offset: { type: String }
     }
 }, { _id: false });
 
 const LocationSchema = new mongoose.Schema({
-    state: { type: String, required: true },
-    country: { type: String, required: true },
-    geo: { type: GeoSchema, required: true }
+    state: { type: String },
+    country: { type: String },
+    geo: { type: GeoSchema }
 }, { _id: false });
 
 const AddressSchema = new mongoose.Schema({
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    location: { type: LocationSchema, required: true }
+    street: { type: String },
+    city: { type: String },
+    location: { type: LocationSchema }
 }, { _id: false });
 
 const ContactSchema = new mongoose.Schema({
@@ -32,7 +32,7 @@ const ContactSchema = new mongoose.Schema({
         ]
     },
     phone: { type: String, required: true },
-    address: { type: AddressSchema, required: true }
+    address: { type: AddressSchema }
 }, { _id: false });
 
 const CertificationsSchema = new mongoose.Schema({
@@ -45,15 +45,15 @@ const CertificationsSchema = new mongoose.Schema({
 }, { _id: false });
 
 const ExperienceSchema = new mongoose.Schema({
-    years: { type: Number, required: true, min: 0, max: 100 },
+    years: { type: Number, min: 0, max: 100 },
     domains: [{ type: String }],
     certifications: { type: CertificationsSchema }
 }, { _id: false });
 
 const SkillsSchema = new mongoose.Schema({
-    primary: { type: String, required: true, index: true },
+    primary: { type: String },
     secondary: [{ type: String }],
-    experience: { type: ExperienceSchema, required: true }
+    experience: { type: ExperienceSchema }
 }, { _id: false });
 
 const ProfileSchema = new mongoose.Schema({
@@ -91,7 +91,7 @@ const employeeSchema = new mongoose.Schema({
     },
     designation: { type: String },
     salary: { type: Number },
-    status: { type: String, enum: ['Active', 'Inactive'], default: 'Active' },
+    status: { type: String, enum: ['Active', 'Inactive', 'active', 'inactive'], default: 'Active' },
     joiningDate: { type: Date, default: Date.now }
 }, {
     timestamps: true

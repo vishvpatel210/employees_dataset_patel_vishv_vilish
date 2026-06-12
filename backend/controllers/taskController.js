@@ -64,6 +64,44 @@ exports.updateTask = async (req, res, next) => {
     }
 };
 
+// @desc    Update task status only (for assigned employee)
+// @route   PATCH /api/v1/tasks/:id/status
+// @access  Private (assigned employee or Admin/HR)
+exports.updateTaskStatus = async (req, res, next) => {
+    try {
+        const task = await Task.findById(req.params.id);
+        if (!task) {
+            return res.status(404).json({ success: false, message: `Task not found with id of ${req.params.id}` });
+        }
+
+        const isAdminOrHr = ['Admin', 'HR'].includes(req.user.role);
+        const assignedId = task.assignedTo ? task.assignedTo.toString() : null;
+        const userId = req.user._id ? req.user._id.toString() : null;
+
+        if (!isAdminOrHr && assignedId !== userId) {
+            return res.status(403).json({
+                success: false,
+                message: 'You are not authorized to update this task'
+            });
+        }
+
+        const allowedFields = ['status'];
+        const updates = {};
+        for (const key of allowedFields) {
+            if (req.body[key] !== undefined) updates[key] = req.body[key];
+        }
+
+        const updatedTask = await Task.findByIdAndUpdate(req.params.id, updates, {
+            new: true,
+            runValidators: true
+        });
+
+        res.status(200).json({ success: true, data: updatedTask });
+    } catch (err) {
+        next(err);
+    }
+};
+
 // @desc    Delete task
 // @route   DELETE /api/v1/tasks/:id
 // @access  Private/Admin/HR

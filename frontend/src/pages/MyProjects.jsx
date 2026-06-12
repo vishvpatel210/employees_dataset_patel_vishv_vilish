@@ -7,13 +7,14 @@ import {
   Card,
   CardContent,
   Grid,
+  CircularProgress,
 } from '@mui/material';
-import { getTasks } from '../../services/taskService';
+import { getTasks } from '../services/taskService';
+import { getProjects } from '../services/projectService';
 import { FolderKanban, Calendar } from 'lucide-react';
-import { formatDate } from '../../utils/helpers';
-import EmptyState from '../../components/common/EmptyState';
-import LoadingScreen from '../../components/common/LoadingScreen';
-import ErrorState from '../../components/common/ErrorState';
+import { formatDate } from '../utils/helpers';
+import EmptyState from '../components/common/EmptyState';
+import ErrorState from '../components/common/ErrorState';
 
 const MyProjects = () => {
   const { user } = useSelector((state) => state.auth);
@@ -24,9 +25,9 @@ const MyProjects = () => {
   const loadMyProjects = useCallback(async () => {
     try {
       setLoading(true);
-      // We extract projects from the tasks assigned to the user
-      const res = await getTasks();
-      const allTasks = res.data?.data || res.data?.tasks || [];
+      const [tasksRes, projectsRes] = await Promise.all([getTasks(), getProjects()]);
+      const allTasks = tasksRes.data?.data || tasksRes.data?.tasks || [];
+      const allProjects = projectsRes.data?.data || projectsRes.data?.projects || [];
       
       const myTasks = allTasks.filter(t => t.assignedTo?.name === user?.name || t.assignedTo?._id === user?._id);
       
@@ -34,6 +35,13 @@ const MyProjects = () => {
       myTasks.forEach(task => {
         if (task.project && !uniqueProjectsMap[task.project._id]) {
           uniqueProjectsMap[task.project._id] = task.project;
+        }
+      });
+      
+      // Also include all projects for Admin/HR, or projects that exist in the system
+      allProjects.forEach(project => {
+        if (!uniqueProjectsMap[project._id]) {
+          uniqueProjectsMap[project._id] = project;
         }
       });
       
@@ -50,7 +58,7 @@ const MyProjects = () => {
     loadMyProjects();
   }, [loadMyProjects]);
 
-  if (loading) return <LoadingScreen />;
+  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}><CircularProgress /></Box>;
   if (error) return <ErrorState message={error} onRetry={loadMyProjects} />;
 
   return (
