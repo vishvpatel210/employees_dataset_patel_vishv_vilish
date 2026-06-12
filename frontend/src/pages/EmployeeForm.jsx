@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
@@ -96,6 +96,16 @@ const EmployeeForm = ({ employee, isEdit }) => {
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.employees);
   const initVals = employee ? flattenEmployee(employee) : initialValues;
+  const [departmentOptions, setDepartmentOptions] = useState([]);
+
+  useEffect(() => {
+    getDepartments()
+      .then((res) => {
+        const depts = res.data?.data || res.data?.departments || [];
+        setDepartmentOptions(depts);
+      })
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
@@ -193,15 +203,23 @@ const EmployeeForm = ({ employee, isEdit }) => {
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Field name="department">
                     {({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Department"
-                        fullWidth
-                        size="medium"
-                        error={touched.department && Boolean(errors.department)}
-                        helperText={touched.department && errors.department}
-                        slotProps={{ input: { sx: { borderRadius: 2 } } }}
-                      />
+                      <FormControl fullWidth size="medium" error={touched.department && Boolean(errors.department)}>
+                        <InputLabel sx={{ borderRadius: 2 }}>Department</InputLabel>
+                        <Select
+                          {...field}
+                          label="Department"
+                          sx={{ borderRadius: 2 }}
+                          onChange={(e) => setFieldValue('department', e.target.value)}
+                        >
+                          <MenuItem value="">Select Department</MenuItem>
+                          {departmentOptions.map((dept) => (
+                            <MenuItem key={dept._id} value={dept._id}>
+                              {dept.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {touched.department && errors.department && <FormHelperText>{errors.department}</FormHelperText>}
+                      </FormControl>
                     )}
                   </Field>
                 </Grid>

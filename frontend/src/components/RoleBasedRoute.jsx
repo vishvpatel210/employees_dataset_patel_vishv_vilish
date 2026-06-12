@@ -1,12 +1,13 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Box, Typography, Button } from '@mui/material';
+import { AUTH_PATHS } from '../utils/constants';
 
 const RoleBasedRoute = ({ allowedRoles }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   if (!isAuthenticated) {
-    return <Navigate to="/auth/login" replace />;
+    return <Navigate to={AUTH_PATHS.LOGIN} replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(user?.role)) {

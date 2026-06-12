@@ -5,7 +5,8 @@ const {
     getTask,
     createTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    updateTaskStatus
 } = require('../controllers/taskController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 
@@ -23,5 +24,9 @@ router
     .get(getTask)
     .patch(authorize('Admin', 'HR'), updateTask)
     .delete(authorize('Admin', 'HR'), deleteTask);
+
+router
+    .route('/:id/status')
+    .patch(updateTaskStatus);
 
 module.exports = router;
