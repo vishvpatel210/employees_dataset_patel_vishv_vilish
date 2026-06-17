@@ -416,5 +416,5 @@ for (let line of lines) {
     }
 }
 
-fs.writeFileSync('EmployeeSphere_Postman_Collection.json', JSON.stringify(collection, null, 2));
+fs.writeFileSync('postman.json', JSON.stringify(collection, null, 2));
 console.log('Collection created!');
