@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Employee = require("../models/Employee");
 const jwt = require('jsonwebtoken');
 
 // Get token from model, create cookie and send response
@@ -27,13 +28,27 @@ exports.register = async (req, res, next) => {
     try {
         const { name, email, password, role } = req.body;
 
-        // Create user
         const user = await User.create({
             name,
             email,
             password,
             role
         });
+
+        const existingEmployee = await Employee.findOne({ 'profile.contact.email': email });
+        if (!existingEmployee) {
+            await Employee.create({
+                id: `EMP-${Date.now()}`,
+                name,
+                profile: {
+                    contact: {
+                        email,
+                        phone: 'N/A'
+                    }
+                },
+                user: user._id
+            });
+        }
 
         sendTokenResponse(user, 200, res);
     } catch (err) {
