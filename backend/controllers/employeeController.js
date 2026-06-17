@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Employee = require('../models/Employee');
+const User = require('../models/userModel');
 
 const getEmployeeLookupConditions = employeeId => {
     const id = String(employeeId);
@@ -248,11 +249,35 @@ exports.employeeExists = async (req, res, next) => {
 // @access  Private/Admin/HR
 exports.createEmployee = async (req, res, next) => {
     try {
-        const employee = await Employee.create(req.body);
+        const employeeEmail = req.body.profile?.contact?.email;
+        let user = null;
+
+        if (employeeEmail) {
+            const existingUser = await User.findOne({ email: employeeEmail });
+            if (!existingUser) {
+                user = await User.create({
+                    name: req.body.name,
+                    email: employeeEmail,
+                    password: 'Employee@123',
+                    role: 'Employee'
+                });
+            } else {
+                user = existingUser;
+            }
+        }
+
+        const employeeData = { ...req.body };
+        if (user) {
+            employeeData.user = user._id;
+        }
+
+        const employee = await Employee.create(employeeData);
 
         res.status(201).json({
             success: true,
-            data: employee
+            data: employee,
+            userAccountCreated: !!user,
+            credentials: user ? { email: user.email, password: 'Employee@123' } : undefined
         });
     } catch (err) {
         next(err);

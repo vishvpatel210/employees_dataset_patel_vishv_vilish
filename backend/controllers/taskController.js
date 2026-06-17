@@ -1,12 +1,25 @@
 const Task = require('../models/Task');
 const Project = require('../models/Project');
+const Employee = require('../models/Employee');
 
 // @desc    Get all tasks
 // @route   GET /api/v1/tasks
 // @access  Private
 exports.getTasks = async (req, res, next) => {
     try {
-        const tasks = await Task.find().populate('project', 'name').populate('assignedTo', 'name id user');
+        let filter = {};
+        const isAdminOrHr = ['Admin', 'HR'].includes(req.user.role);
+
+        if (!isAdminOrHr) {
+            const employee = await Employee.findOne({ user: req.user._id }).select('_id');
+            if (employee) {
+                filter.assignedTo = employee._id;
+            } else {
+                return res.status(200).json({ success: true, count: 0, data: [] });
+            }
+        }
+
+        const tasks = await Task.find(filter).populate('project', 'name').populate('assignedTo', 'name id user');
         res.status(200).json({ success: true, count: tasks.length, data: tasks });
     } catch (err) { 
         next(err); 
@@ -76,9 +89,10 @@ exports.updateTaskStatus = async (req, res, next) => {
 
         const isAdminOrHr = ['Admin', 'HR'].includes(req.user.role);
         const assignedId = task.assignedTo ? task.assignedTo.toString() : null;
-        const userId = req.user._id ? req.user._id.toString() : null;
+        const employee = await Employee.findOne({ user: req.user._id }).select('_id');
+        const employeeId = employee ? employee._id.toString() : null;
 
-        if (!isAdminOrHr && assignedId !== userId) {
+        if (!isAdminOrHr && assignedId !== employeeId) {
             return res.status(403).json({
                 success: false,
                 message: 'You are not authorized to update this task'
