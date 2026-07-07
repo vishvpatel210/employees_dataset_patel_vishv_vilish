@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const User = require('./models/userModel');
 
-mongoose.connect('mongodb://localhost:27017/EmployeeSphere')
+require('dotenv').config();
+
+mongoose.connect(process.env.MONGODB_URI)
   .then(async () => {
     // Check if admin exists
     const admin = await User.findOne({ email: 'admin@company.com' });

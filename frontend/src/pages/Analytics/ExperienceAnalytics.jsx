@@ -30,7 +30,7 @@ const ExperienceAnalytics = () => {
         const items = res.data?.data ?? [];
         setData(
           items.map((item) => ({
-            years: item._id,
+            years: item._id !== null ? item._id : 'Unknown',
             count: item.count,
           }))
         );
