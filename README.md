@@ -22,13 +22,9 @@ This platform replaces manual employee tracking systems with a secure, scalable,
 
 | Resource | Link |
 |----------|------|
-| 🌐 Live Project | Coming Soon |
-| ⚙️ Backend API | Coming Soon |
-| 📄 Postman Documentation | Coming Soon |
-| 🎨 Figma Design | Coming Soon |
-| 💻 GitHub Repository | Coming Soon |
-| 🔀 Official PRs | Coming Soon |
-| 🎥 YouTube Demo | Coming Soon |
+| 🌐 Live Project | [EmployeeSphere](https://employees-sphere-vishv-patel.onrender.com/) |
+| ⚙️ Backend API | [Backend API](https://employees-dataset-patel-vishv-vilish.onrender.com/) |
+| 📄 Postman Documentation | [Postman Docs](https://documenter.getpostman.com/view/50841229/2sBXwtqptY) |
 
 ---
 
@@ -322,15 +318,7 @@ http://localhost:5000/api/v1
 - JWT Authentication implemented
 - MongoDB Aggregation pipelines integrated
 
----
 
-# 📬 Contact
-
-| Platform | Link |
-|----------|------|
-| 💼 LinkedIn | Coming Soon |
-| 💻 GitHub | Coming Soon |
-| 🧠 LeetCode | Coming Soon |
 
 ---
 
